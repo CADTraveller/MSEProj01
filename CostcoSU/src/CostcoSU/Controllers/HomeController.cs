@@ -26,7 +26,12 @@ namespace CostcoSU.Controllers
 
             return View();
         }
+        public IActionResult ProjectList()
+        {
+            ViewData["Message"] = "Your list of projects.";
 
+            return View();
+        }
         public IActionResult Error()
         {
             return View();
