@@ -9,7 +9,12 @@
     padding-left: 15px;
     padding-right: 15px;
 }
-
+/* Added table styles */
+table {
+        width: 100%;
+        text-align: left;
+}   
+tr:nth-child(even) {background-color: #f2f2f2}
 /* Set widths on the form inputs since otherwise they're 100% wide */
 input,
 select,

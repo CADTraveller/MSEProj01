@@ -26,6 +26,12 @@ namespace CostcoSU.Controllers
 
             return View();
         }
+        public IActionResult VerticalList()
+        {
+            ViewData["Message"] = "Verticals page.";
+
+            return View();
+        }
         public IActionResult ProjectList()
         {
             ViewData["Message"] = "Your list of projects.";
