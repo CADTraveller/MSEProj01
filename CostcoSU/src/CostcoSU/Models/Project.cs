@@ -30,7 +30,7 @@ namespace CostcoSU.Models
         WarehouseSolutions,
         MerchandisingSolutions,
         MembershipSolutions,
-        DestributionSolutions,
+        DistributionSolutions,
         InternationalSolutions,
         AncillarySolutions,
         eBusinessSolutions,
