@@ -98,6 +98,8 @@ namespace DatabaseSetup
             }
         }
 
-        public static string ConnectionString = "Server = tcp:costcodevstatus.database.windows.net,1433;Database=CostcoProjects;User ID = SUAdmin@costcodevstatus;Password=39ffbJeo; Encrypt=True;TrustServerCertificate=False;Connection Timeout = 30;";
+        public static string ConnectionString = "Server = tcp:ixorke2165.database.windows.net,1433;Database=CostcoSU;User ID = thinguyen@ixorke2165;Password=PasswordNeeded; Encrypt=True;TrustServerCertificate=False;Connection Timeout = 30;"
+
+
 }
 }
