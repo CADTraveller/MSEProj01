@@ -20,8 +20,10 @@ namespace StatusUpdatesModel
         public Nullable<System.DateTime> RecordDate { get; set; }
         public string UpdateKey { get; set; }
         public string UpdateValue { get; set; }
+        public Nullable<int> VerticalID { get; set; }
     
         public virtual Phase Phase { get; set; }
         public virtual Project Project { get; set; }
+        public virtual Vertical Vertical { get; set; }
     }
 }

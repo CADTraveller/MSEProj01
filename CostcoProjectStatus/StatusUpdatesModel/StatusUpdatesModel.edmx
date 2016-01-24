@@ -4,14 +4,14 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="CostcoDevStatusModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="CostcoDevStatusModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AllowedUser">
           <Key>
             <PropertyRef Name="UserID" />
           </Key>
           <Property Name="UserID" Type="varchar" MaxLength="240" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="240" />
-          <Property Name="RoleID" Type="int" />
+          <Property Name="RoleID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Phase">
           <Key>
@@ -50,6 +50,7 @@
           <Property Name="ProjectID" Type="varchar" MaxLength="240" Nullable="false" />
           <Property Name="PhaseID" Type="int" Nullable="false" />
           <Property Name="StatusSequence" Type="int" Nullable="false" />
+          <Property Name="VerticalID" Type="int" />
           <Property Name="RecordDate" Type="smalldatetime" />
           <Property Name="UpdateKey" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="UpdateValue" Type="nvarchar(max)" />
@@ -70,8 +71,8 @@
           <Property Name="Name" Type="varchar" MaxLength="50" />
           <Property Name="Description" Type="varchar" MaxLength="240" />
         </EntityType>
-        <Association Name="FK__AllowedUs__RoleI__3C69FB99">
-          <End Role="UserRole" Type="Self.UserRole" Multiplicity="0..1" />
+        <Association Name="FK__AllowedUs__RoleI__5165187F">
+          <End Role="UserRole" Type="Self.UserRole" Multiplicity="1" />
           <End Role="AllowedUser" Type="Self.AllowedUser" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="UserRole">
@@ -82,7 +83,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Project__Vertica__3F466844">
+        <Association Name="FK__Project__Vertica__5441852A">
           <End Role="Vertical" Type="Self.Vertical" Multiplicity="0..1" />
           <End Role="Project" Type="Self.Project" Multiplicity="*" />
           <ReferentialConstraint>
@@ -94,7 +95,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ProjectPh__Phase__4222D4EF">
+        <Association Name="FK__ProjectPh__Phase__571DF1D5">
           <End Role="Phase" Type="Self.Phase" Multiplicity="1" />
           <End Role="ProjectPhase" Type="Self.ProjectPhase" Multiplicity="*" />
           <ReferentialConstraint>
@@ -106,7 +107,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ProjectPh__Proje__4316F928">
+        <Association Name="FK__ProjectPh__Proje__5812160E">
           <End Role="Project" Type="Self.Project" Multiplicity="1" />
           <End Role="ProjectPhase" Type="Self.ProjectPhase" Multiplicity="*" />
           <ReferentialConstraint>
@@ -118,7 +119,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__StatusUpd__Phase__46E78A0C">
+        <Association Name="FK__StatusUpd__Phase__5BE2A6F2">
           <End Role="Phase" Type="Self.Phase" Multiplicity="1" />
           <End Role="StatusUpdate" Type="Self.StatusUpdate" Multiplicity="*" />
           <ReferentialConstraint>
@@ -130,7 +131,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__StatusUpd__Proje__45F365D3">
+        <Association Name="FK__StatusUpd__Proje__5AEE82B9">
           <End Role="Project" Type="Self.Project" Multiplicity="1" />
           <End Role="StatusUpdate" Type="Self.StatusUpdate" Multiplicity="*" />
           <ReferentialConstraint>
@@ -139,6 +140,18 @@
             </Principal>
             <Dependent Role="StatusUpdate">
               <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StatusUpd__Verti__5CD6CB2B">
+          <End Role="Vertical" Type="Self.Vertical" Multiplicity="0..1" />
+          <End Role="StatusUpdate" Type="Self.StatusUpdate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vertical">
+              <PropertyRef Name="VerticalID" />
+            </Principal>
+            <Dependent Role="StatusUpdate">
+              <PropertyRef Name="VerticalID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -150,33 +163,36 @@
           <EntitySet Name="StatusUpdate" EntityType="Self.StatusUpdate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Vertical" EntityType="Self.Vertical" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__AllowedUs__RoleI__3C69FB99" Association="Self.FK__AllowedUs__RoleI__3C69FB99">
+          <AssociationSet Name="FK__AllowedUs__RoleI__5165187F" Association="Self.FK__AllowedUs__RoleI__5165187F">
             <End Role="UserRole" EntitySet="UserRole" />
             <End Role="AllowedUser" EntitySet="AllowedUser" />
           </AssociationSet>
-          <AssociationSet Name="FK__Project__Vertica__3F466844" Association="Self.FK__Project__Vertica__3F466844">
+          <AssociationSet Name="FK__Project__Vertica__5441852A" Association="Self.FK__Project__Vertica__5441852A">
             <End Role="Vertical" EntitySet="Vertical" />
             <End Role="Project" EntitySet="Project" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProjectPh__Phase__4222D4EF" Association="Self.FK__ProjectPh__Phase__4222D4EF">
+          <AssociationSet Name="FK__ProjectPh__Phase__571DF1D5" Association="Self.FK__ProjectPh__Phase__571DF1D5">
             <End Role="Phase" EntitySet="Phase" />
             <End Role="ProjectPhase" EntitySet="ProjectPhase" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProjectPh__Proje__4316F928" Association="Self.FK__ProjectPh__Proje__4316F928">
+          <AssociationSet Name="FK__ProjectPh__Proje__5812160E" Association="Self.FK__ProjectPh__Proje__5812160E">
             <End Role="Project" EntitySet="Project" />
             <End Role="ProjectPhase" EntitySet="ProjectPhase" />
           </AssociationSet>
-          <AssociationSet Name="FK__StatusUpd__Phase__46E78A0C" Association="Self.FK__StatusUpd__Phase__46E78A0C">
+          <AssociationSet Name="FK__StatusUpd__Phase__5BE2A6F2" Association="Self.FK__StatusUpd__Phase__5BE2A6F2">
             <End Role="Phase" EntitySet="Phase" />
             <End Role="StatusUpdate" EntitySet="StatusUpdate" />
           </AssociationSet>
-          <AssociationSet Name="FK__StatusUpd__Proje__45F365D3" Association="Self.FK__StatusUpd__Proje__45F365D3">
+          <AssociationSet Name="FK__StatusUpd__Proje__5AEE82B9" Association="Self.FK__StatusUpd__Proje__5AEE82B9">
             <End Role="Project" EntitySet="Project" />
+            <End Role="StatusUpdate" EntitySet="StatusUpdate" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StatusUpd__Verti__5CD6CB2B" Association="Self.FK__StatusUpd__Verti__5CD6CB2B">
+            <End Role="Vertical" EntitySet="Vertical" />
             <End Role="StatusUpdate" EntitySet="StatusUpdate" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CostcoDevStatusModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -238,6 +254,8 @@
           <Property Name="UpdateValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Phase" Relationship="Self.FK__StatusUpd__Phase__46E78A0C" FromRole="StatusUpdate" ToRole="Phase" />
           <NavigationProperty Name="Project" Relationship="Self.FK__StatusUpd__Proje__45F365D3" FromRole="StatusUpdate" ToRole="Project" />
+          <Property Name="VerticalID" Type="Int32" />
+          <NavigationProperty Name="Vertical" Relationship="CostcoDevStatusModel.FK__StatusUpd__Verti__5CD6CB2B" FromRole="StatusUpdate" ToRole="Vertical" />
         </EntityType>
         <EntityType Name="UserRole">
           <Key>
@@ -256,6 +274,7 @@
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Description" Type="String" MaxLength="240" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Projects" Relationship="Self.FK__Project__Vertica__3F466844" FromRole="Vertical" ToRole="Project" />
+          <NavigationProperty Name="StatusUpdates" Relationship="CostcoDevStatusModel.FK__StatusUpd__Verti__5CD6CB2B" FromRole="Vertical" ToRole="StatusUpdate" />
         </EntityType>
         <Association Name="FK__AllowedUs__RoleI__3C69FB99">
           <End Role="UserRole" Type="Self.UserRole" Multiplicity="1" />
@@ -361,7 +380,42 @@
             <End Role="Project" EntitySet="Projects" />
             <End Role="StatusUpdate" EntitySet="StatusUpdates" />
           </AssociationSet>
+          <AssociationSet Name="FK__StatusUpd__Verti__5CD6CB2B" Association="CostcoDevStatusModel.FK__StatusUpd__Verti__5CD6CB2B">
+            <End Role="Vertical" EntitySet="Verticals" />
+            <End Role="StatusUpdate" EntitySet="StatusUpdates" />
+          </AssociationSet>
         </EntityContainer>
+        <EnumType Name="Phases">
+          <Member Name="Start_Up" Value="0" />
+          <Member Name="Solution_Outline" Value="1" />
+          <Member Name="Macro_Design" Value="2" />
+          <Member Name="Micro_Design" Value="3" />
+          <Member Name="Build_Test" Value="4" />
+          <Member Name="Deploy" Value="5" />
+          <Member Name="Transition_Close" Value="6" />
+        </EnumType>
+        <EnumType Name="Verticals">
+          <Member Name="Warehouse_Solutions" Value="0" />
+          <Member Name="Merchandising_Solutions" Value="1" />
+          <Member Name="Membership_Solutions" Value="2" />
+          <Member Name="Distribution_Solutions" Value="3" />
+          <Member Name="International_Solutions" Value="4" />
+          <Member Name="Ancillary_Solutions" Value="5" />
+          <Member Name="eBusiness_Soluttions" Value="6" />
+          <Member Name="Corporate_Solutions" Value="7" />
+        </EnumType>
+        <Association Name="FK__StatusUpd__Verti__5CD6CB2B">
+          <End Type="CostcoDevStatusModel.Vertical" Role="Vertical" Multiplicity="0..1" />
+          <End Type="CostcoDevStatusModel.StatusUpdate" Role="StatusUpdate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vertical">
+              <PropertyRef Name="VerticalID" />
+            </Principal>
+            <Dependent Role="StatusUpdate">
+              <PropertyRef Name="VerticalID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -409,6 +463,7 @@
           <EntitySetMapping Name="StatusUpdates">
             <EntityTypeMapping TypeName="CostcoDevStatusModel.StatusUpdate">
               <MappingFragment StoreEntitySet="StatusUpdate">
+                <ScalarProperty Name="VerticalID" ColumnName="VerticalID" />
                 <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
                 <ScalarProperty Name="PhaseID" ColumnName="PhaseID" />
                 <ScalarProperty Name="StatusSequence" ColumnName="StatusSequence" />

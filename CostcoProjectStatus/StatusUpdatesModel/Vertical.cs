@@ -18,6 +18,7 @@ namespace StatusUpdatesModel
         public Vertical()
         {
             this.Projects = new HashSet<Project>();
+            this.StatusUpdates = new HashSet<StatusUpdate>();
         }
     
         public int VerticalID { get; set; }
@@ -26,5 +27,7 @@ namespace StatusUpdatesModel
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Project> Projects { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StatusUpdate> StatusUpdates { get; set; }
     }
 }

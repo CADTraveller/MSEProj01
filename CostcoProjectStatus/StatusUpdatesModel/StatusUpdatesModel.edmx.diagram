@@ -18,6 +18,7 @@
         <AssociationConnector Association="CostcoDevStatusModel.FK__Project__Vertica__3F466844" ManuallyRouted="false" />
         <AssociationConnector Association="CostcoDevStatusModel.FK__ProjectPh__Proje__4316F928" ManuallyRouted="false" />
         <AssociationConnector Association="CostcoDevStatusModel.FK__StatusUpd__Proje__45F365D3" ManuallyRouted="false" />
+        <AssociationConnector Association="CostcoDevStatusModel.FK__StatusUpd__Verti__5CD6CB2B" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

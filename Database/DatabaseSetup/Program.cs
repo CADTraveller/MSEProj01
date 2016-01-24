@@ -55,6 +55,31 @@ namespace DatabaseSetup
                     }
                 }
 
+                if (input == "d")
+                {
+                    Console.WriteLine("This will delete all DB entities, are you sure?!! (y/n)");
+                    string reply = Console.ReadLine();
+                    if (reply == "y")
+                    {
+                        using (SqlConnection sqlConnection = new SqlConnection())
+                        {
+                            sqlConnection.ConnectionString = ConnectionString;
+
+                            string commandPath = Directory.GetCurrentDirectory();
+                            commandPath += "\\DeleteAll.sql";
+                            string sqlCommandText = File.ReadAllText(commandPath);
+                            SqlCommand sqlCommand = sqlConnection.CreateCommand();
+                            sqlCommand.CommandText = sqlCommandText;
+                            sqlCommand.CommandTimeout = 30;
+
+
+                            sqlConnection.Open();
+                            sqlCommand.BeginExecuteNonQuery();
+                            sqlConnection.Close();
+                        }
+                    }
+                }
+
                 if (input == "q" || string.IsNullOrEmpty(input)) return;
             }
 
@@ -87,7 +112,7 @@ namespace DatabaseSetup
                 sqlConnection.ConnectionString = ConnectionString;
 
                 string commandPath = Directory.GetCurrentDirectory();
-                commandPath += "\\CostcoDBAddSampleData.sql";
+                commandPath += "\\InjectTestData.sql";
                 string sqlCommandText = File.ReadAllText(commandPath);
                 SqlCommand sqlCommand = sqlConnection.CreateCommand();
                 sqlCommand.CommandText = sqlCommandText;

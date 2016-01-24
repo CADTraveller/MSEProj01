@@ -43,7 +43,7 @@ create table AllowedUser
 (
     UserID varchar(240),
     Name varchar(240),
-    RoleID int,
+    RoleID int not null default 0,
     primary key (UserID),
     foreign key (RoleID) references UserRole (RoleID)
 );
@@ -74,12 +74,14 @@ create table StatusUpdate
     ProjectID varchar(240),
     PhaseID int,
     StatusSequence int,
+    VerticalID int,
     RecordDate smalldatetime,
     UpdateKey nvarchar(100),
     UpdateValue nvarchar(max)
     primary key (ProjectID, PhaseID, StatusSequence, UpdateKey),
     foreign key (ProjectID) references Project (ProjectID),
-    foreign key (PhaseID) references Phase (PhaseID)
+    foreign key (PhaseID) references Phase (PhaseID),
+    foreign key (VerticalID) references Vertical (VerticalID)
 );
 
 
