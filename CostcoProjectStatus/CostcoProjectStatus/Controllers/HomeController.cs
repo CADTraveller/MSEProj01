@@ -26,5 +26,10 @@ namespace CostcoProjectStatus.Controllers
 
             return View();
         }
+        public ActionResult ProjectList()
+        {
+            ViewBag.Message = "Your project lists";
+            return View();
+        }
     }
 }
