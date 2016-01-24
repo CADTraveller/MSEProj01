@@ -12,4 +12,12 @@
 <div ng-app="app" ng-controller="projectListController">
 
     {{ name }}
+
+    <div ng-repeat="post in projectListData">
+        <h2>
+            {{post.ProjectID}} {{post.PhaseID}}
+        </h2><br />
+
+    </div>
+
 </div>
