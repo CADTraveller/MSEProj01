@@ -40,7 +40,7 @@ namespace DataService
             throw new NotImplementedException();
         }
 
-        private void RecordStatusUpdate(ProjectUpdate projectUpdate)
+        public void RecordStatusUpdate(ProjectUpdate projectUpdate)
         {
             List<StatusUpdate> NewUpdates = projectUpdate.Updates;
             DateTime currentDT = DateTime.Now;
@@ -54,7 +54,7 @@ namespace DataService
                 List<ProjectPhase> projectPhaseEntries = context.ProjectPhases.Where(p => p.ProjectID == newUpdateID && p.PhaseID == iUpdatePhaseID).ToList();
 
                 if (projectPhaseEntries.Count > 0)
-            {
+                {
                     //__update existing update count and use this for sequence number
                     ProjectPhase existingProjectPhase = projectPhaseEntries[0];
                     int iOldSequenceNumber = Convert.ToInt32(existingProjectPhase.UpdateCount);
@@ -68,6 +68,24 @@ namespace DataService
 
             }
 
+        }
+
+        public bool IsUserAuthorized(string email)
+        {
+            return true;
+        }
+
+        public List<string> GetAllProjectNamess()
+        {
+            List<string> projectNames = new List<string>();
+
+            using (CostcoDevStatusEntities dataContext = new CostcoDevStatusEntities())
+            {
+                projectNames = dataContext.Projects.Select(p => p.Name).ToList();
+            }
+            //return projectNames;
+
+            return new List<string>() { "Moonbase Alpha", "Costco Member Tracker", "Dog Walker Portal", "Travel Packages Website" };
         }
     }
 }
