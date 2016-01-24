@@ -5,8 +5,6 @@
 @section Scripts {
     <script src="~/js/app.js"></script>
     <script src="~/js/project-List.js"></script>
-
-    <script>alert("hello world 2!");</script>
 }
 
 <div ng-app="app" ng-controller="projectListController">
@@ -14,10 +12,7 @@
     {{ name }}
 
     <div ng-repeat="post in projectListData">
-        <h2>
-            {{post.ProjectID}} {{post.PhaseID}}
-        </h2><br />
-
+            {{ post }}
     </div>
 
 </div>

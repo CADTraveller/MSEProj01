@@ -78,7 +78,7 @@ namespace DataService
             List<string> projectNames = new List<string>();
 
 
-            projectNames = context.Projects.Select(p => p.Name).ToList();
+            //projectNames = context.Projects.Select(p => p.Name).ToList();
 
             //This section is for sample development data and should be removed
             if (projectNames.Count == 0)

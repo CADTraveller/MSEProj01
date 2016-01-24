@@ -9,7 +9,7 @@ angular.module('app').controller('projectListController', ['$scope', '$http', fu
     alert('controller initializing');
     $scope.name = "Test";
     $scope.project = "";
-    $http({method: 'GET',url:'http://localhost:64747/js/JsonSample.json'}).success(function(data)
+    $http({method: 'GET',url:'http://localhost:64747/ProjectList/Display'}).success(function(data)
     {
         $scope.projectListData = data;
     });
