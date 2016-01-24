@@ -89,13 +89,10 @@ namespace CostcoProjectStatus.Controllers
                 return View();
             }
         }
-        public ActionResult Display()
+        public JsonResult Display()
         {
             var ProjectNames = DataAccasess.GetAllProjectNamess();
-
-            string ProjectNameJson = JsonConvert.SerializeObject(ProjectNames);
-
-                return View(ProjectNameJson);
+            return Json(new { ProjectNames }, JsonRequestBehavior.AllowGet);
         }
     }
 }
