@@ -1,5 +1,16 @@
 ﻿// project-List.js
-function projectListController($scope) {
-    alert("hello world!");
-    @scope.projectName = "Test Project Title";
+/*function projectListController() {
+    alert("hello world 3!");
 }
+*/
+
+
+angular.module('app').controller('projectListController', ['$scope', '$http', function ($scope, $http) {
+    alert('controller initializing');
+    $scope.name = "Test";
+    $scope.project = "";
+    $http({method: 'GET',url:'http://localhost:64747/js/JsonSample.json'}).success(function(data)
+    {
+        $scope.projectListData = data;
+    });
+}]);
