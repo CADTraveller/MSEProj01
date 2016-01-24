@@ -5,9 +5,12 @@
 */
 
 
-angular.module('app').controller('projectListController', ['$scope', function ($scope) {
-    // this code is never called
+angular.module('app').controller('projectListController', ['$scope', '$http', function ($scope, $http) {
     alert('controller initializing');
     $scope.name = "Test";
     $scope.project = "";
+    $http({method: 'GET',url:'http://localhost:64747/js/JsonSample.json'}).success(function(data)
+    {
+        $scope.projectListData = data;
+    });
 }]);
