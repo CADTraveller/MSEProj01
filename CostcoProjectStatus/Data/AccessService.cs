@@ -52,22 +52,20 @@ namespace DataService
                 string newUpdateID = projectUpdate.ID;
                 int iUpdatePhaseID = u.PhaseID;
                 List<ProjectPhase> projectPhaseEntries = context.ProjectPhases.Where(p => p.ProjectID == newUpdateID && p.PhaseID == iUpdatePhaseID).ToList();
-
+                int iNewSequenceNumber = 0;
                 if (projectPhaseEntries.Count > 0)
                 {
                     //__update existing update count and use this for sequence number
                     ProjectPhase existingProjectPhase = projectPhaseEntries[0];
                     int iOldSequenceNumber = Convert.ToInt32(existingProjectPhase.UpdateCount);
-                    int iNewSequenceNumber = iOldSequenceNumber + 1;
+                    iNewSequenceNumber = iOldSequenceNumber + 1;
                     existingProjectPhase.UpdateCount = iNewSequenceNumber;
-
-                    u.StatusSequence = iNewSequenceNumber;
-
-
                 }
 
+                u.StatusSequence = iNewSequenceNumber;
+                context.StatusUpdates.Add(u);
             }
-
+            context.SaveChanges();
         }
 
         public bool IsUserAuthorized(string email)
@@ -79,13 +77,19 @@ namespace DataService
         {
             List<string> projectNames = new List<string>();
 
-            using (CostcoDevStatusEntities dataContext = new CostcoDevStatusEntities())
-            {
-                projectNames = dataContext.Projects.Select(p => p.Name).ToList();
-            }
-            //return projectNames;
 
-            return new List<string>() { "Moonbase Alpha", "Costco Member Tracker", "Dog Walker Portal", "Travel Packages Website" };
+            projectNames = context.Projects.Select(p => p.Name).ToList();
+
+            //This section is for sample development data and should be removed
+            if (projectNames.Count == 0)
+            {
+                projectNames.Add("Sample Project Names");
+                projectNames.Add("Moonbase Alpha");
+                projectNames.Add("Costco Member Tracker");
+                projectNames.Add("Dog Walker Portal");
+                projectNames.Add("Travel Packages Website");
+            }
+            return projectNames;
         }
     }
 }
