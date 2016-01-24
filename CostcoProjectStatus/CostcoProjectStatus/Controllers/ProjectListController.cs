@@ -11,7 +11,7 @@ namespace CostcoProjectStatus.Controllers
     public class ProjectListController : Controller
     {
 
-        private AccessService DataAccasess = new AccessService();
+        private AccessService DataAccsess = new AccessService();
             // GET: ProjectList
         public ActionResult Index()
         {
@@ -91,7 +91,7 @@ namespace CostcoProjectStatus.Controllers
         }
         public JsonResult Display()
         {
-            var ProjectNames = DataAccasess.GetAllProjectNamess();
+            var ProjectNames = DataAccsess.GetAllProjectNamess();
             return Json(new { ProjectNames }, JsonRequestBehavior.AllowGet);
         }
     }
