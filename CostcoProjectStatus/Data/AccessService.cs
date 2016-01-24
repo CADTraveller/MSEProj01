@@ -40,7 +40,7 @@ namespace DataService
             throw new NotImplementedException();
         }
 
-        private void RecordStatusUpdate(ProjectAndUpdates projectUpdate)
+        private void RecordStatusUpdate(ProjectUpdate projectUpdate)
         {
             List<StatusUpdate> NewUpdates = projectUpdate.Updates;
             DateTime currentDT = DateTime.Now;
@@ -50,10 +50,10 @@ namespace DataService
 
 
                 string newUpdateID = projectUpdate.ID;
-                int iUpdatePhaseID = projectUpdate.PhaseID;
+                int iUpdatePhaseID = u.PhaseID;
                 List<ProjectPhase> projectPhaseEntries = context.ProjectPhases.Where(p => p.ProjectID == newUpdateID && p.PhaseID == iUpdatePhaseID).ToList();
 
-                if (projectPhaseEntries.Count > 0))
+                if (projectPhaseEntries.Count > 0)
             {
                     //__update existing update count and use this for sequence number
                     ProjectPhase existingProjectPhase = projectPhaseEntries[0];
@@ -61,10 +61,10 @@ namespace DataService
                     int iNewSequenceNumber = iOldSequenceNumber + 1;
                     existingProjectPhase.UpdateCount = iNewSequenceNumber;
 
-                    update.StatusSequence = iNewSequenceNumber;
-                    Dictionary<string, string> updateInfo = update.
+                    u.StatusSequence = iNewSequenceNumber;
 
-            }
+
+                }
 
             }
 

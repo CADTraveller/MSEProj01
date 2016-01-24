@@ -51,7 +51,7 @@
   <ItemGroup>
     <Compile Include="AccessService.cs" />
     <Compile Include="IDataService.cs" />
-    <Compile Include="ProjectAndUpdates.cs" />
+    <Compile Include="ProjectUpdate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

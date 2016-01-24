@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DataService
 {
-    public class ProjectAndUpdates
+    public class ProjectUpdate
     {
         public string ID { get; set; }
         public string Name { get; set; }
