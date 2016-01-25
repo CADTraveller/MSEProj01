@@ -54,6 +54,7 @@
     <Compile Include="AllowedUser.cs">
       <DependentUpon>StatusUpdatesModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Partial\CostcoDevStatusEntities.cs" />
     <Compile Include="Phase.cs">
       <DependentUpon>StatusUpdatesModel.tt</DependentUpon>
     </Compile>

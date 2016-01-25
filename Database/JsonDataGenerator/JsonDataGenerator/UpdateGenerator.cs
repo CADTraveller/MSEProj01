@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using StatusUpdatesModel;
+using DataService;
 
 namespace JsonDataGenerator
 {
     public class UpdateGenerator
     {
 
-        public static List<StatusUpdate> GenerateUpdates(int numberOfProjects)
+        public static List<ProjectUpdate> GenerateUpdates(int numberOfProjects)
         {
-            List<StatusUpdate> updates = new List<StatusUpdate>();
+            List<ProjectUpdate> updates = new List<ProjectUpdate>();
             Random rnd = new Random();
             for (int i = 0; i < numberOfProjects; i++)
             {
@@ -21,12 +23,13 @@ namespace JsonDataGenerator
 
                 for (int k = 0; k < numberOfUpdates; k++)
                 {
-                    StatusUpdate update = new StatusUpdate();
+                    ProjectUpdate update = new ProjectUpdate();
                     update.ProjectID = project;
                     update.PhaseID = rnd.Next(6);
                     update.VerticalID = verticalID;
 
                     int dataPointCount = rnd.Next(4) + 2;
+                    int iStatusSequence = i + k; //__need a unique value for each ProjectUpdate
                     bool TaskNotRecorded = true;
 
                     for (int m = 0; m < dataPointCount; m++)
@@ -35,16 +38,41 @@ namespace JsonDataGenerator
                         int doTagSwitch = rnd.Next(6);
                         if (doTagSwitch < 3 && TaskNotRecorded)
                         {
-                            update.Info.Add("Environment", "System #" + rnd.Next(12));
-
-                            update.Info.Add("Task", "Task #" + rnd.Next(7));
+                            StatusUpdate enviroStatus = new StatusUpdate()
+                            {
+                                ProjectID = update.ProjectID,
+                                PhaseID = update.PhaseID,
+                                StatusSequence = iStatusSequence,
+                                RecordDate = DateTime.Now,
+                                UpdateKey = "Environment",
+                                UpdateValue = "System #" + rnd.Next(12)
+                            };
+                            update.Updates.Add(enviroStatus);
+                            StatusUpdate taskStatus = new StatusUpdate()
+                            {
+                                ProjectID = update.ProjectID,
+                                PhaseID = update.PhaseID,
+                                StatusSequence = iStatusSequence,
+                                RecordDate = DateTime.Now,
+                                UpdateKey = "Task",
+                                UpdateValue = "Task #" + rnd.Next(7)
+                            };
+                            update.Updates.Add(taskStatus);
 
                             //__this ensures we get only one Environment/Task pair in a given update
                             TaskNotRecorded = false;
                             continue;
                         }
-
-                        update.Info.Add("Key." + i + "." + k + "." + m, "Value." + i + "." + k + "." + m);
+                        StatusUpdate genStatus = new StatusUpdate()
+                        {
+                            ProjectID = update.ProjectID,
+                            PhaseID = update.PhaseID,
+                            StatusSequence = iStatusSequence,
+                            RecordDate = DateTime.Now,
+                            UpdateKey = "Key." + i + "." + k + "." + m,
+                        UpdateValue = "Value." + i + "." + k + "." + m
+                        };
+                        update.Updates.Add(genStatus );
                     }
 
                     updates.Add(update);

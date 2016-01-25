@@ -7,10 +7,16 @@ namespace DataService
 {
     public class ProjectUpdate
     {
-        public string ID { get; set; }
+
+       public ProjectUpdate()
+        {
+            Updates = new List<StatusUpdatesModel.StatusUpdate>();
+        }
+            public string ProjectID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public int VerticalID { get; set; }
+        public int PhaseID { get; set; }
 
         public List<StatusUpdatesModel.StatusUpdate> Updates { get; set; }
     }

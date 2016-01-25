@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using DataService;
+using StatusUpdatesModel;
 
 namespace JsonDataGenerator
 {
@@ -14,7 +16,7 @@ namespace JsonDataGenerator
         {
             int numberProjects = 6;
 
-            List<StatusUpdate> updates = UpdateGenerator.GenerateUpdates(numberProjects);
+            List<ProjectUpdate> updates = UpdateGenerator.GenerateUpdates(numberProjects);
 
             Console.WriteLine("Generated " + updates.Count + " updates");
 
@@ -27,6 +29,20 @@ namespace JsonDataGenerator
 
             Console.WriteLine("Created file: " + path);
             Console.WriteLine();
+
+            try
+            {
+                AccessService dataPortal = new AccessService();
+                foreach (ProjectUpdate update in updates)
+                {
+                    dataPortal.RecordStatusUpdate(update);
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
             Console.WriteLine("Number of singles to generate?");
             Console.WriteLine();
 
@@ -47,7 +63,7 @@ namespace JsonDataGenerator
                         index = rnd.Next(entries);
                     }
 
-                    StatusUpdate single = updates[index];
+                    ProjectUpdate single = updates[index];
                     string singleJson = JsonConvert.SerializeObject(single, Formatting.Indented);
                     string singlePath = Directory.GetCurrentDirectory() + "\\Single" + (i + 1) + ".json";
                     File.WriteAllText(singlePath, singleJson);

@@ -10,57 +10,91 @@ namespace DataService
     public class AccessService : IDataService
     {
         private CostcoDevStatusEntities context;
+        private const string ConnectionString = "Server=tcp:costcosu.database.windows.net,1433;Database=CostcoDevStatus;User ID=SUAdmin@costcosu;Password=39ffbJeo;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
+        #region Async methods
         public AccessService()
         {
-            context = new CostcoDevStatusEntities();
+            context = CostcoDevStatusEntities.Create(ConnectionString);
+
         }
-        public Task<List<Project>> GetAllProjectsAsync()
+        public async Task<List<Project>> GetAllProjectsAsync()
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<Project>> GetAllProjectsForVerticalAsync(Vertical vertical)
+        public async Task<List<Project>> GetAllProjectsForVerticalAsync(Vertical vertical)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<StatusUpdate>> GetAllUpdatesForProjectAsync(string ProjectID)
+        public async Task<List<StatusUpdate>> GetAllUpdatesForProjectAsync(string ProjectID)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<StatusUpdate>> GetAllUpdatesForProjectPhaseAsynch(string ProjectID, Phase phase)
+        public async Task<List<StatusUpdate>> GetAllUpdatesForProjectPhaseAsynch(string ProjectID, Phase phase)
         {
             throw new NotImplementedException();
         }
 
-        public Task RecordStatusUpdateAsync(StatusUpdate newUpdate)
+        public async Task RecordStatusUpdateAsync(StatusUpdate newUpdate)
         {
             throw new NotImplementedException();
         }
+        #endregion
 
         public void RecordStatusUpdate(ProjectUpdate projectUpdate)
         {
             List<StatusUpdate> NewUpdates = projectUpdate.Updates;
+
+            //__this information from the projectUpdate will also be written to each status update entry
             DateTime currentDT = DateTime.Now;
+            string newUpdateID = projectUpdate.ProjectID;
+            int iUpdatePhaseID = projectUpdate.PhaseID;
+            int iVerticalID = projectUpdate.VerticalID;
+            int iNewSequenceNumber = 0;
+
+            //__check to see if Project exists, add it if not
+
+            //Project existingProjectEntry = context.Projects.First(p => p.ProjectID == newUpdateID);
+            Project existingProjectEntry =context.Projects.FirstOrDefault(p => p.ProjectID == newUpdateID);
+            if (existingProjectEntry == null) //_if there is no existing entry then add one
+            {
+                context.Projects.Add(new Project()
+                {
+                    ProjectID = newUpdateID,
+                    VerticalID = iVerticalID
+                });
+            }
+
+            ProjectPhase projectPhaseEntry = context.ProjectPhases.FirstOrDefault(p => p.ProjectID == newUpdateID && p.PhaseID == iUpdatePhaseID);
+
+            if (projectPhaseEntry != null)//__there are existing entries for this Project & Phase
+            {
+                //__update existing update count and use this for sequence number
+                int iOldSequenceNumber = Convert.ToInt32(projectPhaseEntry.UpdateCount);
+                iNewSequenceNumber = iOldSequenceNumber + 1;
+                projectPhaseEntry.UpdateCount = iNewSequenceNumber;
+                projectPhaseEntry.LatestUpdate = currentDT;
+            }
+            else //__since none was found we need a new entry
+            {
+                context.ProjectPhases.Add(new ProjectPhase()
+                {
+                    ProjectID = newUpdateID,
+                    PhaseID = iUpdatePhaseID,
+                    UpdateCount = 0,
+                    LatestUpdate = currentDT
+                });
+            }
+
             foreach (StatusUpdate u in NewUpdates)
             {
                 u.RecordDate = currentDT;
-
-
-                string newUpdateID = projectUpdate.ID;
-                int iUpdatePhaseID = u.PhaseID;
-                List<ProjectPhase> projectPhaseEntries = context.ProjectPhases.Where(p => p.ProjectID == newUpdateID && p.PhaseID == iUpdatePhaseID).ToList();
-                int iNewSequenceNumber = 0;
-                if (projectPhaseEntries.Count > 0)
-                {
-                    //__update existing update count and use this for sequence number
-                    ProjectPhase existingProjectPhase = projectPhaseEntries[0];
-                    int iOldSequenceNumber = Convert.ToInt32(existingProjectPhase.UpdateCount);
-                    iNewSequenceNumber = iOldSequenceNumber + 1;
-                    existingProjectPhase.UpdateCount = iNewSequenceNumber;
-                }
+                u.ProjectID = newUpdateID;
+                u.PhaseID = iUpdatePhaseID;
+                u.VerticalID = iVerticalID;
 
                 u.StatusSequence = iNewSequenceNumber;
                 context.StatusUpdates.Add(u);
@@ -78,7 +112,7 @@ namespace DataService
             List<string> projectNames = new List<string>();
 
 
-            //projectNames = context.Projects.Select(p => p.Name).ToList();
+            projectNames = context.Projects.Select(p => p.ProjectID).ToList();
 
             //This section is for sample development data and should be removed
             if (projectNames.Count == 0)
