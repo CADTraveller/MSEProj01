@@ -11,13 +11,13 @@ namespace DataService
     {
         private CostcoDevStatusEntities context;
         private const string ConnectionString = "Server=tcp:costcosu.database.windows.net,1433;Database=CostcoDevStatus;User ID=SUAdmin@costcosu;Password=39ffbJeo;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-
-        #region Async methods
         public AccessService()
         {
             context = CostcoDevStatusEntities.Create(ConnectionString);
 
         }
+
+        #region Async methods
         public async Task<List<Project>> GetAllProjectsAsync()
         {
             throw new NotImplementedException();
@@ -107,7 +107,7 @@ namespace DataService
             return true;
         }
 
-        public List<string> GetAllProjectNamess()
+        public List<string> GetAllProjectNames()
         {
             List<string> projectNames = new List<string>();
 
@@ -124,6 +124,16 @@ namespace DataService
                 projectNames.Add("Travel Packages Website");
             }
             return projectNames;
+        }
+
+        public List<StatusUpdate> GetAllUpdatesForProject(string projectID)
+        {
+            return context.StatusUpdates.Where(s => s.ProjectID == projectID).ToList();
+        }
+
+        public List<string> GetAllProjectsForVertical(int verticalID)
+        {
+            return context.Projects.Where(p => p.VerticalID == verticalID).Select(p => p.ProjectID).ToList();
         }
     }
 }

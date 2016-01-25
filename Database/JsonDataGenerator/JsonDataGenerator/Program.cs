@@ -14,6 +14,7 @@ namespace JsonDataGenerator
     {
         static void Main(string[] args)
         {
+            
             int numberProjects = 6;
 
             List<ProjectUpdate> updates = UpdateGenerator.GenerateUpdates(numberProjects);

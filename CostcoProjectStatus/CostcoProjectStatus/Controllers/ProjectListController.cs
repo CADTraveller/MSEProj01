@@ -91,7 +91,7 @@ namespace CostcoProjectStatus.Controllers
         }
         public JsonResult Display()
         {
-            var ProjectNames = DataAccsess.GetAllProjectNamess();
+            var ProjectNames = DataAccsess.GetAllProjectNames();
             return Json(new { ProjectNames }, JsonRequestBehavior.AllowGet);
         }
     }
