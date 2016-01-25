@@ -18,6 +18,11 @@ namespace CostcoProjectStatus
                 "ProjectList/{Display}",
                 new { Controller="ProjectList", action="Display",id=""}
                 );
+            routes.MapRoute(
+                "ProjectUpdates",
+                "ProjectUpdates/{Update}",
+                 new { Controller="ProjectUpdates",action="Update"}
+                );
 
             routes.MapRoute(
                 name: "Default",

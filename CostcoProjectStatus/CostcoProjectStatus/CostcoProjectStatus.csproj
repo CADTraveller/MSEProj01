@@ -201,6 +201,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProjectListController.cs" />
+    <Compile Include="Controllers\ProjectUpdateController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1053,10 +1054,12 @@
     <Content Include="Service References\Application Insights\ConnectedService.json" />
     <Content Include="Scripts\version.json" />
     <Content Include="Views\Home\ProjectList.cshtml" />
+    <Content Include="Views\Home\test.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\ProjectList\" />
+    <Folder Include="Views\ProjectUpdate\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
