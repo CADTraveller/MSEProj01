@@ -8,11 +8,11 @@
 }
 
 <div ng-app="app" ng-controller="projectListController">
-
-    {{ name }}
-
-    <div ng-repeat="post in projectListData">
-            {{ post }}
+    <div ng-repeat="projectList in projectListData">
+        <table>
+            <tr ng-repeat="project in projectList">
+                <td> {{projectList[$index]}}</td>
+            </tr>
+        </table>
     </div>
-
 </div>
