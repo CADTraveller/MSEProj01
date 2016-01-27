@@ -333,7 +333,20 @@ namespace CostcoProjectStatus.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    var email = loginInfo.Email;
+                    DataService.AccessService dataService = new DataService.AccessService();
+                    var userExists = dataService.IsUserAuthorized(email);
+                     if (userExists)
+                     {
+                       return View("Success");// RedirectToAction("Success");
+                     }
+                    else
+                     {
+                         return View("UnauthAccess");
+                    }
+                    
+
+                    //return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
