@@ -336,17 +336,15 @@ namespace CostcoProjectStatus.Controllers
                     var email = loginInfo.Email;
                     DataService.AccessService dataService = new DataService.AccessService();
                     var userExists = dataService.IsUserAuthorized(email);
-                     if (userExists)
-                     {
-                       return View("Success");// RedirectToAction("Success");
-                     }
-                    else
-                     {
-                         return View("UnauthAccess");
+                    if (userExists)
+                    {
+                        return View("Success");// RedirectToAction("Success");
                     }
-                    
-
-                    //return RedirectToLocal(returnUrl);
+                    else
+                    {
+                        return View("UnauthAccess");
+                    }
+                //return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
