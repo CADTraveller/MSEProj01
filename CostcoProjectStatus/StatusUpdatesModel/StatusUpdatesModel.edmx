@@ -9,8 +9,8 @@
           <Key>
             <PropertyRef Name="UserID" />
           </Key>
-          <Property Name="UserID" Type="varchar" MaxLength="240" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="240" />
+          <Property Name="UserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="240" Nullable="false" />
           <Property Name="RoleID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Phase">
@@ -71,7 +71,7 @@
           <Property Name="Name" Type="varchar" MaxLength="50" />
           <Property Name="Description" Type="varchar" MaxLength="240" />
         </EntityType>
-        <Association Name="FK__AllowedUs__RoleI__5165187F">
+        <Association Name="FK__AllowedUs__RoleI__70DDC3D8">
           <End Role="UserRole" Type="Self.UserRole" Multiplicity="1" />
           <End Role="AllowedUser" Type="Self.AllowedUser" Multiplicity="*" />
           <ReferentialConstraint>
@@ -163,7 +163,7 @@
           <EntitySet Name="StatusUpdate" EntityType="Self.StatusUpdate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Vertical" EntityType="Self.Vertical" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__AllowedUs__RoleI__5165187F" Association="Self.FK__AllowedUs__RoleI__5165187F">
+          <AssociationSet Name="FK__AllowedUs__RoleI__70DDC3D8" Association="Self.FK__AllowedUs__RoleI__70DDC3D8">
             <End Role="UserRole" EntitySet="UserRole" />
             <End Role="AllowedUser" EntitySet="AllowedUser" />
           </AssociationSet>
@@ -196,15 +196,6 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CostcoDevStatusModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="AllowedUser">
-          <Key>
-            <PropertyRef Name="UserID" />
-          </Key>
-          <Property Name="UserID" Type="String" MaxLength="240" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="240" FixedLength="false" Unicode="false" />
-          <Property Name="RoleID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="UserRole" Relationship="Self.FK__AllowedUs__RoleI__3C69FB99" FromRole="AllowedUser" ToRole="UserRole" />
-        </EntityType>
         <EntityType Name="Phase">
           <Key>
             <PropertyRef Name="PhaseID" />
@@ -264,7 +255,7 @@
           <Property Name="RoleID" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Description" Type="String" MaxLength="240" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="AllowedUsers" Relationship="Self.FK__AllowedUs__RoleI__3C69FB99" FromRole="UserRole" ToRole="AllowedUser" />
+          <NavigationProperty Name="AllowedUsers" Relationship="CostcoDevStatusModel.FK__AllowedUs__RoleI__70DDC3D8" FromRole="UserRole" ToRole="AllowedUser" />
         </EntityType>
         <EntityType Name="Vertical">
           <Key>
@@ -276,18 +267,6 @@
           <NavigationProperty Name="Projects" Relationship="Self.FK__Project__Vertica__3F466844" FromRole="Vertical" ToRole="Project" />
           <NavigationProperty Name="StatusUpdates" Relationship="CostcoDevStatusModel.FK__StatusUpd__Verti__5CD6CB2B" FromRole="Vertical" ToRole="StatusUpdate" />
         </EntityType>
-        <Association Name="FK__AllowedUs__RoleI__3C69FB99">
-          <End Role="UserRole" Type="Self.UserRole" Multiplicity="1" />
-          <End Role="AllowedUser" Type="Self.AllowedUser" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserRole">
-              <PropertyRef Name="RoleID" />
-            </Principal>
-            <Dependent Role="AllowedUser">
-              <PropertyRef Name="RoleID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__ProjectPh__Phase__4222D4EF">
           <End Role="Phase" Type="Self.Phase" Multiplicity="1" />
           <End Role="ProjectPhase" Type="Self.ProjectPhase" Multiplicity="*" />
@@ -349,17 +328,12 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="CostcoDevStatusEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="AllowedUsers" EntityType="Self.AllowedUser" />
           <EntitySet Name="Phases" EntityType="Self.Phase" />
           <EntitySet Name="Projects" EntityType="Self.Project" />
           <EntitySet Name="ProjectPhases" EntityType="Self.ProjectPhase" />
           <EntitySet Name="StatusUpdates" EntityType="Self.StatusUpdate" />
           <EntitySet Name="UserRoles" EntityType="Self.UserRole" />
           <EntitySet Name="Verticals" EntityType="Self.Vertical" />
-          <AssociationSet Name="FK__AllowedUs__RoleI__3C69FB99" Association="Self.FK__AllowedUs__RoleI__3C69FB99">
-            <End Role="UserRole" EntitySet="UserRoles" />
-            <End Role="AllowedUser" EntitySet="AllowedUsers" />
-          </AssociationSet>
           <AssociationSet Name="FK__ProjectPh__Phase__4222D4EF" Association="Self.FK__ProjectPh__Phase__4222D4EF">
             <End Role="Phase" EntitySet="Phases" />
             <End Role="ProjectPhase" EntitySet="ProjectPhases" />
@@ -383,6 +357,11 @@
           <AssociationSet Name="FK__StatusUpd__Verti__5CD6CB2B" Association="CostcoDevStatusModel.FK__StatusUpd__Verti__5CD6CB2B">
             <End Role="Vertical" EntitySet="Verticals" />
             <End Role="StatusUpdate" EntitySet="StatusUpdates" />
+          </AssociationSet>
+          <EntitySet Name="AllowedUsers" EntityType="CostcoDevStatusModel.AllowedUser" />
+          <AssociationSet Name="FK__AllowedUs__RoleI__70DDC3D8" Association="CostcoDevStatusModel.FK__AllowedUs__RoleI__70DDC3D8">
+            <End Role="UserRole" EntitySet="UserRoles" />
+            <End Role="AllowedUser" EntitySet="AllowedUsers" />
           </AssociationSet>
         </EntityContainer>
         <EnumType Name="Phases">
@@ -416,21 +395,33 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="AllowedUser">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Guid" Nullable="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Name="RoleID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="UserRole" Relationship="CostcoDevStatusModel.FK__AllowedUs__RoleI__70DDC3D8" FromRole="AllowedUser" ToRole="UserRole" />
+        </EntityType>
+        <Association Name="FK__AllowedUs__RoleI__70DDC3D8">
+          <End Type="CostcoDevStatusModel.UserRole" Role="UserRole" Multiplicity="1" />
+          <End Type="CostcoDevStatusModel.AllowedUser" Role="AllowedUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserRole">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="AllowedUser">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="CostcoDevStatusModelStoreContainer" CdmEntityContainer="CostcoDevStatusEntities">
-          <EntitySetMapping Name="AllowedUsers">
-            <EntityTypeMapping TypeName="CostcoDevStatusModel.AllowedUser">
-              <MappingFragment StoreEntitySet="AllowedUser">
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Phases">
             <EntityTypeMapping TypeName="CostcoDevStatusModel.Phase">
               <MappingFragment StoreEntitySet="Phase">
@@ -488,6 +479,15 @@
                 <ScalarProperty Name="VerticalID" ColumnName="VerticalID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AllowedUsers">
+            <EntityTypeMapping TypeName="CostcoDevStatusModel.AllowedUser">
+              <MappingFragment StoreEntitySet="AllowedUser">
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
