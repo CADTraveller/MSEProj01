@@ -338,7 +338,7 @@ namespace CostcoProjectStatus.Controllers
                     var userExists = dataService.IsUserAuthorized(email);
                     if (userExists)
                     {
-                        return View("Success");// RedirectToAction("Success");
+                        return View("Success");// or RedirectToAction("Success");
                     }
                     else
                     {
