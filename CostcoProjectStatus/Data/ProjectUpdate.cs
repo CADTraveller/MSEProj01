@@ -16,7 +16,7 @@ namespace DataService
         public string Name { get; set; }
         public string Description { get; set; }
         public int VerticalID { get; set; }
-        public int PhaseID { get; set; }
+
 
         public List<StatusUpdatesModel.StatusUpdate> Updates { get; set; }
     }

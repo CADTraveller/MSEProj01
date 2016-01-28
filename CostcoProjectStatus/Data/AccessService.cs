@@ -51,7 +51,7 @@ namespace DataService
             //__this information from the projectUpdate will also be written to each status update entry
             DateTime currentDT = DateTime.Now;
             string newUpdateID = projectUpdate.ProjectID;
-            int iUpdatePhaseID = projectUpdate.PhaseID;
+            int iUpdatePhaseID = NewUpdates[0].PhaseID;// projectUpdate.PhaseID;
             int iVerticalID = projectUpdate.VerticalID;
             int iNewSequenceNumber = 0;
 

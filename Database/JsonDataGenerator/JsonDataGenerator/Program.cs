@@ -14,10 +14,23 @@ namespace JsonDataGenerator
     {
         static void Main(string[] args)
         {
+
+            AccessService dataAccess = new AccessService();
+            List<string> projects = dataAccess.GetAllProjectNames();
+            List<StatusUpdate> updates = dataAccess.GetAllUpdatesForProject(projects[0]);
+            //ProjectUpdate project = new ProjectUpdate();
+            //project.ProjectID = projects[0];
+            //project.Updates = updates;
+            //project.VerticalID = 2;
+            //string projectJson = JsonConvert.SerializeObject(project, Formatting.Indented);
+
+            string projectWritePath = Directory.GetCurrentDirectory() + "\\Project.json";
+            string updatesJson = JsonConvert.SerializeObject(updates, Formatting.Indented);
+            File.WriteAllText(projectWritePath, updatesJson);
             
             int numberProjects = 6;
-
-            List<ProjectUpdate> updates = UpdateGenerator.GenerateUpdates(numberProjects);
+            /*
+            updates = UpdateGenerator.GenerateUpdates(numberProjects);
 
             Console.WriteLine("Generated " + updates.Count + " updates");
 
@@ -80,6 +93,7 @@ namespace JsonDataGenerator
                 Console.WriteLine("***");
             }
             Console.ReadLine();
+            */
         }
     }
 }
