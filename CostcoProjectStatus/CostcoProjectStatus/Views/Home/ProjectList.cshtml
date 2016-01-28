@@ -11,7 +11,7 @@
     <div ng-repeat="projectList in projectListData">
         <table>
             <tr ng-repeat="project in projectList">
-                <td> {{projectList[$index]}}</td>
+                <td><a href="ProjectDetail?ProjectName={{projectList[$index]}}">{{projectList[$index]}}</a></td>
             </tr>
         </table>
     </div>

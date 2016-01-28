@@ -209,8 +209,11 @@ namespace DataService
         {
             List<string> projectNames = new List<string>();
 
-
-            projectNames = context.Projects.Select(p => p.ProjectID).ToList();
+            try {
+                projectNames = context.Projects.Select(p => p.ProjectID).ToList();
+            } catch (Exception e) {
+                Console.WriteLine("Unsuccessful: {0}",e.ToString());
+            }
 
             //This section is for sample development data and should be removed
             if (projectNames.Count == 0)
