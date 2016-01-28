@@ -8,14 +8,12 @@ namespace DataService
 {
     interface IDataService
     {
+        Task<List<string>> GetAllProjectsAsync();
+        Task<List<Project>> GetAllProjectsForVerticalAsync(int verticalID);
+        Task<List<string>> GetAllProjectNamesForVerticalAsync(int verticalID);
         Task<List<StatusUpdate>> GetAllUpdatesForProjectAsync(string ProjectID);
+        Task<List<StatusUpdate>> GetAllUpdatesForProjectPhaseAsynch(string ProjectID, int PhaseID);
 
-        Task<List<Project>> GetAllProjectsAsync();
-
-        Task<List<Project>> GetAllProjectsForVerticalAsync(Vertical vertical);
-
-        Task<List<StatusUpdate>> GetAllUpdatesForProjectPhaseAsynch(string ProjectID, Phase phase);
-
-        Task RecordStatusUpdateAsync(StatusUpdate newUpdate);
+        Task RecordStatusUpdateAsync(ProjectUpdate newUpdate);
     }
 }

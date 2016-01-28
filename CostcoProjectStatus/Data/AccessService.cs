@@ -18,31 +18,44 @@ namespace DataService
         }
 
         #region Async methods
-        public async Task<List<Project>> GetAllProjectsAsync()
+        public async Task<List<string>> GetAllProjectsAsync()
         {
-            throw new NotImplementedException();
+            return GetAllProjectNames();
         }
 
-        public async Task<List<Project>> GetAllProjectsForVerticalAsync(Vertical vertical)
+        public async Task<List<Project>> GetAllProjectsForVerticalAsync(int verticalID)
         {
-            throw new NotImplementedException();
+            return GetAllProjectsForVertical(verticalID);
+        }
+
+        public async Task<List<string>> GetAllProjectNamesForVerticalAsync(int verticalID)
+        {
+            return GetAllProjectNamesForVertical(verticalID);
         }
 
         public async Task<List<StatusUpdate>> GetAllUpdatesForProjectAsync(string ProjectID)
         {
-            throw new NotImplementedException();
+            return GetAllUpdatesForProject(ProjectID);
         }
 
-        public async Task<List<StatusUpdate>> GetAllUpdatesForProjectPhaseAsynch(string ProjectID, Phase phase)
+        public async Task<List<StatusUpdate>> GetAllUpdatesForProjectPhaseAsynch(string projectID, int phaseID)
         {
-            throw new NotImplementedException();
+            return GetAllUpdatesForProjectPhase(projectID, phaseID);
         }
 
-        public async Task RecordStatusUpdateAsync(StatusUpdate newUpdate)
+
+        public async Task RecordStatusUpdateAsync(ProjectUpdate newUpdate)
         {
-            throw new NotImplementedException();
+            RecordStatusUpdate(newUpdate);
         }
         #endregion
+
+        private List<StatusUpdate> GetAllUpdatesForProjectPhase(string projectID, int phaseID)
+        {
+            List<StatusUpdate> updates = new List<StatusUpdate>();
+            updates = context.StatusUpdates.Where(p => p.ProjectID == projectID && p.PhaseID == phaseID).ToList();
+            return updates;
+        }
 
         public void RecordStatusUpdate(ProjectUpdate projectUpdate)
         {
@@ -58,7 +71,7 @@ namespace DataService
             //__check to see if Project exists, add it if not
 
             //Project existingProjectEntry = context.Projects.First(p => p.ProjectID == newUpdateID);
-            Project existingProjectEntry =context.Projects.FirstOrDefault(p => p.ProjectID == newUpdateID);
+            Project existingProjectEntry = context.Projects.FirstOrDefault(p => p.ProjectID == newUpdateID);
             if (existingProjectEntry == null) //_if there is no existing entry then add one
             {
                 context.Projects.Add(new Project()
@@ -104,6 +117,91 @@ namespace DataService
 
         public bool IsUserAuthorized(string email)
         {
+            return context.AllowedUsers.Any(u => u.Email == email);
+        }
+
+        /// <summary>
+        /// Checks for the user in the database. If found RoleID (0,1,2) is returned
+        /// If user is not found, -1 is returned
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        public int GetUserRole(string email)
+        {
+            int result = -1;
+            AllowedUser user = context.AllowedUsers.FirstOrDefault(u => u.Email == email);
+
+            if (user != null)
+            {
+                result = user.RoleID;
+            }
+            return result;
+        }
+
+        public bool AddUser(string email, int userRole)
+        {
+            if (context.AllowedUsers.Any(a => a.Email == email)) return false;
+            try
+            {
+
+                AllowedUser newUser = new AllowedUser()
+                {
+                    Email = email,
+                    UserID = new Guid(),
+                    RoleID = userRole
+                };
+                context.AllowedUsers.Add(newUser);
+                context.SaveChanges();
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public bool UpdateUserRole(string email, int newUserRole)
+        {
+            if (context.AllowedUsers.Any(a => a.Email == email)) return false;
+            try
+            {
+
+                AllowedUser user = context.AllowedUsers.FirstOrDefault(u => u.Email == email);
+                user.RoleID = newUserRole;                
+                context.SaveChanges();
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public bool DeleteUser(string email)
+        {
+            try
+            {
+                AllowedUser user = context.AllowedUsers.FirstOrDefault(u => u.Email == email);
+                if (user != null)
+                {
+                    context.AllowedUsers.Remove(user);
+                    context.SaveChanges();
+                    return true;
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool UpdateUserEmail(string oldEmail, string newEmail)
+        {
+            AllowedUser user = context.AllowedUsers.FirstOrDefault(u => u.Email == oldEmail);
+            if (user == null) return false;
+            user.Email = newEmail;
+            context.SaveChanges();
             return true;
         }
 
@@ -131,7 +229,14 @@ namespace DataService
             return context.StatusUpdates.Where(s => s.ProjectID == projectID).ToList();
         }
 
-        public List<string> GetAllProjectsForVertical(int verticalID)
+        public List<Project> GetAllProjectsForVertical(int verticalID)
+        {
+            //return context.Projects.Where(p => p.VerticalID == verticalID).Select(p => p.ProjectID).ToList();
+            return context.Projects.Where(p => p.VerticalID == verticalID).ToList();
+
+        }
+
+        public List<string> GetAllProjectNamesForVertical(int verticalID)
         {
             return context.Projects.Where(p => p.VerticalID == verticalID).Select(p => p.ProjectID).ToList();
         }
