@@ -41,8 +41,8 @@ create table UserRole
 
 create table AllowedUser
 (
-    UserID varchar(240),
-    Name varchar(240),
+    UserID uniqueidentifier,
+    Email varchar(240) not null,
     RoleID int not null default 0,
     primary key (UserID),
     foreign key (RoleID) references UserRole (RoleID)

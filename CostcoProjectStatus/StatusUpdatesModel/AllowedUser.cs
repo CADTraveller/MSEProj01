@@ -14,8 +14,8 @@ namespace StatusUpdatesModel
     
     public partial class AllowedUser
     {
-        public string UserID { get; set; }
-        public string Name { get; set; }
+        public System.Guid UserID { get; set; }
+        public string Email { get; set; }
         public int RoleID { get; set; }
     
         public virtual UserRole UserRole { get; set; }

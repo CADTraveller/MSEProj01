@@ -18,7 +18,7 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort />
+    <IISExpressSSLPort>44300</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -218,7 +218,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="js\project-List.js" />
+    <Content Include="dashboard\angular\core\controllers\app.js" />
+    <Content Include="dashboard\angular\project\controllers\project-List.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
     <Content Include="Scripts\angular-animate.js" />
@@ -1017,6 +1018,9 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="dashboard\angular\project\views\Verticals.html" />
+    <Content Include="dashboard\index.html" />
+    <Content Include="dashboard\angular\project\views\ProjectList.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1055,9 +1059,13 @@
     <Content Include="Scripts\version.json" />
     <Content Include="Views\Home\ProjectList.cshtml" />
     <Content Include="Views\Home\test.cshtml" />
+    <Content Include="Views\Account\Success.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\App_LocalResources\" />
+    <Folder Include="dashboard\angular\core\views\" />
+    <Folder Include="js\" />
     <Folder Include="Views\ProjectList\" />
     <Folder Include="Views\ProjectUpdate\" />
   </ItemGroup>
@@ -1100,7 +1108,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>64747</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:64747/</IISUrl>
+          <IISUrl>https://localhost:44300/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
