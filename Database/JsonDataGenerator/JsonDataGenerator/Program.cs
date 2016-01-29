@@ -16,8 +16,8 @@ namespace JsonDataGenerator
         {
 
             AccessService dataAccess = new AccessService();
-            List<string> projects = dataAccess.GetAllProjectNames();
-            List<StatusUpdate> updates = dataAccess.GetAllUpdatesForProject(projects[0]);
+            List<Project> projects = dataAccess.GetAllProjectNames();
+            List<StatusUpdate> updates = dataAccess.GetAllUpdatesForProject(projects[0].ProjectID);
             //ProjectUpdate project = new ProjectUpdate();
             //project.ProjectID = projects[0];
             //project.Updates = updates;
@@ -29,6 +29,8 @@ namespace JsonDataGenerator
             File.WriteAllText(projectWritePath, updatesJson);
             
             int numberProjects = 6;
+            Console.WriteLine(projectWritePath);
+            Console.ReadLine();
             /*
             updates = UpdateGenerator.GenerateUpdates(numberProjects);
 

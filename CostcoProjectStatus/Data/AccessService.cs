@@ -7,7 +7,7 @@ using StatusUpdatesModel;
 
 namespace DataService
 {
-    public class AccessService : IDataService
+    public class AccessService 
     {
         private CostcoDevStatusEntities context;
         private const string ConnectionString = "Server=tcp:costcosu.database.windows.net,1433;Database=CostcoDevStatus;User ID=SUAdmin@costcosu;Password=39ffbJeo;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
@@ -18,7 +18,7 @@ namespace DataService
         }
 
         #region Async methods
-        public async Task<List<string>> GetAllProjectsAsync()
+        public async Task<List<Project>> GetAllProjectsAsync()
         {
             return GetAllProjectNames();
         }
@@ -26,11 +26,6 @@ namespace DataService
         public async Task<List<Project>> GetAllProjectsForVerticalAsync(int verticalID)
         {
             return GetAllProjectsForVertical(verticalID);
-        }
-
-        public async Task<List<string>> GetAllProjectNamesForVerticalAsync(int verticalID)
-        {
-            return GetAllProjectNamesForVertical(verticalID);
         }
 
         public async Task<List<StatusUpdate>> GetAllUpdatesForProjectAsync(string ProjectID)
@@ -205,26 +200,11 @@ namespace DataService
             return true;
         }
 
-        public List<string> GetAllProjectNames()
+        public List<Project> GetAllProjectNames()
         {
-            List<string> projectNames = new List<string>();
+            return context.Projects.AsEnumerable().ToList();
 
-            try {
-                projectNames = context.Projects.Select(p => p.ProjectID).ToList();
-            } catch (Exception e) {
-                Console.WriteLine("Unsuccessful: {0}",e.ToString());
-            }
-
-            //This section is for sample development data and should be removed
-            if (projectNames.Count == 0)
-            {
-                projectNames.Add("Sample Project Names");
-                projectNames.Add("Moonbase Alpha");
-                projectNames.Add("Costco Member Tracker");
-                projectNames.Add("Dog Walker Portal");
-                projectNames.Add("Travel Packages Website");
-            }
-            return projectNames;
+            
         }
 
         public List<StatusUpdate> GetAllUpdatesForProject(string projectID)
@@ -239,9 +219,6 @@ namespace DataService
 
         }
 
-        public List<string> GetAllProjectNamesForVertical(int verticalID)
-        {
-            return context.Projects.Where(p => p.VerticalID == verticalID).Select(p => p.ProjectID).ToList();
-        }
+       
     }
 }
