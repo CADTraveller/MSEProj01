@@ -202,6 +202,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProjectListController.cs" />
     <Compile Include="Controllers\ProjectUpdateController.cs" />
+    <Compile Include="Controllers\TreeViewDataController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -220,6 +221,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="dashboard\angular\core\controllers\app.js" />
     <Content Include="dashboard\angular\project\controllers\project-List.js" />
+    <Content Include="js\TreeController.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
     <Content Include="Scripts\angular-animate.js" />
@@ -1021,6 +1023,7 @@
     <Content Include="dashboard\angular\project\views\Verticals.html" />
     <Content Include="dashboard\index.html" />
     <Content Include="dashboard\angular\project\views\ProjectList.html" />
+    <Content Include="Views\Home\TreeView.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1065,9 +1068,9 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\App_LocalResources\" />
     <Folder Include="dashboard\angular\core\views\" />
-    <Folder Include="js\" />
     <Folder Include="Views\ProjectList\" />
     <Folder Include="Views\ProjectUpdate\" />
+    <Folder Include="Views\TreeViewData\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

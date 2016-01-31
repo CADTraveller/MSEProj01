@@ -39,7 +39,7 @@ namespace DataService
         }
 
 
-        public async Task RecordStatusUpdateAsync(ProjectUpdate newUpdate)
+        public async Task RecordStatusUpdateAsync(List<StatusUpdate> newUpdate)
         {
             RecordStatusUpdate(newUpdate);
         }
