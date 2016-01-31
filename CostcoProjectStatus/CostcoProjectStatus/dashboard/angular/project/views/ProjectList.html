@@ -1,7 +1,6 @@
-﻿    <div ng-repeat="projectList in projectListData">
-            <table>
-                 <tr ng-repeat="project in projectList">
-                     <td><a href="ProjectDetail?ProjectName={{projectList[$index]}}">{{projectList[$index]}}</a></td>
+﻿Table size: {{ projectIdList.length }}    
+<table>
+          <tr ng-repeat="projectId in projectIdList">
+                     <td><a href="ProjectDetail?ProjectName={{projectIdList[$index]}}">{{projectIdList[$index]}}</a></td>
                  </tr>
              </table>
-        </div> 

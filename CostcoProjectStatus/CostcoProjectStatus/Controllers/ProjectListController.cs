@@ -89,10 +89,19 @@ namespace CostcoProjectStatus.Controllers
                 return View();
             }
         }
+        
         public JsonResult Display()
         {
             var ProjectNames = DataAccsess.GetAllProjectNames();
-            return Json(new { ProjectNames }, JsonRequestBehavior.AllowGet);
+            //LTC: This is a clumsy way to get around the 500 error
+            var ProjectId = new List<String>();
+            for (int i = 0; i < ProjectNames.Count; i++)
+            {
+                ProjectId.Add(ProjectNames[i].ProjectID);
+            }
+            // This is what it used to be, had to edit it because LTC was getting a 500 error
+            //return Json(new { ProjectNames }, JsonRequestBehavior.AllowGet);
+            return Json(new { ProjectId }, JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -43,9 +43,16 @@ angular.module('dashboardApp', [
     ];
     })
     .controller('projectListCtrl', ['$scope', '$http', function ($scope, $http) {
-     $http({ method: 'GET', url: 'http://localhost:64747/ProjectList/Display' }).success(function (data)
+     $http({ method: 'GET', url: 'https://localhost:44300/ProjectList/Display' }).success(function (data)
      {
-         $scope.projectListData = data;
+         console.log(data);
+         $scope.projectIdList = data.ProjectId;
+         console.log($scope.projectIdList);
+     }).error(function(data, status, headers, config) {
+         console.log(status);
+         console.log(data);
+         console.log(headers);
+         console.log(config);
      });
     }])
 
