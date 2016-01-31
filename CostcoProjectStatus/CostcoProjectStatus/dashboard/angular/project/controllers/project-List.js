@@ -65,19 +65,20 @@ angular.module('dashboardApp', [
         { id: '7', Vname: 'Corporate Solutions' }
     ];
     })
-    .controller('projectListCtrl', ['$scope', '$http', '$routeParams', function ($scope, $http, $routeParams, PhaseEnum) {
+    .controller('projectListCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
         console.log($routeParams.vId);
         $http({ method: 'GET', url: 'https://localhost:44300/ProjectList/GetStatusUpdates' }).success(function (data)
         {
             console.log(data);
             console.log($routeParams.vId);
             $scope.vId = $routeParams.vId;
+            $scope.vName = VerticalEnum[$routeParams.vId];
             $scope.projectIdList = data.ProjectId;
             $scope.projectVIdList = data.ProjectVertical;
             $scope.projectPhaseList = data.ProjectLastPhase;
             $scope.projectUpdateList = data.ProjectLastUpdate;
             $scope.phaseEnum = PhaseEnum; 
-            console.log($scope.projectIdList);
+            console.log($scope.phaseEnum);
         }).error(function(data, status, headers, config) {
             console.log(status);
             console.log(data);
@@ -85,7 +86,7 @@ angular.module('dashboardApp', [
             console.log(config);
         })
     }])
-    .controller('statusUpdatesCtrl', ['$scope', '$http', '$routeParams', function ($scope, $http, $routeParams, PhaseEnum) {
+    .controller('statusUpdatesCtrl', ['$scope', '$http', '$routeParams', 'PhaseEnum',function ($scope, $http, $routeParams, PhaseEnum) {
         console.log($routeParams.projectId);
         $http({ method: 'GET', url: 'https://localhost:44300/ProjectList/GetProjectUpdates/'+$routeParams.projectId }).success(function (data)
         {
