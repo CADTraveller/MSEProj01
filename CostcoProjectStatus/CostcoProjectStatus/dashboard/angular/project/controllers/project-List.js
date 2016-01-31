@@ -88,21 +88,35 @@ angular.module('dashboardApp', [
         $http({ method: 'GET', url: 'https://localhost:44300/ProjectList/GetProjectUpdates/'+$routeParams.projectId }).success(function (data)
         {
             console.log(data);
-            //console.log($routeParams.projectId);
-            //$scope.vId = data.vId;
-            //$scope.vName = VerticalEnum[$scope.vId];
-            //$scope.phaseEnums = PhaseEnum;
-            //$scope.pId = $routeParams.projectId
-            //$scope.descriptionList = data.ProjectUpdateDescriptions;
-            //$scope.phasesList = data.ProjectUpdatePhases;
-            //$scope.datesList = data.ProjectDates;
-            //$scope.updateKey = data.ProjectUpdateKey;
+            console.log($routeParams.projectId);
+            $scope.statusUpdateList = data;
+            $scope.vId = $scope.statusUpdateList[0].VerticalID;
+            $scope.vName = VerticalEnum[$scope.vId];
+            $scope.phaseEnums = PhaseEnum;
+            $scope.pId = $routeParams.projectId
         }).error(function(data, status, headers, config) {
             console.log(status);
             console.log(data);
             console.log(headers);
             console.log(config);
-        });
+        })
+        .controller('statusDataCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum','PhaseEnum',function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
+            console.log($routeParams.projectId);
+            $http({ method: 'GET', url: 'https://localhost:44300/ProjectList/GetStatusData'+$routeParams.projectId }).success(function (data)
+            {
+                console.log(data);
+                console.log($routeParams.projectId);
+                $scope.statusUpdateList = data;
+                $scope.vId = $scope.statusUpdateList[0].VerticalID;
+                $scope.vName = VerticalEnum[$scope.vId];
+                $scope.phaseEnums = PhaseEnum;
+                $scope.pId = $routeParams.projectId
+            }).error(function(data, status, headers, config) {
+                console.log(status);
+                console.log(data);
+                console.log(headers);
+                console.log(config);
+            });
     }])
 
 ;
