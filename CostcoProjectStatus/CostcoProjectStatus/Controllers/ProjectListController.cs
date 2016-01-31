@@ -110,27 +110,35 @@ namespace CostcoProjectStatus.Controllers
             // This is what it used to be, had to edit it because LTC was getting a 500 error
             return Json(new { ProjectId, ProjectVertical, ProjectLastPhase, ProjectLastUpdate }, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult GetStatusUpdates(String id)
+        public string GetStatusUpdates(String id)
         {
             // LTC: Wrote this quick function to test data retrieval from the UI    
             var ProjectUpdates = DataAccsess.GetAllUpdatesForProject(id);
             //LTC: This is a clumsy way to get around the 500 error
             // These descriptions are not correct. 
-            var ProjectUpdateDescriptions = new List<String>();
-            var ProjectUpdatePhases = new List<int>();
-            var ProjectDates = new List<String>();
-            var ProjectUpdateKey = new List<String>();
-            for (int i = 0; i < ProjectUpdates.Count; i++)
-            {
-                ProjectUpdateDescriptions.Add(ProjectUpdates[i].UpdateValue);
-                ProjectUpdatePhases.Add(ProjectUpdates[i].PhaseID);
-                ProjectDates.Add(ProjectUpdates[i].RecordDate.ToString());
-                ProjectUpdateKey.Add(ProjectUpdates[i].UpdateKey);
-            }
-            var vId = ProjectUpdates.Last().VerticalID;
+            //var ProjectUpdateDescriptions = new List<String>();
+            //var ProjectUpdatePhases = new List<int>();
+            //var ProjectDates = new List<String>();
+            //var ProjectUpdateKey = new List<String>();
+            //for (int i = 0; i < ProjectUpdates.Count; i++)
+            //{
+            //    ProjectUpdateDescriptions.Add(ProjectUpdates[i].UpdateValue);
+            //    ProjectUpdatePhases.Add(ProjectUpdates[i].PhaseID);
+            //    ProjectDates.Add(ProjectUpdates[i].RecordDate.ToString());
+            //    ProjectUpdateKey.Add(ProjectUpdates[i].UpdateKey);
+            //}
+            //var vId = ProjectUpdates.Last().VerticalID;
             // This is what it used to be, had to edit it because LTC was getting a 500 error
-            return Json(new { vId, ProjectUpdateKey, ProjectUpdateDescriptions, ProjectUpdatePhases, ProjectDates }, JsonRequestBehavior.AllowGet);
-        }
+            //return Json(new { vId, ProjectUpdateKey, ProjectUpdateDescriptions, ProjectUpdatePhases, ProjectDates }, JsonRequestBehavior.AllowGet);
+            string result = JsonConvert.SerializeObject(ProjectUpdates);
 
+
+            return result;
+            //    return Json(new
+            //    {
+            //        ProjectUpdates
+            //    }, JsonRequestBehavior.AllowGet);
+            //}
+        }
     }
 }

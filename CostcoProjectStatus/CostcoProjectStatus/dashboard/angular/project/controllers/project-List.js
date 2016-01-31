@@ -91,15 +91,15 @@ angular.module('dashboardApp', [
         $http({ method: 'GET', url: 'https://localhost:44300/ProjectList/GetProjectUpdates/'+$routeParams.projectId }).success(function (data)
         {
             console.log(data);
-            console.log($routeParams.projectId);
-            $scope.vId = data.vId;
-            $scope.vName = VerticalEnum[$scope.vId];
-            $scope.phaseEnums = PhaseEnum;
-            $scope.pId = $routeParams.projectId
-            $scope.descriptionList = data.ProjectUpdateDescriptions;
-            $scope.phasesList = data.ProjectUpdatePhases;
-            $scope.datesList = data.ProjectDates;
-            $scope.updateKey = data.ProjectUpdateKey;
+            //console.log($routeParams.projectId);
+            //$scope.vId = data.vId;
+            //$scope.vName = VerticalEnum[$scope.vId];
+            //$scope.phaseEnums = PhaseEnum;
+            //$scope.pId = $routeParams.projectId
+            //$scope.descriptionList = data.ProjectUpdateDescriptions;
+            //$scope.phasesList = data.ProjectUpdatePhases;
+            //$scope.datesList = data.ProjectDates;
+            //$scope.updateKey = data.ProjectUpdateKey;
         }).error(function(data, status, headers, config) {
             console.log(status);
             console.log(data);
