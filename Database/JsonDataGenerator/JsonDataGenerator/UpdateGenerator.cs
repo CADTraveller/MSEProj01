@@ -25,7 +25,7 @@ namespace JsonDataGenerator
                 {
                     ProjectUpdate update = new ProjectUpdate();
                     update.ProjectID = project;
-                    update.PhaseID = rnd.Next(6);
+                    //update.PhaseID = rnd.Next(6);
                     update.VerticalID = verticalID;
 
                     int dataPointCount = rnd.Next(4) + 2;
@@ -41,7 +41,7 @@ namespace JsonDataGenerator
                             StatusUpdate enviroStatus = new StatusUpdate()
                             {
                                 ProjectID = update.ProjectID,
-                                PhaseID = update.PhaseID,
+                                PhaseID = rnd.Next(6),//= update.PhaseID,
                                 StatusSequence = iStatusSequence,
                                 RecordDate = DateTime.Now,
                                 UpdateKey = "Environment",
@@ -51,7 +51,7 @@ namespace JsonDataGenerator
                             StatusUpdate taskStatus = new StatusUpdate()
                             {
                                 ProjectID = update.ProjectID,
-                                PhaseID = update.PhaseID,
+                                PhaseID = rnd.Next(6), //update.PhaseID,
                                 StatusSequence = iStatusSequence,
                                 RecordDate = DateTime.Now,
                                 UpdateKey = "Task",
@@ -66,7 +66,7 @@ namespace JsonDataGenerator
                         StatusUpdate genStatus = new StatusUpdate()
                         {
                             ProjectID = update.ProjectID,
-                            PhaseID = update.PhaseID,
+                            PhaseID = rnd.Next(6),//= update.PhaseID,
                             StatusSequence = iStatusSequence,
                             RecordDate = DateTime.Now,
                             UpdateKey = "Key." + i + "." + k + "." + m,
