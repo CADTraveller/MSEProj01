@@ -1,0 +1,21 @@
+﻿Table size: {{ descriptionList.length }} 
+<div>
+    <table width = "100%" cellpadding = "10" cellspacing="100" border="1">
+        <tr>
+            <td><div ng-if="phasesList.indexOf(0) != -1" style="background-color: #7eba7e">Micro Design</div><div ng-if="phasesList.indexOf(0) == -1" style="background-color: darkgrey">Start Up</div></td>
+            <td><div ng-if="phasesList.indexOf(1) != -1" style="background-color: #7eba7e">Micro Design</div><div ng-if="phasesList.indexOf(1) == -1" style="background-color: darkgrey">Solution Outline</div></td>
+            <td><div ng-if="phasesList.indexOf(2) != -1" style="background-color: #7eba7e">Micro Design</div><div ng-if="phasesList.indexOf(2) == -1" style="background-color: darkgrey">Macro Design</div></td>
+            <td><div ng-if="phasesList.indexOf(3) != -1" style="background-color: #7eba7e">Micro Design</div><div ng-if="phasesList.indexOf(3) == -1" style="background-color: darkgrey">Micro Design</div></td>
+            <td><div ng-if="phasesList.indexOf(4) != -1" style="background-color: #7eba7e">Micro Design</div><div ng-if="phasesList.indexOf(4) == -1" style="background-color: darkgrey">Build And Test</div></td>
+            <td><div ng-if="phasesList.indexOf(5) != -1" style="background-color: #7eba7e">Micro Design</div><div ng-if="phasesList.indexOf(5) == -1" style="background-color: darkgrey">Deploy</div></td>
+            <td><div ng-if="phasesList.indexOf(6) != -1" style="background-color: #7eba7e">Micro Design</div><div ng-if="phasesList.indexOf(6) == -1" style="background-color: darkgrey">Transition and Close</div></td>
+        </tr>
+    </table>
+</div>
+Project Updates:
+<table width="100%">
+    <tr><td>Task Title</td><td>Date</td><td>Phase</td></tr>
+    <tr ng-repeat="description in descriptionList">
+        <td> <a href="{{ updateKey[$index] }}">{{ description }}</a></td><td> {{datesList[$index]}}</td><td>{{ phasesList[$index] }}</td>
+    </tr>
+</table>

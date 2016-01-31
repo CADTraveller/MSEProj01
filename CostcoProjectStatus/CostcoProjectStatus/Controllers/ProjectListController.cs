@@ -95,13 +95,42 @@ namespace CostcoProjectStatus.Controllers
             var ProjectNames = DataAccsess.GetAllProjectNames();
             //LTC: This is a clumsy way to get around the 500 error
             var ProjectId = new List<String>();
+            var ProjectVertical = new List<int>();
+            var ProjectLastUpdate = new List<String>();
+            var ProjectLastPhase = new List<String>();
             for (int i = 0; i < ProjectNames.Count; i++)
             {
                 ProjectId.Add(ProjectNames[i].ProjectID);
+                // You only need this if the client is expected to filter the verticals
+                ProjectVertical.Add((int)ProjectNames[i].VerticalID);
+                ProjectLastUpdate.Add(ProjectNames[i].ProjectPhases.Last().LatestUpdate.ToString());
+                ProjectLastPhase.Add(ProjectNames[i].ProjectPhases.Last().PhaseID.ToString());
             }
+            
             // This is what it used to be, had to edit it because LTC was getting a 500 error
-            //return Json(new { ProjectNames }, JsonRequestBehavior.AllowGet);
-            return Json(new { ProjectId }, JsonRequestBehavior.AllowGet);
+            return Json(new { ProjectId, ProjectVertical, ProjectLastPhase, ProjectLastUpdate }, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult GetStatusUpdates(String id)
+        {
+            // LTC: Wrote this quick function to test data retrieval from the UI    
+            var ProjectUpdates = DataAccsess.GetAllUpdatesForProject(id);
+            //LTC: This is a clumsy way to get around the 500 error
+            // These descriptions are not correct. 
+            var ProjectUpdateDescriptions = new List<String>();
+            var ProjectUpdatePhases = new List<int>();
+            var ProjectDates = new List<String>();
+            var ProjectUpdateKey = new List<String>();
+            for (int i = 0; i < ProjectUpdates.Count; i++)
+            {
+                ProjectUpdateDescriptions.Add(ProjectUpdates[i].UpdateValue);
+                ProjectUpdatePhases.Add(ProjectUpdates[i].PhaseID);
+                ProjectDates.Add(ProjectUpdates[i].RecordDate.ToString());
+                ProjectUpdateKey.Add(ProjectUpdates[i].UpdateKey);
+            }
+
+            // This is what it used to be, had to edit it because LTC was getting a 500 error
+            return Json(new { ProjectUpdateKey, ProjectUpdateDescriptions, ProjectUpdatePhases, ProjectDates }, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

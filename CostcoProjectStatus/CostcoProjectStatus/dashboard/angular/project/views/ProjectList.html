@@ -1,6 +1,5 @@
-﻿Table size: {{ projectIdList.length }}    
-<table>
-          <tr ng-repeat="projectId in projectIdList">
-                     <td><a href="ProjectDetail?ProjectName={{projectIdList[$index]}}">{{projectIdList[$index]}}</a></td>
-                 </tr>
-             </table>
+﻿Table size: {{ projectIdList.length }}  Vertical: {{ vId }} Vertical List Length: {{ projectVIdList.length }} 
+
+    <div ng-repeat="projectId in projectIdList">
+        <div ng-if="vId == projectVIdList[$index]"><a href="#ProjectUpdates/{{projectId}}">{{projectId}}</a> {{ $phaseEnum[projectPhaseList[$index]] }} {{ projectUpdateList[$index]}}</div>
+    </div>
