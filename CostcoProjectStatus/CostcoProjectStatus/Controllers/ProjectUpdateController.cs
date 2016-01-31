@@ -88,12 +88,12 @@ namespace CostcoProjectStatus.Controllers
                 return View();
             }
         }
-        //public  void Update(string json)
+        //public void Update(string json)
         //{
         //    //ProjectUpdate projectupdates =new ProjectUpdate();
-        //    var projectupdates =JsonConvert.DeserializeObject<ProjectUpdate>(json);   
+        //    var projectupdates = JsonConvert.DeserializeObject<ProjectUpdate>(json);
         //    DataAccess.RecordStatusUpdate(projectupdates);
-            
+
         //}
     }
 }
