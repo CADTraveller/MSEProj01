@@ -212,8 +212,13 @@ namespace DataService
 
         public List<Project> GetAllProjectNames()
         {
-            return context.Projects.AsEnumerable().ToList();
-
+            List<Project> projects = context.Projects.AsEnumerable().ToList();
+            DateTime now = DateTime.Now;
+            foreach (var project in projects)
+            {
+                project.LatestUpdate = now;
+            }
+            return projects;
 
         }
 
@@ -227,6 +232,14 @@ namespace DataService
             //return context.Projects.Where(p => p.VerticalID == verticalID).Select(p => p.ProjectID).ToList();
             return context.Projects.Where(p => p.VerticalID == verticalID).ToList();
 
+        }
+
+        public List<StatusUpdate> GetAllUpdatesFromEmail(string projectID, int phaseID, int statusSequence)
+        {
+            return context.StatusUpdates.Where(su =>
+            su.ProjectID == projectID &&
+            su.PhaseID == phaseID &&
+            su.StatusSequence == statusSequence).ToList();
         }
 
         #endregion

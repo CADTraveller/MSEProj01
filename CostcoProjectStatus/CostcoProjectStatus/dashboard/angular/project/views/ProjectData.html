@@ -1,6 +1,6 @@
 ﻿<div> <a href="#DashboardCtrl">Dashboard</a> > <a href="#ProjectList/{{ vId }}">{{ vName }}</a> > {{ pId }}</div>
 <div>
-    <table width = "100%" cellpadding = "10" cellspacing="100" border="1">
+    <table width="100%" cellpadding="10" cellspacing="100" border="1">
         <tr>
             <td ng-repeat="phaseEnum in phaseEnums"><div ng-if="phasesList.indexOf($index) != -1" style="background-color: #7eba7e"> {{ phaseEnum }}</div><div ng-if="phasesList.indexOf($index) == -1" style="background-color: darkgrey"> {{ phaseEnum }}</div></td>
         </tr>
@@ -10,6 +10,9 @@ Project Updates:
 <table width="100%">
     <tr><td>Update Key</td><td>Update Value</td><td>Phases</td><td>Date</td></tr>
     <tr ng-repeat="statusUpdate in statusUpdateList">
-        <td> <a href="#ProjectData/{{ statusUpdate.ProjectID}}/{{statusUpdate.PhaseID}}/{{statusUpdate.StatusSequence}}">{{ statusUpdate.UpdateKey }}</a></td><td> {{ statusUpdate.UpdateValue }}</td><td> {{ phaseEnums[statusUpdate.PhaseID] }}</td><td>{{ statusUpdate.RecordDate }}</td>
+        <td> <a href="#ProjectData/{{ statusUpdate.ProjectID}}/{{statusUpdate.PhaseID}}/{{statusUpdate.StatusSequence}}">{{ statusUpdate.UpdateKey }}</a></td>
+        <td> {{ statusUpdate.UpdateValue }}</td>
+        <td> {{ phaseEnums[statusUpdate.PhaseID] }}</td>
+        <td>{{ statusUpdate.RecordDate }}</td>
     </tr>
 </table>
