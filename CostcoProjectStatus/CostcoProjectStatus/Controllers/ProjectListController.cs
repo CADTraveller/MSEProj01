@@ -103,5 +103,6 @@ namespace CostcoProjectStatus.Controllers
             string result = JsonConvert.SerializeObject(ProjectUpdates);
             return result;
         }
+        
     }
 }
