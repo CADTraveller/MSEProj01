@@ -212,8 +212,13 @@ namespace DataService
 
         public List<Project> GetAllProjectNames()
         {
-            return context.Projects.AsEnumerable().ToList();
-
+            List<Project> projects = context.Projects.AsEnumerable().ToList();
+            DateTime now = DateTime.Now;
+            foreach (var project in projects)
+            {
+                project.LatestUpdate = now;
+            }
+            return projects;
 
         }
 
