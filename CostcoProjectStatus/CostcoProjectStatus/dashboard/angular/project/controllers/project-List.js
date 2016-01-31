@@ -45,6 +45,10 @@ angular.module('dashboardApp', [
                 templateUrl: 'angular/project/views/ProjectUpdates.html',
                 controller: 'statusUpdatesCtrl'
             })
+            .when('/ProjectData/:projectId/:phaseId/:statusSequence', {
+                templateUrl: 'angular/project/views/ProjectData.html',
+                controller: 'statusDataCtrl'
+            })
             .when('/DashboardCtrl', {
                 templateUrl: 'angular/project/views/Verticals.html',
                 controller: 'dashboardCtrl'
@@ -100,16 +104,17 @@ angular.module('dashboardApp', [
             console.log(headers);
             console.log(config);
         })
+    }])
         .controller('statusDataCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum','PhaseEnum',function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
             console.log($routeParams.projectId);
-            $http({ method: 'GET', url: 'https://localhost:44300/ProjectList/GetStatusData'+$routeParams.projectId }).success(function (data)
+            $http({ method: 'GET', url: 'https://localhost:44300/ProjectList/GetProjectUpdates/'+$routeParams.projectId+"/"+$routeParams.phaseId+"/"+$routeParams.statusSequence }).success(function (data)
             {
                 console.log(data);
                 console.log($routeParams.projectId);
                 $scope.statusUpdateList = data;
-                $scope.vId = $scope.statusUpdateList[0].VerticalID;
-                $scope.vName = VerticalEnum[$scope.vId];
-                $scope.phaseEnums = PhaseEnum;
+                // $scope.vId = $scope.statusUpdateList[0].VerticalID;
+                //$scope.vName = VerticalEnum[$scope.vId];
+                //$scope.phaseEnums = PhaseEnum;
                 $scope.pId = $routeParams.projectId
             }).error(function(data, status, headers, config) {
                 console.log(status);
@@ -117,6 +122,4 @@ angular.module('dashboardApp', [
                 console.log(headers);
                 console.log(config);
             });
-    }])
-
-;
+        }]);
