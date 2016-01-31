@@ -127,9 +127,9 @@ namespace CostcoProjectStatus.Controllers
                 ProjectDates.Add(ProjectUpdates[i].RecordDate.ToString());
                 ProjectUpdateKey.Add(ProjectUpdates[i].UpdateKey);
             }
-
+            var vId = ProjectUpdates.Last().VerticalID;
             // This is what it used to be, had to edit it because LTC was getting a 500 error
-            return Json(new { ProjectUpdateKey, ProjectUpdateDescriptions, ProjectUpdatePhases, ProjectDates }, JsonRequestBehavior.AllowGet);
+            return Json(new { vId, ProjectUpdateKey, ProjectUpdateDescriptions, ProjectUpdatePhases, ProjectDates }, JsonRequestBehavior.AllowGet);
         }
 
     }

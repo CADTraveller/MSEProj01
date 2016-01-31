@@ -86,12 +86,16 @@ angular.module('dashboardApp', [
             console.log(config);
         })
     }])
-    .controller('statusUpdatesCtrl', ['$scope', '$http', '$routeParams', 'PhaseEnum',function ($scope, $http, $routeParams, PhaseEnum) {
+    .controller('statusUpdatesCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum','PhaseEnum',function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
         console.log($routeParams.projectId);
         $http({ method: 'GET', url: 'https://localhost:44300/ProjectList/GetProjectUpdates/'+$routeParams.projectId }).success(function (data)
         {
             console.log(data);
             console.log($routeParams.projectId);
+            $scope.vId = data.vId;
+            $scope.vName = VerticalEnum[$scope.vId];
+            $scope.phaseEnums = PhaseEnum;
+            $scope.pId = $routeParams.projectId
             $scope.descriptionList = data.ProjectUpdateDescriptions;
             $scope.phasesList = data.ProjectUpdatePhases;
             $scope.datesList = data.ProjectDates;
