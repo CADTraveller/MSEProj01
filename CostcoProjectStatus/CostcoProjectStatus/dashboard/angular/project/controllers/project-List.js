@@ -112,9 +112,11 @@ angular.module('dashboardApp', [
                 console.log(data);
                 console.log($routeParams.projectId);
                 $scope.statusUpdateList = data;
-                // $scope.vId = $scope.statusUpdateList[0].VerticalID;
-                //$scope.vName = VerticalEnum[$scope.vId];
-                //$scope.phaseEnums = PhaseEnum;
+                $scope.date = $scope.statusUpdateList[0].RecordDate;
+                $scope.dataExtractionId = $scope.statusUpdateList[0].StatusSequence;
+                $scope.vId = $scope.statusUpdateList[0].VerticalID;
+                $scope.vName = VerticalEnum[$scope.vId];
+                $scope.phase = PhaseEnum[$scope.statusUpdateList[0].PhaseID];
                 $scope.pId = $routeParams.projectId
             }).error(function(data, status, headers, config) {
                 console.log(status);
