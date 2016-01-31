@@ -1,0 +1,21 @@
+﻿<div> <a href="#DashboardCtrl">Dashboard</a> > {{ vName }}</div>
+<div>
+    <div>
+        <table width="70%"><tr><td>Project Name</td><td>Project Phase</td><td>Date</td></tr></table>
+    </div>
+</div>
+<div ng-repeat="projectId in projectIdList">
+    <div ng-if="vId == projectVIdList[$index]">
+        <table width="100%">
+            <tr>
+                <td><a href="#ProjectUpdates/{{projectId}}">{{projectId}}</a></td>
+                <td>
+                    {{ phaseEnum[projectPhaseList[$index]] }}
+                </td>
+                <td>{{ projectUpdateList[$index]}}</td>
+            </tr>
+        </table>
+
+
+    </div>
+</div>

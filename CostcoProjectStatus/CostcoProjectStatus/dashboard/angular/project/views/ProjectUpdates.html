@@ -1,0 +1,15 @@
+﻿<div> <a href="#DashboardCtrl">Dashboard</a> > <a href="#ProjectList/{{ vId }}">{{ vName }}</a> > {{ pId }}</div>
+<div>
+    <table width = "100%" cellpadding = "10" cellspacing="100" border="1">
+        <tr>
+            <td ng-repeat="phaseEnum in phaseEnums"><div ng-if="phasesList.indexOf($index) != -1" style="background-color: #7eba7e"> {{ phaseEnum }}</div><div ng-if="phasesList.indexOf($index) == -1" style="background-color: darkgrey"> {{ phaseEnum }}</div></td>
+        </tr>
+    </table>
+</div>
+Project Updates:
+<table width="100%">
+    <tr><td>Task Title</td><td>Date</td><td>Phase</td></tr>
+    <tr ng-repeat="description in descriptionList">
+        <td> <a href="{{ updateKey[$index] }}">{{ description }}</a></td><td> {{datesList[$index]}}</td><td>{{ phaseEnums[phasesList[$index]] }}</td>
+    </tr>
+</table>

@@ -3,33 +3,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using  Newtonsoft.Json;
 using DataService;
+using StatusUpdatesModel;
+using Newtonsoft;
+using Newtonsoft.Json;
 
 namespace CostcoProjectStatus.Controllers
 {
-    public class ProjectUpdateController : Controller
+    public class TreeViewDataController : Controller
     {
-        private AccessService DataAccess = new AccessService();
-        // GET: ProjectUpdate
+        // GET: TreeViewData
         public ActionResult Index()
         {
             return View();
         }
 
-        // GET: ProjectUpdate/Details/5
+        // GET: TreeViewData/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: ProjectUpdate/Create
+        // GET: TreeViewData/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: ProjectUpdate/Create
+        // POST: TreeViewData/Create
         [HttpPost]
         public ActionResult Create(FormCollection collection)
         {
@@ -45,13 +46,13 @@ namespace CostcoProjectStatus.Controllers
             }
         }
 
-        // GET: ProjectUpdate/Edit/5
+        // GET: TreeViewData/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: ProjectUpdate/Edit/5
+        // POST: TreeViewData/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
         {
@@ -67,13 +68,13 @@ namespace CostcoProjectStatus.Controllers
             }
         }
 
-        // GET: ProjectUpdate/Delete/5
+        // GET: TreeViewData/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: ProjectUpdate/Delete/5
+        // POST: TreeViewData/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {
@@ -88,12 +89,15 @@ namespace CostcoProjectStatus.Controllers
                 return View();
             }
         }
-        //public  void Update(string json)
-        //{
-        //    //ProjectUpdate projectupdates =new ProjectUpdate();
-        //    var projectupdates =JsonConvert.DeserializeObject<ProjectUpdate>(json);   
-        //    DataAccess.RecordStatusUpdate(projectupdates);
-            
-        //}
+
+        public JsonResult ListVerticals()
+        {
+            AccessService data = new AccessService();
+            List<string> verticals = Enum.GetNames(typeof(Verticals)).ToList();
+            string json = JsonConvert.SerializeObject(verticals);
+            JsonResult result = new JsonResult();
+            result.Data = json;
+            return result;
+        }
     }
 }
