@@ -73,10 +73,7 @@ angular.module('dashboardApp', [
             console.log($routeParams.vId);
             $scope.vId = $routeParams.vId;
             $scope.vName = VerticalEnum[$routeParams.vId];
-            $scope.projectIdList = data.ProjectId;
-            $scope.projectVIdList = data.ProjectVertical;
-            $scope.projectPhaseList = data.ProjectLastPhase;
-            $scope.projectUpdateList = data.ProjectLastUpdate;
+            $scope.projectList = data;
             $scope.phaseEnum = PhaseEnum; 
             console.log($scope.phaseEnum);
         }).error(function(data, status, headers, config) {
