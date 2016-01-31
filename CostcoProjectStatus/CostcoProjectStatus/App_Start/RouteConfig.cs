@@ -24,6 +24,11 @@ namespace CostcoProjectStatus
                 new { Controller = "ProjectList", action = "GetStatusUpdates", id = "projectId" }
                 );
             routes.MapRoute(
+                "StatusDataList",
+                "ProjectList/{GetStatusData}/{projectId}/{phaseId}/{statusSequence}",
+                new { Controller = "ProjectList", action = "GetStatusData", projectId = "projectId", phaseId = "phaseId", statusSequence = "statusSequence"  }
+                );
+            routes.MapRoute(
                 "ProjectUpdates",
                 "ProjectUpdates/{Update}",
                  new { Controller="ProjectUpdates",action="Update"}
