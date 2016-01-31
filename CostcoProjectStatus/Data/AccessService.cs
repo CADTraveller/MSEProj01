@@ -234,6 +234,14 @@ namespace DataService
 
         }
 
+        public List<StatusUpdate> GetAllUpdatesFromEmail(string projectID, int phaseID, int statusSequence)
+        {
+            return context.StatusUpdates.Where(su =>
+            su.ProjectID == projectID &&
+            su.PhaseID == phaseID &&
+            su.StatusSequence == statusSequence).ToList();
+        }
+
         #endregion
     }
 }
