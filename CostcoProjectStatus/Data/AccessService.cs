@@ -210,7 +210,7 @@ namespace DataService
             List<string> projectNames = new List<string>();
 
 
-            projectNames = context.Projects.Select(p => p.ProjectID).ToList();
+          //  projectNames = context.Projects.Select(p => p.ProjectID).ToList();
 
             //This section is for sample development data and should be removed
             if (projectNames.Count == 0)
