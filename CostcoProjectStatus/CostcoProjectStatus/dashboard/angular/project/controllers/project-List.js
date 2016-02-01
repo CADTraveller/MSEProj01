@@ -37,10 +37,18 @@ angular.module('dashboardApp', [
     })
     .config(function ($routeProvider) {
         $routeProvider
+           .when('/Login', {
+                templateUrl: 'angular/project/views/Login.html',
+                controller: 'loginCtrl'
+           })
+            .when('/Login/:loginId/:password', {
+                templateUrl: 'angular/project/views/Login.html',
+                controller: 'loginResultCtrl'
+            })
           .when('/ProjectList/:vId', {
               templateUrl: 'angular/project/views/ProjectList.html',
               controller: 'projectListCtrl'
-          })
+           })
             .when('/ProjectUpdates/:projectId', {
                 templateUrl: 'angular/project/views/ProjectUpdates.html',
                 controller: 'statusUpdatesCtrl'
@@ -57,18 +65,43 @@ angular.module('dashboardApp', [
           redirectTo: '/DashboardCtrl'
       });
     })
-    .controller('dashboardCtrl', function ($scope) {
-    $scope.names = [
-        { id: '0', Vname: 'Warehouse Solutions' },
-        { id: '1', Vname: 'Merchandising Solutions' },
-        { id: '2', Vname: 'Membership Solutions' },
-        { id: '3', Vname: 'Distribution Solutions' },
-        { id: '4', Vname: 'International Solutions' },
-        { id: '5', Vname: 'Ancillary Solutions' },
-        { id: '6', Vname: 'eBusiness Solutions' },
-        { id: '7', Vname: 'Corporate Solutions' }
-    ];
+    .controller('dashboardCtrl', function ($scope, VerticalEnum) {
+        console.log(VerticalEnum[0]);
+        $scope.VEnum = VerticalEnum;
     })
+    .controller('loginCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
+
+        $scope.completedCheck = false;
+        $scope.model = {};
+        $scope.submit = function () {
+            console.log($scope.model.username);
+            console.log($scope.model.password);
+            $http({ method: 'GET', url: 'https://localhost:44300/AccountController/Login/'+$scope.model.username }).success(function (data) {
+                console.log(data);
+                $scope.completedCheck = true;
+                console.log($scope.phaseEnum);
+            }).error(function (data, status, headers, config) {
+                console.log(status);
+                console.log(data);
+                console.log(headers);
+                console.log(config);
+            })
+        }
+    }])
+    .controller('loginResultCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
+        console.log($routeParams.vId);
+        $http({ method: 'GET', url: 'https://localhost:44300/ProjectList/GetStatusUpdates' }).success(function (data) {
+            console.log(data);
+            console.log($routeParams.vId);
+            $scope.completedCheck = true;
+            console.log($scope.phaseEnum);
+        }).error(function (data, status, headers, config) {
+            console.log(status);
+            console.log(data);
+            console.log(headers);
+            console.log(config);
+        })
+    }])
     .controller('projectListCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
         console.log($routeParams.vId);
         $http({ method: 'GET', url: 'https://localhost:44300/ProjectList/GetStatusUpdates' }).success(function (data)
