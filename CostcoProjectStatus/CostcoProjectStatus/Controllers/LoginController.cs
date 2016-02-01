@@ -3,33 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using  Newtonsoft.Json;
-using DataService;
 
 namespace CostcoProjectStatus.Controllers
 {
-    public class ProjectUpdateController : Controller
+    public class LoginController : Controller
     {
-        private AccessService DataAccess = new AccessService();
-        // GET: ProjectUpdate
+        // GET: Login
         public ActionResult Index()
         {
             return View();
         }
 
-        // GET: ProjectUpdate/Details/5
+        // GET: Login/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: ProjectUpdate/Create
+        // GET: Login/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: ProjectUpdate/Create
+        // POST: Login/Create
         [HttpPost]
         public ActionResult Create(FormCollection collection)
         {
@@ -45,13 +42,13 @@ namespace CostcoProjectStatus.Controllers
             }
         }
 
-        // GET: ProjectUpdate/Edit/5
+        // GET: Login/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: ProjectUpdate/Edit/5
+        // POST: Login/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
         {
@@ -67,13 +64,13 @@ namespace CostcoProjectStatus.Controllers
             }
         }
 
-        // GET: ProjectUpdate/Delete/5
+        // GET: Login/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: ProjectUpdate/Delete/5
+        // POST: Login/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {
@@ -88,12 +85,5 @@ namespace CostcoProjectStatus.Controllers
                 return View();
             }
         }
-        //public void Update(string json)
-        //{
-        //    //ProjectUpdate projectupdates =new ProjectUpdate();
-        //    var projectupdates = JsonConvert.DeserializeObject<ProjectUpdate>(json);
-        //    DataAccess.RecordStatusUpdate(projectupdates);
-
-        //}
     }
 }
