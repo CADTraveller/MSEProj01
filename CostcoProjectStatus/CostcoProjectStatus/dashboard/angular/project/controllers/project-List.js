@@ -88,20 +88,6 @@ angular.module('dashboardApp', [
             })
         }
     }])
-    .controller('loginResultCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
-        console.log($routeParams.vId);
-        $http({ method: 'GET', url: 'https://localhost:44300/ProjectList/GetStatusUpdates' }).success(function (data) {
-            console.log(data);
-            console.log($routeParams.vId);
-            $scope.completedCheck = true;
-            console.log($scope.phaseEnum);
-        }).error(function (data, status, headers, config) {
-            console.log(status);
-            console.log(data);
-            console.log(headers);
-            console.log(config);
-        })
-    }])
     .controller('projectListCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
         console.log($routeParams.vId);
         $http({ method: 'GET', url: 'https://localhost:44300/ProjectList/GetStatusUpdates' }).success(function (data)
@@ -130,7 +116,15 @@ angular.module('dashboardApp', [
             $scope.vId = $scope.statusUpdateList[0].VerticalID;
             $scope.vName = VerticalEnum[$scope.vId];
             $scope.phaseEnums = PhaseEnum;
-            $scope.pId = $routeParams.projectId
+            $scope.pId = $routeParams.projectId;
+            $scope.inProgressPhases = [];
+            angular.forEach($scope.statusUpdateList, function (value, key) {
+                console.log($scope.statusUpdateList[key].PhaseID);
+                
+                    this.push($scope.statusUpdateList[key].PhaseID);
+
+            }, $scope.inProgressPhases);
+            console.log($scope.inProgressPhases);
         }).error(function(data, status, headers, config) {
             console.log(status);
             console.log(data);
@@ -150,7 +144,7 @@ angular.module('dashboardApp', [
                 $scope.vId = $scope.statusUpdateList[0].VerticalID;
                 $scope.vName = VerticalEnum[$scope.vId];
                 $scope.phase = PhaseEnum[$scope.statusUpdateList[0].PhaseID];
-                $scope.pId = $routeParams.projectId
+                $scope.pId = $routeParams.projectId;
             }).error(function(data, status, headers, config) {
                 console.log(status);
                 console.log(data);
