@@ -2,7 +2,7 @@
 <div>
     <table width = "100%" cellpadding = "10" cellspacing="100" border="1">
         <tr>
-            <td ng-repeat="phaseEnum in phaseEnums"><div ng-if="phasesList.indexOf($index) != -1" style="background-color: #7eba7e"> {{ phaseEnum }}</div><div ng-if="phasesList.indexOf($index) == -1" style="background-color: darkgrey"> {{ phaseEnum }}</div></td>
+            <td ng-repeat="phaseEnum in phaseEnums"><div ng-if="inProgressPhases.indexOf($index) != -1" style="background-color: #7eba7e"> {{ phaseEnum }}</div><div ng-if="inProgressPhases.indexOf($index) == -1" style="background-color: darkgrey"> {{ phaseEnum }}</div></td>
         </tr>
     </table>
 </div>

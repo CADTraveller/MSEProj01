@@ -1,4 +1,4 @@
-﻿<a href="#DashboardCtrl">Back to Verticals</a>
+﻿<!--<a href="#DashboardCtrl">Back to Verticals</a>-->
 <div ng-switch on="completedCheck">
     <div ng-switch-when="completedCheck">
         You've submitted your login information
@@ -6,9 +6,9 @@
     <div ng-switch-default>
         <form data-title="Sign in" data-value="login" class="tab-pane" name="login"
               ng-submit="submit()" ng-controller="loginCtrl">
-            <input type="text" name="username" value="" placeholder="Username" ng-model="model.username" ng-minlength="3" required autocapitalize="false" />
-            <input type="password" name="password" value="" placeholder="Password" ng-model="model.password" required autocapitalize="false" autocorrect="false" />
-            <input type="submit" name="login" value="Sign in" />
+            <!--<input type="text" name="username" value="" placeholder="Username" ng-model="model.username" ng-minlength="3" required autocapitalize="false" />-->
+            <!--<input type="password" name="password" value="" placeholder="Password" ng-model="model.password" required autocapitalize="false" autocorrect="false" />-->
+            <input type="submit" name="login" value="Sign in via Google" />
         </form>
     </div>
 </div>
