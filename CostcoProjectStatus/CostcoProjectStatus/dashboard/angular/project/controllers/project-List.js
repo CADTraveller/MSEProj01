@@ -62,7 +62,7 @@ angular.module('dashboardApp', [
                 controller: 'dashboardCtrl'
             })
       .otherwise({
-          redirectTo: '/DashboardCtrl'
+          redirectTo: '/Login'
       });
     })
     .controller('dashboardCtrl', function ($scope, VerticalEnum) {
@@ -76,7 +76,7 @@ angular.module('dashboardApp', [
         $scope.submit = function () {
             console.log($scope.model.username);
             console.log($scope.model.password);
-            $http({ method: 'GET', url: 'https://localhost:44300/AccountController/Login/'+$scope.model.username }).success(function (data) {
+            $http({ method: 'GET', url: 'https://localhost:44300/AccountController/ExternalLogin' }).success(function (data) {
                 console.log(data);
                 $scope.completedCheck = true;
                 console.log($scope.phaseEnum);
