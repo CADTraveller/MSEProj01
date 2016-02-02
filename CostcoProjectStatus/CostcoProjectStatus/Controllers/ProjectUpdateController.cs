@@ -90,7 +90,6 @@ namespace CostcoProjectStatus.Controllers
         }
         public void Update(string json)
         {//
-             
             List<StatusUpdate> ListOfUpdates = new List<StatusUpdate>();
             ListOfUpdates = JsonConvert.DeserializeObject<List<StatusUpdate>>(json);
             DataAccess.RecordStatusUpdate(ListOfUpdates);
