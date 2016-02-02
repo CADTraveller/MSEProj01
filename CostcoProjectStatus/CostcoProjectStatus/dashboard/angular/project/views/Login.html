@@ -4,11 +4,7 @@
         You've submitted your login information
     </div>
     <div ng-switch-default>
-        <form data-title="Sign in" data-value="login" class="tab-pane" name="login"
-              ng-submit="submit()" ng-controller="loginCtrl">
-            <!--<input type="text" name="username" value="" placeholder="Username" ng-model="model.username" ng-minlength="3" required autocapitalize="false" />-->
-            <!--<input type="password" name="password" value="" placeholder="Password" ng-model="model.password" required autocapitalize="false" autocorrect="false" />-->
-            <input type="submit" name="login" value="Sign in via Google" />
-        </form>
+        <h1>Login</h1>
+        <button ng-click="login()">Login with Google</button>
     </div>
 </div>
