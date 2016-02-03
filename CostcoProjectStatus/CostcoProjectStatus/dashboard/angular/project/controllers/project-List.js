@@ -73,10 +73,10 @@ angular.module('dashboardApp', [
 
         $scope.completedCheck = false;
         $scope.model = {};
-        $scope.submit = function () {
+        $scope.login = function () {
             console.log($scope.model.username);
             console.log($scope.model.password);
-            $http({ method: 'GET', url: 'https://localhost:44300/AccountController/ExternalLogin' }).success(function (data) {
+            $http({ method: 'GET', url: 'https://accounts.google.com/o/oauth2/v2/auth' }).success(function (data) {
                 console.log(data);
                 $scope.completedCheck = true;
                 console.log($scope.phaseEnum);
