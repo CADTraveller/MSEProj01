@@ -62,9 +62,10 @@ create table ProjectPhase
 (
     PhaseID int,
     ProjectID varchar(240),
+    UpdateKey varchar(100),
     UpdateCount int,
     LatestUpdate smalldatetime,
-    primary key (PhaseID, ProjectID),
+    primary key (PhaseID, ProjectID, UpdateKey),
     foreign key (PhaseID) references Phase (PhaseID),
     foreign key (ProjectID) references Project (ProjectID)    
 );

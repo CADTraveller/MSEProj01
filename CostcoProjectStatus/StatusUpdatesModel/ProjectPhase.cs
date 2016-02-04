@@ -16,6 +16,7 @@ namespace StatusUpdatesModel
     {
         public int PhaseID { get; set; }
         public string ProjectID { get; set; }
+        public string UpdateKey { get; set; }
         public Nullable<int> UpdateCount { get; set; }
         public Nullable<System.DateTime> LatestUpdate { get; set; }
     

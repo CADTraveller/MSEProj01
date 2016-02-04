@@ -27,10 +27,10 @@ namespace StatusUpdatesModel
     
         public virtual DbSet<Phase> Phases { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
-        public virtual DbSet<ProjectPhase> ProjectPhases { get; set; }
         public virtual DbSet<StatusUpdate> StatusUpdates { get; set; }
         public virtual DbSet<UserRole> UserRoles { get; set; }
         public virtual DbSet<Vertical> Verticals { get; set; }
         public virtual DbSet<AllowedUser> AllowedUsers { get; set; }
+        public virtual DbSet<ProjectPhase> ProjectPhases { get; set; }
     }
 }

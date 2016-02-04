@@ -22,13 +22,8 @@ namespace StatusUpdatesModel
         public string UpdateValue { get; set; }
         public Nullable<int> VerticalID { get; set; }
     
-        [Newtonsoft.Json.JsonIgnore]
         public virtual Phase Phase { get; set; }
-
-        [Newtonsoft.Json.JsonIgnore]
         public virtual Project Project { get; set; }
-
-        [Newtonsoft.Json.JsonIgnore]
         public virtual Vertical Vertical { get; set; }
     }
 }
