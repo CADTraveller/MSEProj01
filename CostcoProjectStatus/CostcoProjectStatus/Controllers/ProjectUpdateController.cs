@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using  Newtonsoft.Json;
 using DataService;
-
+using StatusUpdatesModel;
 namespace CostcoProjectStatus.Controllers
 {
     public class ProjectUpdateController : Controller
@@ -88,12 +88,12 @@ namespace CostcoProjectStatus.Controllers
                 return View();
             }
         }
-        //public  void Update(string json)
-        //{
-        //    //ProjectUpdate projectupdates =new ProjectUpdate();
-        //    var projectupdates =JsonConvert.DeserializeObject<ProjectUpdate>(json);   
-        //    DataAccess.RecordStatusUpdate(projectupdates);
-            
-        //}
+        public void Update(string json)
+        {//
+            List<StatusUpdate> ListOfUpdates = new List<StatusUpdate>();
+            ListOfUpdates = JsonConvert.DeserializeObject<List<StatusUpdate>>(json);
+            DataAccess.RecordStatusUpdate(ListOfUpdates);
+
+        }
     }
 }

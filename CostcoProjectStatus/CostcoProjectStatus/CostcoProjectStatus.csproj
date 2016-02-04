@@ -199,6 +199,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProjectListController.cs" />
     <Compile Include="Controllers\ProjectUpdateController.cs" />
@@ -215,6 +216,7 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="dashboard\angular\project\views\Login.html" />
     <Content Include="dashboard\angular\project\views\ProjectData.html" />
     <Content Include="dashboard\angular\project\views\ProjectUpdates.html" />
     <Content Include="favicon.ico" />

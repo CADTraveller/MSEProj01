@@ -1,7 +1,8 @@
-﻿     <div>
-            <ul>
-                <li ng-repeat="x in names">
-                    <a href="#ProjectList/{{ x.id }}">{{ x.Vname }}</a>
-                </li>
-            </ul>
-        </div>
+﻿ <a href="#Login">Log in here</a>
+<div>
+    <ul>
+        <li ng-repeat="x in VEnum">
+            <a href="#ProjectList/{{ $index }}">{{ x }}</a>
+        </li>
+    </ul>
+</div>
