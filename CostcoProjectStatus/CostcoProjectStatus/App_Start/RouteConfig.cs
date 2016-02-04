@@ -12,17 +12,22 @@ namespace CostcoProjectStatus
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-            routes.MapRoute(
-                "Account",
-                "Account/{ExternlLogin}",
-                 new { Controller = "Account", action = "Update" }
-                );
+            //routes.MapRoute(
+            //    "Account",
+            //    "Account/{ExternalLogin}",
+            //     new { Controller = "Account", action = "ExternalLogin" }
+            //    );
 
             //routes.MapRoute(
             //    "ProjectList",
             //    "ProjectList/{Display}",
             //    new { Controller="ProjectList", action="Display",id=""}
             //    );
+            routes.MapRoute(
+                "Account",
+                "Account/{ExternalLogin}",
+                new { Controller = "ProjectList", action = "ExternalLogin", id = "" }
+                );
             routes.MapRoute(
                 "StatusUpdateList",
                 "ProjectList/{GetStatusUpdates}/{id}",

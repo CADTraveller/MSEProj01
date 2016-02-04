@@ -109,5 +109,15 @@ namespace CostcoProjectStatus.Controllers
             string result = JsonConvert.SerializeObject(statusData);
             return result;
         }
+        //
+        // POST: /Account/ExternalLogin
+        [HttpPost]
+        public ActionResult ExternalLogin(string provider, string returnUrl)
+        {
+            // Request a redirect to the external login provider
+            return null;
+        }
+
+
     }
 }
