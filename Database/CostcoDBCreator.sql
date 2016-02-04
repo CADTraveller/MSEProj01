@@ -99,3 +99,8 @@ create table StatusUpdate
   --drop table Phase;
   --drop table AllowedUser;
   --drop table UserRole;
+  
+  -- Use these lines to delete all data
+  delete from StatusUpdate;
+  delete from ProjectPhase;
+  delete from Project;
