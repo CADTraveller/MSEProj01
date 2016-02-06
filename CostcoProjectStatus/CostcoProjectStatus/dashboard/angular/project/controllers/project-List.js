@@ -14,7 +14,8 @@ angular.module('dashboardApp', [
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch'
+    'ngTouch',
+    'ui.bootstrap'
 ])
     .constant('VerticalEnum', {
         0: 'Warehouse Solutions',
@@ -85,16 +86,9 @@ angular.module('dashboardApp', [
                 data: { name: '__RequestVerificationToken',
                     type: 'hidden', value: 'L62szysgS5xEV4Aos8ZwX1wQaG4m4TaIwhYOae4smn5KD8XMK3_Z2gh7qu4rI1cIusSJmneKMiJXFxLcWXylkL0Nuc4oXCiyngvocvpKXvU1'}
             };
-            $http(req).then(function () {
+            $http(req).then(function (data) {
                 console.log(data);
             });
-            
-            /*.error(function (data, status, headers, config) {
-                console.log(status);
-                console.log(data);
-                console.log(headers);
-                console.log(config);
-            })*/
         }
     }])
     .controller('projectListCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
