@@ -93,12 +93,9 @@ namespace CostcoProjectStatus.Controllers
         
         public string Display()
         {
-            var ProjectNames = DataAccsess.GetAllProjectsForVertical(4);
-            /* Getting this exception: An exception of type 'Newtonsoft.Json.JsonSerializationException' occurred in Newtonsoft.Json.dll but was not handled in user code
-
-Additional information: Self referencing loop detected with type 'System.Data.Entity.DynamicProxies.Project_ED441AB195C7424EDA5104A4ACC2C5E06C8BCA7F7C9B2758BEB7ECECDCAC4FD9'. Path '[0].Vertical.Projects' Massaging to get around it */
+            var ProjectNames = DataAccsess.GetAllProjectNames();
             
-            string result = JsonConvert.SerializeObject(ProjectNames, Newtonsoft.Json.Formatting.Indented);
+            string result = JsonConvert.SerializeObject(ProjectNames);
             return result;
         }
         public string GetStatusUpdates(String id)
