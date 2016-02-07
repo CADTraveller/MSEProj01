@@ -17,8 +17,8 @@ namespace StatusUpdatesModel
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Phase()
         {
-            this.ProjectPhases = new HashSet<ProjectPhase>();
             this.StatusUpdates = new HashSet<StatusUpdate>();
+            this.ProjectPhases = new HashSet<ProjectPhase>();
         }
     
         public int PhaseID { get; set; }
@@ -26,8 +26,8 @@ namespace StatusUpdatesModel
         public string Description { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ProjectPhase> ProjectPhases { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StatusUpdate> StatusUpdates { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ProjectPhase> ProjectPhases { get; set; }
     }
 }

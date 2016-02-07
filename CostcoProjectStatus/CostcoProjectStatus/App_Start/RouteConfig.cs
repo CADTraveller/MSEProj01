@@ -26,7 +26,7 @@ namespace CostcoProjectStatus
             routes.MapRoute(
                 "Account",
                 "Account/{ExternalLogin}",
-                new { Controller = "ProjectList", action = "ExternalLogin", id = "" }
+                new { Controller = "ProjectList", action = "ExternalLogin" }
                 );
             routes.MapRoute(
                 "StatusUpdateList",

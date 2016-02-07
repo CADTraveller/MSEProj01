@@ -150,54 +150,60 @@ namespace DataService
             {
 
                 DateTime currentDT = DateTime.Now;
-                string newUpdateID = updates[0].ProjectID;
-
-                //__check to see if Project exists, add it if not
-                Project existingProjectEntry = context.Projects.FirstOrDefault(p => p.ProjectID == newUpdateID);
-                if (existingProjectEntry == null) //_if there is no existing entry then add one
-                {
-                    context.Projects.Add(new Project()
-                    {
-                        ProjectID = newUpdateID,
-                        VerticalID = updates[0].VerticalID
-                    });
-                }
-
-                int iUpdatePhaseID = updates[0].PhaseID;
-                int iNewSequenceNumber = 0;
-               
-                ProjectPhase projectPhaseEntry = context.ProjectPhases.FirstOrDefault(p => p.ProjectID == newUpdateID && p.PhaseID == iUpdatePhaseID);
-
-                // check for existing entries for this Project & Phase
-                if (projectPhaseEntry != null)//__an entry exists
-                {
-                    //__update existing update count and use this for sequence number
-                    int iOldSequenceNumber = Convert.ToInt32(projectPhaseEntry.UpdateCount);
-                    iNewSequenceNumber = iOldSequenceNumber + 1;
-                    projectPhaseEntry.UpdateCount = iNewSequenceNumber;
-                    projectPhaseEntry.LatestUpdate = currentDT;
-                }
-                else //__since none was found we need a new entry
-                {
-                    context.ProjectPhases.Add(new ProjectPhase()
-                    {
-                        ProjectID = newUpdateID,
-                        PhaseID = iUpdatePhaseID,
-                        UpdateCount = 0,
-                        LatestUpdate = currentDT
-                    });
-                }
-
                 foreach (StatusUpdate u in updates)
                 {
+
+                    //__check to see if Project exists, add it if not
+                    Project existingProjectEntry = context.Projects.FirstOrDefault(p => p.ProjectID == u.ProjectID);
+                    if (existingProjectEntry == null) //_if there is no existing entry then add one
+                    {
+                        context.Projects.Add(new Project()
+                        {
+                            ProjectID = u.ProjectID,
+                            VerticalID = u.VerticalID
+                        });
+                        context.SaveChanges();
+                    }
+                    
+                    int iNewSequenceNumber = 0;
+
+                    // check for existing entries for this Project & Phase & UpdateKey
+                    ProjectPhase projectPhaseEntry = context.ProjectPhases.FirstOrDefault(
+                        p => p.ProjectID == u.ProjectID &&
+                        p.PhaseID == u.PhaseID &&
+                        p.UpdateKey == u.UpdateKey);
+
+                    if (projectPhaseEntry != null)//__an entry exists
+                    {
+                        //__update existing update count and use this for sequence number
+                        int iOldSequenceNumber = Convert.ToInt32(projectPhaseEntry.UpdateCount);
+                        iNewSequenceNumber = iOldSequenceNumber + 1;
+                        projectPhaseEntry.UpdateCount = iNewSequenceNumber;
+                        projectPhaseEntry.LatestUpdate = currentDT;
+                    }
+                    else //__since none was found we need a new entry
+                    {
+                        context.ProjectPhases.Add(new ProjectPhase()
+                        {
+                            ProjectID = u.ProjectID,
+                            PhaseID = u.PhaseID,
+                            UpdateKey = u.UpdateKey,
+                            UpdateCount = 0,
+                            LatestUpdate = currentDT
+                        });
+                        context.SaveChanges();
+                    }
+
                     u.StatusSequence = iNewSequenceNumber;
-                    context.StatusUpdates.Add(u);
+                    context.StatusUpdates.Add(u);                   
+
                 }
                 context.SaveChanges();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return false;
+                throw e;
+                // return false;
             }
             return true;
         }

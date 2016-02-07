@@ -12,7 +12,7 @@ using CostcoProjectStatus.Models;
 
 namespace CostcoProjectStatus.Controllers
 {
-    [Authorize]
+   // [Authorize]
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;
