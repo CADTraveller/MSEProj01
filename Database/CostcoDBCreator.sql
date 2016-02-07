@@ -62,9 +62,10 @@ create table ProjectPhase
 (
     PhaseID int,
     ProjectID varchar(240),
+    UpdateKey varchar(100),
     UpdateCount int,
     LatestUpdate smalldatetime,
-    primary key (PhaseID, ProjectID),
+    primary key (PhaseID, ProjectID, UpdateKey),
     foreign key (PhaseID) references Phase (PhaseID),
     foreign key (ProjectID) references Project (ProjectID)    
 );
@@ -98,3 +99,8 @@ create table StatusUpdate
   --drop table Phase;
   --drop table AllowedUser;
   --drop table UserRole;
+  
+  -- Use these lines to delete all data
+  delete from StatusUpdate;
+  delete from ProjectPhase;
+  delete from Project;
