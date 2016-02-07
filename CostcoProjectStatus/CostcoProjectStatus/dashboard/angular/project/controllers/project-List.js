@@ -14,8 +14,7 @@ angular.module('dashboardApp', [
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch',
-    'ui.bootstrap'
+    'ngTouch'
 ])
     .constant('VerticalEnum', {
         0: 'Warehouse Solutions',
