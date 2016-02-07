@@ -18,11 +18,11 @@ namespace CostcoProjectStatus
             //     new { Controller = "Account", action = "ExternalLogin" }
             //    );
 
-            //routes.MapRoute(
-            //    "ProjectList",
-            //    "ProjectList/{Display}",
-            //    new { Controller="ProjectList", action="Display",id=""}
-            //    );
+            routes.MapRoute(
+                "ProjectList",
+                "ProjectList/{Display}",
+                new { Controller="ProjectList", action="Display",id=""}
+                );
             routes.MapRoute(
                 "Account",
                 "Account/{ExternalLogin}",
