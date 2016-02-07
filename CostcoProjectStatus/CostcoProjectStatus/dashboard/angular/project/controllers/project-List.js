@@ -84,7 +84,7 @@
     }])
     .controller('projectListCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
         console.log($routeParams.vId);
-        $http({ method: 'GET', url: 'https://localhost:44300/PostTestController/GetStatusUpdates' }).success(function (data)
+        $http({ method: 'GET', url: 'https://localhost:44300/ProjectList/GetStatusUpdates' }).success(function (data)
         {
             console.log(data);
             console.log($routeParams.vId);
@@ -104,7 +104,7 @@
         console.log($routeParams.projectId);
         var req = {
                 method: 'POST',
-                url: 'https://localhost:44300/ProjectList/GetStatusUpdates/',
+                url: 'https://localhost:44300/TestPostController/GetStatusUpdates/',
                 headers: {
                     'Content-Type': undefined
                 },
