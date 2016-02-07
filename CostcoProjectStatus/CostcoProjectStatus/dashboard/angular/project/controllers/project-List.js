@@ -76,7 +76,7 @@ angular.module('dashboardApp', [
         $scope.login = function () {
             console.log($scope.model.username);
             console.log($scope.model.password);
-            $http({ method: 'GET', url: 'https://accounts.google.com/o/oauth2/v2/auth' }).success(function (data) {
+            $http({ method: 'POST', url: 'https://localhost:44300/Account/ExternalLogin' }).success(function (data) {
                 console.log(data);
                 $scope.completedCheck = true;
                 console.log($scope.phaseEnum);
