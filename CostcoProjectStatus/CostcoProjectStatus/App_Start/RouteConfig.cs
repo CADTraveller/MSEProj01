@@ -39,9 +39,9 @@ namespace CostcoProjectStatus
                 new { Controller = "ProjectList", action = "GetStatusData", projectId = "projectId", phaseId = "phaseId", statusSequence = "statusSequence"  }
                 );
             routes.MapRoute(
-                "ProjectUpdates",
-                "ProjectUpdates/{Update}",
-                 new { Controller="ProjectUpdates",action="Update"}
+                "ProjectUpdate",
+                "ProjectUpdate/{Update}",
+                 new { Controller="ProjectUpdate",action="Update"}
                 );
             //routes.MapRoute(
             //    name: "LoginOverride",
