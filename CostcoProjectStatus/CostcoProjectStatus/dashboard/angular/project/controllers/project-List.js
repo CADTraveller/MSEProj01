@@ -76,16 +76,18 @@ angular.module('dashboardApp', [
         $scope.login = function () {
             console.log($scope.model.username);
             console.log($scope.model.password);
-            $http({ method: 'GET', url: 'https://accounts.google.com/o/oauth2/v2/auth' }).success(function (data) {
+            var req = {
+                method: 'POST',
+                url: 'https://localhost:44300/Account/ExternalLogin',
+                headers: {
+                    'Content-Type': undefined
+                },
+                data: { name: '__RequestVerificationToken',
+                    type: 'hidden', value: 'L62szysgS5xEV4Aos8ZwX1wQaG4m4TaIwhYOae4smn5KD8XMK3_Z2gh7qu4rI1cIusSJmneKMiJXFxLcWXylkL0Nuc4oXCiyngvocvpKXvU1'}
+            };
+            $http(req).then(function (data) {
                 console.log(data);
-                $scope.completedCheck = true;
-                console.log($scope.phaseEnum);
-            }).error(function (data, status, headers, config) {
-                console.log(status);
-                console.log(data);
-                console.log(headers);
-                console.log(config);
-            })
+            });
         }
     }])
     .controller('projectListCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
