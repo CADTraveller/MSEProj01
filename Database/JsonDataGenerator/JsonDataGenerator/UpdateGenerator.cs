@@ -13,81 +13,73 @@ namespace JsonDataGenerator
 
         public static List<ProjectUpdate> GenerateUpdates(int numberOfProjects)
         {
-            List<ProjectUpdate> projectUpdates = new List<ProjectUpdate>();
-            List<String> usedNames = new List<string>() { "Start" };
+            List<ProjectUpdate> updates = new List<ProjectUpdate>();
             Random rnd = new Random();
-
-            for (int n = 0; n < 7; n++)//__loop through the number of Verticals
+            for (int i = 0; i < numberOfProjects; i++)
             {
+                string project = projectNames[rnd.Next(4)] + " " + projectTypes[rnd.Next(3)];
+                int verticalID = rnd.Next(7);
+                int numberOfUpdates = rnd.Next(11) + 1;
 
-                for (int i = 0; i < numberOfProjects; i++)//__create this many projects
+                for (int k = 0; k < numberOfUpdates; k++)
                 {
-                    string project = "Start";
-                    while (usedNames.Contains(project))
+                    ProjectUpdate update = new ProjectUpdate();
+                    update.ProjectID = project;
+                    //update.PhaseID = rnd.Next(6);
+                    update.VerticalID = verticalID;
+
+                    int dataPointCount = rnd.Next(4) + 2;
+                    int iStatusSequence = i + k; //__need a unique value for each ProjectUpdate
+                    bool TaskNotRecorded = true;
+
+                    for (int m = 0; m < dataPointCount; m++)
                     {
-                        int nameIndex = rnd.Next(8);
-                        int typeIndex = rnd.Next(10);
-                        project = projectNames[nameIndex] + " " + projectTypes[typeIndex] + "-V" + n;
-                    }
-                    int verticalID = n;// rnd.Next(7);
 
-                   int iNumPhases = rnd.Next(7);
-                    for (int p = 0; p < iNumPhases; p++)//__loop through this number of phases
-                    {
-
-
-                        int iNumberEmails = rnd.Next(12) + 1;
-                        for (int m = 0; m < iNumberEmails; m++)//__generate m emails for this Project, Phase
+                        int doTagSwitch = rnd.Next(6);
+                        if (doTagSwitch < 3 && TaskNotRecorded)
                         {
-                            //__we want only 1 Environemnt and 1 Task per email
-                            bool TaskNotRecorded = true;
-                            bool EnvironmentNotRecorded = true;
-                            List<string> usedIdentifiers = new List<string>();
-
-                            ProjectUpdate newProjectUpdate = new ProjectUpdate();
-
-                            int numberOfDataPoints = rnd.Next(11) + 1;
-                            for (int k = 0; k < numberOfDataPoints; k++)//__generate k data points for this email
+                            StatusUpdate enviroStatus = new StatusUpdate()
                             {
+                                ProjectID = update.ProjectID,
+                                PhaseID = rnd.Next(6),//= update.PhaseID,
+                                StatusSequence = iStatusSequence,
+                                RecordDate = DateTime.Now,
+                                UpdateKey = "Environment",
+                                UpdateValue = "System #" + rnd.Next(12)
+                            };
+                            update.Updates.Add(enviroStatus);
+                            StatusUpdate taskStatus = new StatusUpdate()
+                            {
+                                ProjectID = update.ProjectID,
+                                PhaseID = rnd.Next(6), //update.PhaseID,
+                                StatusSequence = iStatusSequence,
+                                RecordDate = DateTime.Now,
+                                UpdateKey = "Task",
+                                UpdateValue = "Task #" + rnd.Next(7)
+                            };
+                            update.Updates.Add(taskStatus);
 
-                                StatusUpdate update = new StatusUpdate();
-                                update.ProjectID = project;
-                                update.PhaseID = p;// rnd.Next(6),//= update.PhaseID,
-                                update.VerticalID = n;
-                                update.RecordDate = DateTime.Now;
-                                int doTagSwitch = rnd.Next(6);
+                            //__this ensures we get only one Environment/Task pair in a given update
+                            TaskNotRecorded = false;
+                            continue;
+                        }
+                        StatusUpdate genStatus = new StatusUpdate()
+                        {
+                            ProjectID = update.ProjectID,
+                            PhaseID = rnd.Next(6),//= update.PhaseID,
+                            StatusSequence = iStatusSequence,
+                            RecordDate = DateTime.Now,
+                            UpdateKey = "Key." + i + "." + k + "." + m,
+                        UpdateValue = "Value." + i + "." + k + "." + m
+                        };
+                        update.Updates.Add(genStatus );
+                    }
 
-                                if (doTagSwitch < 3 && EnvironmentNotRecorded)
-                                {
+                    updates.Add(update);
+                }
+            }
 
-                                    update.UpdateKey = "Environment";
-                                    update.UpdateValue = "System #" + rnd.Next(12);
-                                    EnvironmentNotRecorded = false;
-                                    
-                                }
-                                 else if (doTagSwitch < 3 && TaskNotRecorded)
-                                {
-
-                                    update.UpdateKey = "Task";
-                                    update.UpdateValue = "Task #" + rnd.Next(7);
-                                    TaskNotRecorded = false;
-                                }
-                                else
-                                {
-                                    string identifier = rnd.Next(8) + "." + rnd.Next(8);
-                                    //__ensure there are no duplicate keys in a given email
-                                    while(usedIdentifiers.Contains(identifier)) identifier = rnd.Next(8) + "." + rnd.Next(8);
-                                        update.UpdateKey = "Key." + identifier;
-                                    update.UpdateValue = "Value." + identifier;
-                                }
-                                newProjectUpdate.Updates.Add(update);
-                            }//__end loop through data points
-                            projectUpdates.Add(newProjectUpdate);//__Add this email to the list to return
-                        }//__end loop through emails
-                    }//__end loop through Phases
-                }//__end loop through Projects
-            }//__end loop through Verticals
-            return projectUpdates;
+            return updates;
         }
 
         private static List<string> projectNames = new List<string>()
@@ -97,9 +89,7 @@ namespace JsonDataGenerator
             "Manager",
             "Portal",
             "Monitor",
-            "Thingamajig",
-            "Driver",
-            "Checker"
+            "Thingamajig"
         };
 
         private static List<string> projectTypes = new List<string>()
@@ -108,12 +98,7 @@ namespace JsonDataGenerator
             "Martha",
             "Stewart",
             "Schenectady",
-            "Bocephus",
-            "Aardvark",
-            "Samantha",
-            "Trippy",
-            "Vermicious Knid",
-            "Particulate"
+            "Bocephus"
         };
 
         private static List<string> verticals = new List<string>()

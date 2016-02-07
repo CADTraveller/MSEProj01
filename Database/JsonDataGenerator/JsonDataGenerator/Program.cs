@@ -15,38 +15,87 @@ namespace JsonDataGenerator
         static void Main(string[] args)
         {
 
-            //AccessService dataAccess = new AccessService();
-            //List<Project> projects = dataAccess.GetAllProjectNames();
-            //List<StatusUpdate> updates = dataAccess.GetAllUpdatesForProject(projects[0].ProjectID);
+            AccessService dataAccess = new AccessService();
+            List<Project> projects = dataAccess.GetAllProjectNames();
+            List<StatusUpdate> updates = dataAccess.GetAllUpdatesForProject(projects[0].ProjectID);
+            //ProjectUpdate project = new ProjectUpdate();
+            //project.ProjectID = projects[0];
+            //project.Updates = updates;
+            //project.VerticalID = 2;
+            //string projectJson = JsonConvert.SerializeObject(project, Formatting.Indented);
 
-            //string projectWritePath = Directory.GetCurrentDirectory() + "\\Project.json";
-            //string updatesJson = JsonConvert.SerializeObject(updates, Formatting.Indented);
-            //File.WriteAllText(projectWritePath, updatesJson);
+            string projectWritePath = Directory.GetCurrentDirectory() + "\\Project.json";
+            string updatesJson = JsonConvert.SerializeObject(updates, Formatting.Indented);
+            File.WriteAllText(projectWritePath, updatesJson);
+            
+            int numberProjects = 6;
+            Console.WriteLine(projectWritePath);
+            Console.ReadLine();
+            /*
+            updates = UpdateGenerator.GenerateUpdates(numberProjects);
 
-            //int numberProjects = 6;
-            //Console.WriteLine(projectWritePath);
-            //Console.ReadLine();
-
-            List<ProjectUpdate> projects = new List<ProjectUpdate>();
-            projects = UpdateGenerator.GenerateUpdates(8);
+            Console.WriteLine("Generated " + updates.Count + " updates");
 
 
-            foreach (var project in projects)
+
+            string json = JsonConvert.SerializeObject(updates, Formatting.Indented);
+            string path = Directory.GetCurrentDirectory() + "\\JsonSample.json";
+
+            File.WriteAllText(path, json);
+
+            Console.WriteLine("Created file: " + path);
+            Console.WriteLine();
+
+            try
             {
-                List<StatusUpdate> updates = project.Updates;
                 AccessService dataPortal = new AccessService();
-
-                try
+                foreach (ProjectUpdate update in updates)
                 {
-                    dataPortal.RecordStatusUpdate(updates);
+                    dataPortal.RecordStatusUpdate(update);
                 }
-                catch (Exception e)
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+            Console.WriteLine("Number of singles to generate?");
+            Console.WriteLine();
+
+            string reply = Console.ReadLine();
+
+            try
+            {
+                int iNumSingles = Convert.ToInt16(reply);
+                int entries = numberProjects;
+                List<int> usedIndices = new List<int>();
+                Random rnd = new Random();
+
+                for (int i = 0; i < iNumSingles; i++)
                 {
+                    int index = rnd.Next(entries);
+                    while (usedIndices.Contains(index))//__prevent duplicates
+                    {
+                        index = rnd.Next(entries);
+                    }
 
-                    throw e;
+                    ProjectUpdate single = updates[index];
+                    string singleJson = JsonConvert.SerializeObject(single, Formatting.Indented);
+                    string singlePath = Directory.GetCurrentDirectory() + "\\Single" + (i + 1) + ".json";
+                    File.WriteAllText(singlePath, singleJson);
                 }
 
-            }            
+                Console.WriteLine("Created " + iNumSingles + " single entry Json files");
+            }
+            catch (Exception e)
+            {
+
+                Console.WriteLine("***");
+                Console.WriteLine(e.Message);
+                Console.WriteLine("***");
+            }
+            Console.ReadLine();
+            */
         }
     }
 }

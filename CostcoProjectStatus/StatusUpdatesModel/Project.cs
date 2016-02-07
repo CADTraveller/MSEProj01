@@ -11,25 +11,32 @@ namespace StatusUpdatesModel
 {
     using System;
     using System.Collections.Generic;
-    
+
     public partial class Project
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Project()
         {
-            this.StatusUpdates = new HashSet<StatusUpdate>();
             this.ProjectPhases = new HashSet<ProjectPhase>();
+            this.StatusUpdates = new HashSet<StatusUpdate>();
         }
-    
+
         public string ProjectID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public Nullable<int> VerticalID { get; set; }
-    
+
+        [Newtonsoft.Json.JsonIgnore]
         public virtual Vertical Vertical { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<StatusUpdate> StatusUpdates { get; set; }
+
+
+        [Newtonsoft.Json.JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProjectPhase> ProjectPhases { get; set; }
+
+
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StatusUpdate> StatusUpdates { get; set; }
     }
 }
