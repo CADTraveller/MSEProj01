@@ -25,10 +25,16 @@ namespace StatusUpdatesModel
         public string Name { get; set; }
         public string Description { get; set; }
         public Nullable<int> VerticalID { get; set; }
-    
+
+
+        [Newtonsoft.Json.JsonIgnore]
         public virtual Vertical Vertical { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+        [Newtonsoft.Json.JsonIgnore]
         public virtual ICollection<StatusUpdate> StatusUpdates { get; set; }
+
+        [Newtonsoft.Json.JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProjectPhase> ProjectPhases { get; set; }
     }

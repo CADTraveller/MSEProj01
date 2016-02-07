@@ -195,8 +195,7 @@ namespace DataService
                     }
 
                     u.StatusSequence = iNewSequenceNumber;
-                    context.StatusUpdates.Add(u);
-                    
+                    context.StatusUpdates.Add(u);                   
 
                 }
                 context.SaveChanges();
