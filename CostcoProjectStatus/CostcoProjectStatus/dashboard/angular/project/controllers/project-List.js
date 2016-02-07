@@ -1,12 +1,4 @@
-﻿/*angular.module('costcoapp').controller('ProjectCntrl', ['$scope', '$http', function ($scope, $http) {
-    $scope.name = "Test";
-    $scope.project = "";
-   /* $http({ method: 'GET', url: 'http://localhost:64747/ProjectList/Display' }).success(function (data)
-    {
-        $scope.projectListData = data;
-    });*/
-//}]);
-angular.module('dashboardApp', [
+﻿var dashboardModule = angular.module('dashboardApp', [
     'ngAnimate',
     'ngAria',
     'ngCookies',
