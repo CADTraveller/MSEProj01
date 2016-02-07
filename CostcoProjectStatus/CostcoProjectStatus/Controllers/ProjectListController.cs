@@ -94,8 +94,16 @@ namespace CostcoProjectStatus.Controllers
         public string Display()
         {
             var ProjectNames = DataAccsess.GetAllProjectNames();
-            
-            string result = JsonConvert.SerializeObject(ProjectNames);
+            List<Models.PassableProjectModel> passableModelList = new List<Models.PassableProjectModel>();
+            foreach(StatusUpdatesModel.Project project in ProjectNames)
+            {
+                var passableProject = new Models.PassableProjectModel();
+                passableProject.ProjectID = project.ProjectID;
+                passableProject.VerticalID = project.VerticalID;
+                passableProject.LatestUpdate = project.LatestUpdate;
+                passableModelList.Add(passableProject);
+            }
+            string result = JsonConvert.SerializeObject(passableModelList);
             return result;
         }
         public string GetStatusUpdates(String id)
