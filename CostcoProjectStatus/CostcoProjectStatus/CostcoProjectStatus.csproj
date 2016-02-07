@@ -193,6 +193,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\AccountController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -202,8 +203,10 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\PostTestController.cs" />
     <Compile Include="Controllers\ProjectListController.cs" />
     <Compile Include="Controllers\ProjectUpdateController.cs" />
+    <Compile Include="Controllers\TestPostController.cs" />
     <Compile Include="Controllers\TreeViewDataController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -218,9 +221,11 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="dashboard\angular\project\controllers\tabsController.js" />
     <Content Include="dashboard\angular\project\views\Login.html" />
     <Content Include="dashboard\angular\project\views\ProjectData.html" />
     <Content Include="dashboard\angular\project\views\ProjectUpdates.html" />
+    <Content Include="dashboard\angular\project\views\tabs.html" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -1025,6 +1030,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\ui-bootstrap-tpls-1.1.2.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="dashboard\angular\project\views\Verticals.html" />
     <Content Include="dashboard\index.html" />
@@ -1074,8 +1080,10 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\App_LocalResources\" />
     <Folder Include="dashboard\angular\core\views\" />
+    <Folder Include="Views\PostTest\" />
     <Folder Include="Views\ProjectList\" />
     <Folder Include="Views\ProjectUpdate\" />
+    <Folder Include="Views\TestPost\" />
     <Folder Include="Views\TreeViewData\" />
   </ItemGroup>
   <ItemGroup>

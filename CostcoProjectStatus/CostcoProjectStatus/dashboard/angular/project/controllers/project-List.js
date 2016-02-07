@@ -1,12 +1,4 @@
-﻿/*angular.module('costcoapp').controller('ProjectCntrl', ['$scope', '$http', function ($scope, $http) {
-    $scope.name = "Test";
-    $scope.project = "";
-   /* $http({ method: 'GET', url: 'http://localhost:64747/ProjectList/Display' }).success(function (data)
-    {
-        $scope.projectListData = data;
-    });*/
-//}]);
-angular.module('dashboardApp', [
+﻿var dashboardModule = angular.module('dashboardApp', [
     'ngAnimate',
     'ngAria',
     'ngCookies',
@@ -110,11 +102,21 @@ angular.module('dashboardApp', [
     }])
     .controller('statusUpdatesCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum','PhaseEnum',function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
         console.log($routeParams.projectId);
-        $http({ method: 'GET', url: 'https://localhost:44300/ProjectList/GetProjectUpdates/'+$routeParams.projectId }).success(function (data)
-        {
-            console.log(data);
+        var req = {
+                method: 'POST',
+                url: 'https://localhost:44300/TestPostController/GetStatusUpdates/',
+                headers: {
+                    'Content-Type': undefined
+                },
+                data: {
+                    projectId: $routeParams.projectId
+                }
+            };
+        $http(req).then(function (data) {
+
+            console.log(data.data);
             console.log($routeParams.projectId);
-            $scope.statusUpdateList = data;
+            $scope.statusUpdateList = data.data;
             $scope.vId = $scope.statusUpdateList[0].VerticalID;
             $scope.vName = VerticalEnum[$scope.vId];
             $scope.phaseEnums = PhaseEnum;
@@ -122,17 +124,12 @@ angular.module('dashboardApp', [
             $scope.inProgressPhases = [];
             angular.forEach($scope.statusUpdateList, function (value, key) {
                 console.log($scope.statusUpdateList[key].PhaseID);
-                
-                    this.push($scope.statusUpdateList[key].PhaseID);
+
+                this.push($scope.statusUpdateList[key].PhaseID);
 
             }, $scope.inProgressPhases);
             console.log($scope.inProgressPhases);
-        }).error(function(data, status, headers, config) {
-            console.log(status);
-            console.log(data);
-            console.log(headers);
-            console.log(config);
-        })
+        });
     }])
         .controller('statusDataCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum','PhaseEnum',function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
             console.log($routeParams.projectId);
