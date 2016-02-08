@@ -1,11 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
-using  Newtonsoft.Json;
+using Newtonsoft.Json;
+using System.Text;
 using DataService;
 using StatusUpdatesModel;
+
+using HttpPost = System.Web.Mvc.HttpPostAttribute;
+
+
+
 namespace CostcoProjectStatus.Controllers
 {
     public class ProjectUpdateController : Controller
@@ -30,7 +36,7 @@ namespace CostcoProjectStatus.Controllers
         }
 
         // POST: ProjectUpdate/Create
-        [HttpPost]
+        //[HttpPost]
         public ActionResult Create(FormCollection collection)
         {
             try
@@ -52,7 +58,7 @@ namespace CostcoProjectStatus.Controllers
         }
 
         // POST: ProjectUpdate/Edit/5
-        [HttpPost]
+       // [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
         {
             try
@@ -74,7 +80,7 @@ namespace CostcoProjectStatus.Controllers
         }
 
         // POST: ProjectUpdate/Delete/5
-        [HttpPost]
+       // [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {
             try
@@ -88,12 +94,22 @@ namespace CostcoProjectStatus.Controllers
                 return View();
             }
         }
-        public void Update(string json)
-        {//
-            List<StatusUpdate> ListOfUpdates = new List<StatusUpdate>();
-            ListOfUpdates = JsonConvert.DeserializeObject<List<StatusUpdate>>(json);
-            DataAccess.RecordStatusUpdate(ListOfUpdates);
 
+        
+        [HttpPost]
+        public string Update(string json)
+        {
+
+            if (!string.IsNullOrEmpty(json))
+            {
+
+                List<StatusUpdate> ListOfUpdates = new List<StatusUpdate>();
+                ListOfUpdates = JsonConvert.DeserializeObject<List<StatusUpdate>>(json);
+                DataAccess.RecordStatusUpdate(ListOfUpdates);
+                return "Success";
+            }
+
+            return "Failure";
         }
     }
 }

@@ -104,9 +104,9 @@
         console.log($routeParams.projectId);
         var req = {
                 method: 'POST',
-                url: 'https://localhost:44300/PostTestController/GetStatusUpdates/',
+                url: 'https://localhost:44300/PostTest/GetStatusUpdates/',
                 headers: {
-                    'Content-Type': 'application / json'
+                    'Content-Type': undefined
                 },
                 data: {
                     projectId: $routeParams.projectId
