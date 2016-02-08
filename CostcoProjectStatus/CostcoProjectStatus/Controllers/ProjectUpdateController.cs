@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
+using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 using System.Text;
@@ -94,9 +94,7 @@ namespace CostcoProjectStatus.Controllers
                 return View();
             }
         }
-
         
-        [HttpPost]
         public string Update(string json)
         {
 
