@@ -30,8 +30,8 @@ namespace CostcoProjectStatus
                // );
             routes.MapRoute(
                 "StatusUpdateList",
-                "PostTestController/GetStatusUpdates/{id}",
-                new { Controller = "PostTestController", action = "GetStatusUpdates", id = "projectId" }
+                "ProjectList/{GetProjectUpdates}/{id}",
+                new { Controller = "ProjectList", action = "GetStatusUpdates", id = "id" }
                 );
             routes.MapRoute(
                 "StatusDataList",
