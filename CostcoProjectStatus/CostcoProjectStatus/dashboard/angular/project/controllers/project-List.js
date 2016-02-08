@@ -63,19 +63,13 @@
     })
     .controller('loginCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
 
-        $scope.completedCheck = false;
-        $scope.model = {};
         $scope.login = function () {
-            console.log($scope.model.username);
-            console.log($scope.model.password);
             var req = {
                 method: 'POST',
-                url: 'https://localhost:44300/Account/ExternalLogin',
+                url: 'https://localhost:44300/AuthAccount/ExternalLogin',
                 headers: {
                     'Content-Type': undefined
-                },
-                data: { name: '__RequestVerificationToken',
-                    type: 'hidden', value: 'L62szysgS5xEV4Aos8ZwX1wQaG4m4TaIwhYOae4smn5KD8XMK3_Z2gh7qu4rI1cIusSJmneKMiJXFxLcWXylkL0Nuc4oXCiyngvocvpKXvU1'}
+                }
             };
             $http(req).then(function (data) {
                 console.log(data);

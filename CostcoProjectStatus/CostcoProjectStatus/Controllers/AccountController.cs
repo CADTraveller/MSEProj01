@@ -276,10 +276,10 @@ namespace CostcoProjectStatus.Controllers
         [HttpPost]
         [AllowAnonymous]
        [ValidateAntiForgeryToken]
-        public ActionResult ExternalLogin(string provider, string returnUrl)
+        public ActionResult ExternalLogin()
         {
             // Request a redirect to the external login provider
-            return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
+            return new ChallengeResult("google", Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = "http://www.google.com" }));
         }
 
         //
