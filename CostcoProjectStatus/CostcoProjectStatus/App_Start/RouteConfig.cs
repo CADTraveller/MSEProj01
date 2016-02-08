@@ -13,7 +13,7 @@ namespace CostcoProjectStatus
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.MapRoute(
-                "Account",
+                "ExternalLogin",
                 "Account/{ExternalLogin}",
                  new { Controller = "Account", action = "ExternalLogin" }
                 );
@@ -24,14 +24,14 @@ namespace CostcoProjectStatus
                 new { Controller="ProjectList", action="Display",id=""}
                 );
             //routes.MapRoute(
-            //    "Account",
-            //    "Account/{ExternalLogin}",
-            //    new { Controller = "ProjectList", action = "ExternalLogin" }
-            //    );
+             //   "ExternalLogin",
+             //   "AuthAccount/{ExternalLogin}",
+              //  new { Controller = "AuthAccount", action = "ExternalLogin" }
+               // );
             routes.MapRoute(
                 "StatusUpdateList",
-                "PostTestController/GetStatusUpdates/{id}",
-                new { Controller = "PostTest", action = "GetStatusUpdates", id = "projectId" }
+                "ProjectList/{GetProjectUpdates}/{id}",
+                new { Controller = "ProjectList", action = "GetStatusUpdates", id = "id" }
                 );
             routes.MapRoute(
                 "StatusDataList",
