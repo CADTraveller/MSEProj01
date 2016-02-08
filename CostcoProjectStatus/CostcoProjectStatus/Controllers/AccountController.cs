@@ -274,8 +274,6 @@ namespace CostcoProjectStatus.Controllers
         //
         // POST: /Account/ExternalLogin
         [HttpPost]
-        [AllowAnonymous]
-       [ValidateAntiForgeryToken]
         public ActionResult ExternalLogin()
         {
             // Request a redirect to the external login provider
