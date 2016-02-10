@@ -9,7 +9,12 @@ namespace CostcoProjectStatus.Models
         [Display(Name = "Email")]
         public string Email { get; set; }
     }
-
+    
+    public class PassedInDataViewModel
+    {
+        public string Provider { get; set; }
+        public string ReturnURL { get; set; }
+    }
     public class ExternalLoginListViewModel
     {
         public string ReturnUrl { get; set; }
