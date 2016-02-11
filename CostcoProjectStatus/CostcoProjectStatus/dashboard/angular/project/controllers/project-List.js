@@ -64,25 +64,41 @@
     .controller('loginCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
 
         $scope.login = function () {
-            var req = {
-                method: 'POST',
-                url: 'https://localhost:44300/Account/ExternalLoginCallbackRedirect',
-                headers: {
-                    'Content-Type': undefined
-                },
-                data: {
-                    name: '__RequestVerificationToken',
-                    type: 'hidden', value: 'L62szysgS5xEV4Aos8ZwX1wQaG4m4TaIwhYOae4smn5KD8XMK3_Z2gh7qu4rI1cIusSJmneKMiJXFxLcWXylkL0Nuc4oXCiyngvocvpKXvU1'
-                }
-            };
-            $http(req).then(function () {
-                console.log(data);
+            /* var req = {
+                 method: 'POST',
+                 url: '../Account/ExternalLogin',
+                 headers: {
+                     'Content-Type': undefined
+                 },
+                 data: {
+                     provider: 'google',
+                     returnURL: '#/DashboardCtrl',
+                     name: '__RequestVerificationToken',
+                     type: 'hidden', value: 'L62szysgS5xEV4Aos8ZwX1wQaG4m4TaIwhYOae4smn5KD8XMK3_Z2gh7qu4rI1cIusSJmneKMiJXFxLcWXylkL0Nuc4oXCiyngvocvpKXvU1'
+                 }
+             };
+             $http(req).then(function () {
+                 console.log(data);
+             });
+         } */
+            var postData = {
+                provider: 'google',
+                returnURL: '#/DashboardCtrl'
+            }
+            $http.post('../Account/ExternalLogin', postData)
+            .then(function (result) {
+                alert("coool!");
+                console.log(result.data);
+
+            }, function () {
+                //errpr
+                alert("no good!");
             });
         }
     }])
     .controller('projectListCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
         console.log($routeParams.vId);
-        $http({ method: 'GET', url: 'https://localhost:44300/ProjectList/GetStatusUpdates' }).success(function (data)
+        $http({ method: 'GET', url: '../ProjectList/GetStatusUpdates' }).success(function (data)
         {
             console.log(data);
             console.log($routeParams.vId);
@@ -100,7 +116,7 @@
     }])
     .controller('statusUpdatesCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum','PhaseEnum',function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
         console.log($routeParams.projectId);
-        $http({ method: 'GET', url: 'https://localhost:44300/ProjectList/GetProjectUpdates/' + $routeParams.projectId }).success(function (data) {
+        $http({ method: 'GET', url: '../ProjectList/GetProjectUpdates/' + $routeParams.projectId }).success(function (data) {
             console.log(data);
             console.log($routeParams.projectId);
             $scope.statusUpdateList = data;
@@ -127,7 +143,7 @@
             console.log($routeParams.projectId);
             console.log($routeParams.phaseId);
             console.log($routeParams.statusSequence);
-            $http({ method: 'GET', url: 'https://localhost:44300/ProjectList/GetProjectUpdates/'+$routeParams.projectId+"/"+$routeParams.phaseId+"/"+$routeParams.statusSequence }).success(function (data)
+            $http({ method: 'GET', url: '../ProjectList/GetProjectUpdates/'+$routeParams.projectId+"/"+$routeParams.phaseId+"/"+$routeParams.statusSequence }).success(function (data)
             {
                 console.log(data);
                 console.log($routeParams.projectId);
