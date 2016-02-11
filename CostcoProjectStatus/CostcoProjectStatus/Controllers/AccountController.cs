@@ -280,7 +280,7 @@ namespace CostcoProjectStatus.Controllers
         */
         //
         // POST: /Account/ExternalLogin
-        [HttpPost]
+        
         [AllowAnonymous]
         public ActionResult ExternalLogin(String provider, String returnURL)
         {
