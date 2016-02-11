@@ -66,7 +66,7 @@
         $scope.login = function () {
             var req = {
                 method: 'POST',
-                url: 'https://localhost:44300/Account/ExternalLogin',
+                url: 'https://localhost:44300/Account/ExternalLoginCallbackRedirect',
                 headers: {
                     'Content-Type': undefined
                 },
