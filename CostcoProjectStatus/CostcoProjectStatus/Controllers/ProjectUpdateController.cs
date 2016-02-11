@@ -98,7 +98,7 @@ namespace CostcoProjectStatus.Controllers
             }
         }
 
-        [HttpPost]
+        [System.Web.Mvc.HttpPostAttribute]
         public void Update(List<EmailObject> jsonList)
         {
             List<StatusUpdate> ListOfUpdates = new List<StatusUpdate>();
