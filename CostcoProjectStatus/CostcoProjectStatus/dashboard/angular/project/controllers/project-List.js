@@ -64,19 +64,37 @@
     .controller('loginCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
 
         $scope.login = function () {
-            var req = {
-                method: 'POST',
-                url: 'https://localhost:44300/Account/ExternalLogin',
-                headers: {
-                    'Content-Type': undefined
-                },
-                data: {
-                    name: '__RequestVerificationToken',
-                    type: 'hidden', value: 'L62szysgS5xEV4Aos8ZwX1wQaG4m4TaIwhYOae4smn5KD8XMK3_Z2gh7qu4rI1cIusSJmneKMiJXFxLcWXylkL0Nuc4oXCiyngvocvpKXvU1'
-                }
-            };
-            $http(req).then(function () {
-                console.log(data);
+            /* var req = {
+                 method: 'POST',
+                 url: 'https://localhost:44300/Account/ExternalLogin',
+                 headers: {
+                     'Content-Type': undefined
+                 },
+                 data: {
+                     provider: 'google',
+                     returnURL: '#/DashboardCtrl',
+                     name: '__RequestVerificationToken',
+                     type: 'hidden', value: 'L62szysgS5xEV4Aos8ZwX1wQaG4m4TaIwhYOae4smn5KD8XMK3_Z2gh7qu4rI1cIusSJmneKMiJXFxLcWXylkL0Nuc4oXCiyngvocvpKXvU1'
+                 }
+             };
+             $http(req).then(function () {
+                 console.log(data);
+             });
+         } */
+            var postData = {
+                provider: 'google',
+                returnURL: '#/DashboardCtrl'
+            }
+            $scope.provider = 'google';
+            $scope.returnURL = '#/DashboardCtrl';
+            $http.post('https://localhost:44300/Account/ExternalLogin', postData)
+            .then(function (result) {
+                alert("coool!");
+                console.log(result.data);
+
+            }, function () {
+                //errpr
+                alert("no good!");
             });
         }
     }])
