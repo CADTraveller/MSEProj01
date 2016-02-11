@@ -270,19 +270,22 @@ namespace CostcoProjectStatus.Controllers
         {
             return View();
         }
+        /*
         [HttpPost]
         [AllowAnonymous]
         public ActionResult StartLogin(CostcoProjectStatus.Models.PassedInDataViewModel passedInData)
         {
             return ExternalLogin(passedInData.Provider, passedInData.ReturnURL);
         }
+        */
         //
         // POST: /Account/ExternalLogin
+        [HttpPost]
         [AllowAnonymous]
         public ActionResult ExternalLogin(String provider, String returnURL)
         {
             // Request a redirect to the external login provider
-            string[] keys = Request.Form.AllKeys;
+          /*  string[] keys = Request.Form.AllKeys;
             var value = "";
             for (int i = 0; i < keys.Length; i++)
             {
@@ -290,8 +293,9 @@ namespace CostcoProjectStatus.Controllers
                 // keys[i];
                 // to get the value you use
                 value = Request.Form[keys[i]];
-            }
-            return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnURL }));
+            }*/
+            returnURL = null;
+            return new ChallengeResult("Google", Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnURL }));
         }
 
         //
