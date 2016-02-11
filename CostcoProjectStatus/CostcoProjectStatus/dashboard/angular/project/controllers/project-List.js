@@ -66,7 +66,7 @@
         $scope.login = function () {
             /* var req = {
                  method: 'POST',
-                 url: 'https://localhost:44300/Account/ExternalLogin',
+                 url: '../Account/ExternalLogin',
                  headers: {
                      'Content-Type': undefined
                  },
@@ -85,9 +85,7 @@
                 provider: 'google',
                 returnURL: '#/DashboardCtrl'
             }
-            $scope.provider = 'google';
-            $scope.returnURL = '#/DashboardCtrl';
-            $http.post('https://localhost:44300/Account/ExternalLogin', postData)
+            $http.post('../Account/ExternalLogin', postData)
             .then(function (result) {
                 alert("coool!");
                 console.log(result.data);
@@ -100,7 +98,7 @@
     }])
     .controller('projectListCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
         console.log($routeParams.vId);
-        $http({ method: 'GET', url: 'https://localhost:44300/ProjectList/GetStatusUpdates' }).success(function (data)
+        $http({ method: 'GET', url: '../ProjectList/GetStatusUpdates' }).success(function (data)
         {
             console.log(data);
             console.log($routeParams.vId);
@@ -118,7 +116,7 @@
     }])
     .controller('statusUpdatesCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum','PhaseEnum',function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
         console.log($routeParams.projectId);
-        $http({ method: 'GET', url: 'https://localhost:44300/ProjectList/GetProjectUpdates/' + $routeParams.projectId }).success(function (data) {
+        $http({ method: 'GET', url: '../ProjectList/GetProjectUpdates/' + $routeParams.projectId }).success(function (data) {
             console.log(data);
             console.log($routeParams.projectId);
             $scope.statusUpdateList = data;
@@ -145,7 +143,7 @@
             console.log($routeParams.projectId);
             console.log($routeParams.phaseId);
             console.log($routeParams.statusSequence);
-            $http({ method: 'GET', url: 'https://localhost:44300/ProjectList/GetProjectUpdates/'+$routeParams.projectId+"/"+$routeParams.phaseId+"/"+$routeParams.statusSequence }).success(function (data)
+            $http({ method: 'GET', url: '../ProjectList/GetProjectUpdates/'+$routeParams.projectId+"/"+$routeParams.phaseId+"/"+$routeParams.statusSequence }).success(function (data)
             {
                 console.log(data);
                 console.log($routeParams.projectId);
