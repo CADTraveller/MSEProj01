@@ -270,16 +270,32 @@ namespace CostcoProjectStatus.Controllers
         {
             return View();
         }
-
-        //
-        // POST: /Account/ExternalLogin
+        /*
         [HttpPost]
         [AllowAnonymous]
-       [ValidateAntiForgeryToken]
-        public ActionResult ExternalLogin(string provider, string returnUrl)
+        public ActionResult StartLogin(CostcoProjectStatus.Models.PassedInDataViewModel passedInData)
+        {
+            return ExternalLogin(passedInData.Provider, passedInData.ReturnURL);
+        }
+        */
+        //
+        // POST: /Account/ExternalLogin
+        
+        [AllowAnonymous]
+        public ActionResult ExternalLogin(String provider, String returnURL)
         {
             // Request a redirect to the external login provider
-            return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
+          /*  string[] keys = Request.Form.AllKeys;
+            var value = "";
+            for (int i = 0; i < keys.Length; i++)
+            {
+                // here you get the name eg test[0].quantity
+                // keys[i];
+                // to get the value you use
+                value = Request.Form[keys[i]];
+            }*/
+            returnURL = null;
+            return new ChallengeResult("Google", Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnURL }));
         }
 
         //
@@ -317,6 +333,11 @@ namespace CostcoProjectStatus.Controllers
             return RedirectToAction("VerifyCode", new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
         }
 
+       // [AllowAnonymous]
+        //public ActionResult ExternalLoginCallbackRedirect(string returnUrl)
+        //{
+        //    return RedirectPermanent("/Account/ExternalLoginCallback");
+        //}
         //
         // GET: /Account/ExternalLoginCallback
         [AllowAnonymous]

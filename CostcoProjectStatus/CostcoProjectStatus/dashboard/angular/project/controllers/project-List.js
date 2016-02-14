@@ -63,28 +63,39 @@
     })
     .controller('loginCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
 
-        $scope.completedCheck = false;
-        $scope.model = {};
         $scope.login = function () {
-            console.log($scope.model.username);
-            console.log($scope.model.password);
-            var req = {
-                method: 'POST',
-                url: 'https://localhost:44300/Account/ExternalLogin',
-                headers: {
-                    'Content-Type': undefined
-                },
-                data: { name: '__RequestVerificationToken',
-                    type: 'hidden', value: 'L62szysgS5xEV4Aos8ZwX1wQaG4m4TaIwhYOae4smn5KD8XMK3_Z2gh7qu4rI1cIusSJmneKMiJXFxLcWXylkL0Nuc4oXCiyngvocvpKXvU1'}
-            };
-            $http(req).then(function (data) {
-                console.log(data);
+            /* var req = {
+                 method: 'POST',
+                 url: '../Account/ExternalLogin',
+                 headers: {
+                     'Content-Type': undefined
+                 },
+                 data: {
+                     provider: 'google',
+                     returnURL: '#/DashboardCtrl',
+                     name: '__RequestVerificationToken',
+                     type: 'hidden', value: 'L62szysgS5xEV4Aos8ZwX1wQaG4m4TaIwhYOae4smn5KD8XMK3_Z2gh7qu4rI1cIusSJmneKMiJXFxLcWXylkL0Nuc4oXCiyngvocvpKXvU1'
+                 }
+             };
+             $http(req).then(function () {
+                 console.log(data);
+             });
+         } */
+            var postData = {
+                provider: 'Google',
+                returnURL: ''
+            }
+            $http.post('../Account/ExternalLogin', postData)
+            .then(function (result) {
+                alert("coool!");
+                console.log(result.data);
+
             });
         }
     }])
     .controller('projectListCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
         console.log($routeParams.vId);
-        $http({ method: 'GET', url: 'https://localhost:44300/ProjectList/GetStatusUpdates' }).success(function (data)
+        $http({ method: 'GET', url: '../ProjectList/GetStatusUpdates' }).success(function (data)
         {
             console.log(data);
             console.log($routeParams.vId);
@@ -102,21 +113,10 @@
     }])
     .controller('statusUpdatesCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum','PhaseEnum',function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
         console.log($routeParams.projectId);
-        var req = {
-                method: 'POST',
-                url: 'https://localhost:44300/TestPostController/GetStatusUpdates/',
-                headers: {
-                    'Content-Type': undefined
-                },
-                data: {
-                    projectId: $routeParams.projectId
-                }
-            };
-        $http(req).then(function (data) {
-
-            console.log(data.data);
+        $http({ method: 'GET', url: '../ProjectList/GetProjectUpdates/' + $routeParams.projectId }).success(function (data) {
+            console.log(data);
             console.log($routeParams.projectId);
-            $scope.statusUpdateList = data.data;
+            $scope.statusUpdateList = data;
             $scope.vId = $scope.statusUpdateList[0].VerticalID;
             $scope.vName = VerticalEnum[$scope.vId];
             $scope.phaseEnums = PhaseEnum;
@@ -129,11 +129,18 @@
 
             }, $scope.inProgressPhases);
             console.log($scope.inProgressPhases);
-        });
+        }).error(function (data, status, headers, config) {
+            console.log(status);
+            console.log(data);
+            console.log(headers);
+            console.log(config);
+        })
     }])
         .controller('statusDataCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum','PhaseEnum',function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
             console.log($routeParams.projectId);
-            $http({ method: 'GET', url: 'https://localhost:44300/ProjectList/GetProjectUpdates/'+$routeParams.projectId+"/"+$routeParams.phaseId+"/"+$routeParams.statusSequence }).success(function (data)
+            console.log($routeParams.phaseId);
+            console.log($routeParams.statusSequence);
+            $http({ method: 'GET', url: '../ProjectList/GetProjectUpdates/'+$routeParams.projectId+"/"+$routeParams.phaseId+"/"+$routeParams.statusSequence }).success(function (data)
             {
                 console.log(data);
                 console.log($routeParams.projectId);
@@ -150,4 +157,20 @@
                 console.log(headers);
                 console.log(config);
             });
-        }]);
+        }])
+ .controller('TabsDemoCtrl', function ($scope, $window) {
+        $scope.tabs = [
+          { title: 'Dynamic Title 1', content: 'Dynamic content 1' },
+          { title: 'Dynamic Title 2', content: 'Dynamic content 2', disabled: true }
+        ];
+
+        $scope.alertMe = function () {
+            setTimeout(function () {
+                $window.alert('You\'ve selected the alert tab!');
+            });
+        };
+
+        $scope.model = {
+            name: 'Tabs'
+        };
+    });

@@ -20,8 +20,8 @@ namespace CostcoProjectStatus.Controllers
         }
         [HttpPost]
         public string GetStatusUpdates(String id)
-        {
-           
+        { 
+      
             var ProjectUpdates = DataAccsess.GetAllUpdatesForProject(id);
             string result = JsonConvert.SerializeObject(ProjectUpdates);
             return result;
