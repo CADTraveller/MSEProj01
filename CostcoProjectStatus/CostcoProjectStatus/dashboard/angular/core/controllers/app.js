@@ -1,37 +1,32 @@
-﻿/// <reference path="../../project/views/ProjectList.html" />
-'use strict';
+﻿var VerticalEnum = {
+    Warehouse: 0,
+    Merchandising: 1,
+    Membership: 2,
+    Distribution: 3,
+    International: 4,
+    Ancillary: 5,
+    eBusiness: 6,
+    Corporate: 7,
+}
+$(document).ready(function() {
+    $('#searchProj').click(function() {
+        document.location.href = '#/ProjectUpdates/'+ $('#searchText').val();
+    });
+});
+document.getElementById("VerticalList").innerHTML = "";
+for (var vertIter in VerticalEnum) {
+    document.getElementById("VerticalList").innerHTML += "<li><a href='#ProjectList/" + VerticalEnum[vertIter] + "'>" + vertIter + " Solutions</a></li>";
+}
 
-/**
- * @ngdoc overview
- * @name To Do App
- * @description
- * # To do Application
- *
- * Main module of the application.
- */
-angular.module('dashboardApp', [
-    'ngAnimate',
-    'ngAria',
-    'ngCookies',
-    'ngMessages',
-    'ngResource',
-    'ngRoute',
-    'ngSanitize',
-    'ngTouch'
-])
-    .config(function ($routeProvider) {
-        $routeProvider
-          .when('/ProjectList', {
-              templateUrl: 'angular/project/views/ProjectList.html',
-              controller: 'dashboardCtrl'
-          })
-      .otherwise({
-          redirectTo: 'angular/project/views/ProjectList.html'
-      });
-})
-;
+function loginUser() {
+    var loginData = {
+        provider: 'Google',
+        returnURL: ''
+    }
+    $.post('../Account/ExternalLogin', loginData)
+    .then(function (result) {
+        alert("coool!");
+        console.log(result.data);
 
-/*
-var app = angular.module('dashboardApp', []);
- *   
- */
+    });
+}

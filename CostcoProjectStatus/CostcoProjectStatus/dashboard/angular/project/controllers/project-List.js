@@ -6,7 +6,8 @@
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch'
+    'ngTouch',
+    'smart-table'
 ])
     .constant('VerticalEnum', {
         0: 'Warehouse Solutions',
@@ -33,9 +34,13 @@
                 templateUrl: 'angular/project/views/Login.html',
                 controller: 'loginCtrl'
            })
-            .when('/Login/:loginId/:password', {
-                templateUrl: 'angular/project/views/Login.html',
-                controller: 'loginResultCtrl'
+            .when('/Welcome', {
+                templateUrl: 'angular/project/views/Welcome.html',
+                controller: 'welcomeCtrl'
+            })
+            .when('/Updates', {
+                templateUrl: 'angular/project/views/Updates.html',
+                controller: 'updateCtrl'
             })
           .when('/ProjectList/:vId', {
               templateUrl: 'angular/project/views/ProjectList.html',
@@ -54,9 +59,19 @@
                 controller: 'dashboardCtrl'
             })
       .otherwise({
-          redirectTo: '/Login'
+          redirectTo: '/Welcome'
       });
     })
+    .controller('welcomeCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
+
+        // Left blank and ready for new code!
+
+    }])
+    .controller('updateCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
+
+            // Left blank and ready for new code!
+
+        }])
     .controller('dashboardCtrl', function ($scope, VerticalEnum) {
         console.log(VerticalEnum[0]);
         $scope.VEnum = VerticalEnum;
@@ -64,23 +79,6 @@
     .controller('loginCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
 
         $scope.login = function () {
-            /* var req = {
-                 method: 'POST',
-                 url: '../Account/ExternalLogin',
-                 headers: {
-                     'Content-Type': undefined
-                 },
-                 data: {
-                     provider: 'google',
-                     returnURL: '#/DashboardCtrl',
-                     name: '__RequestVerificationToken',
-                     type: 'hidden', value: 'L62szysgS5xEV4Aos8ZwX1wQaG4m4TaIwhYOae4smn5KD8XMK3_Z2gh7qu4rI1cIusSJmneKMiJXFxLcWXylkL0Nuc4oXCiyngvocvpKXvU1'
-                 }
-             };
-             $http(req).then(function () {
-                 console.log(data);
-             });
-         } */
             var postData = {
                 provider: 'Google',
                 returnURL: ''
@@ -90,7 +88,7 @@
                 alert("coool!");
                 console.log(result.data);
 
-            });
+            }); 
         }
     }])
     .controller('projectListCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
@@ -99,6 +97,9 @@
         {
             console.log(data);
             console.log($routeParams.vId);
+            $scope.sortType = 'projName';
+            $scope.sortReverse = false;
+            
             $scope.vId = $routeParams.vId;
             $scope.vName = VerticalEnum[$routeParams.vId];
             $scope.projectList = data;
@@ -122,6 +123,8 @@
             $scope.phaseEnums = PhaseEnum;
             $scope.pId = $routeParams.projectId;
             $scope.inProgressPhases = [];
+            $scope.sortType = 'keyName';
+            $scope.sortReverse = false;
             angular.forEach($scope.statusUpdateList, function (value, key) {
                 console.log($scope.statusUpdateList[key].PhaseID);
 
