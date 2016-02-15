@@ -12,8 +12,8 @@ namespace DataService
         {
             Updates = new List<StatusUpdatesModel.StatusUpdate>();
         }
-            public string ProjectID { get; set; }
-        public string Name { get; set; }
+        public Guid ProjectID { get; set; }
+        public string ProjectName { get; set; }
         public string Description { get; set; }
         public int VerticalID { get; set; }
 

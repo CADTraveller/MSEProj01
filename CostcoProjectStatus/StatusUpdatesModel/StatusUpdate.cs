@@ -14,13 +14,13 @@ namespace StatusUpdatesModel
     
     public partial class StatusUpdate
     {
-        public string ProjectID { get; set; }
+        public System.Guid ProjectID { get; set; }
         public int PhaseID { get; set; }
         public int StatusSequence { get; set; }
+        public Nullable<int> VerticalID { get; set; }
         public Nullable<System.DateTime> RecordDate { get; set; }
         public string UpdateKey { get; set; }
         public string UpdateValue { get; set; }
-        public Nullable<int> VerticalID { get; set; }
     
         [Newtonsoft.Json.JsonIgnore]
         public virtual Phase Phase { get; set; }

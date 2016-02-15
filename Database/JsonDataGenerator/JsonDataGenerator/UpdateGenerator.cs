@@ -16,18 +16,20 @@ namespace JsonDataGenerator
             List<ProjectUpdate> projectUpdates = new List<ProjectUpdate>();
             List<String> usedNames = new List<string>() { "Start" };
             Random rnd = new Random();
+            DateTime now = DateTime.Now;
 
             for (int n = 0; n < 7; n++)//__loop through the number of Verticals
             {
 
                 for (int i = 0; i < numberOfProjects; i++)//__create this many projects
                 {
-                    string project = "Start";
-                    while (usedNames.Contains(project))
+                    Guid projectID = Guid.NewGuid();
+                    string projectName = "Start";
+                    while (usedNames.Contains(projectName))
                     {
                         int nameIndex = rnd.Next(8);
                         int typeIndex = rnd.Next(10);
-                        project = projectNames[nameIndex] + " " + projectTypes[typeIndex] + "-V" + n;
+                        projectName = projectNames[nameIndex] + " " + projectTypes[typeIndex] + "-V" + n;
                     }
                     int verticalID = n;// rnd.Next(7);
 
@@ -39,7 +41,7 @@ namespace JsonDataGenerator
                         int iNumberEmails = rnd.Next(12) + 1;
                         for (int m = 0; m < iNumberEmails; m++)//__generate m emails for this Project, Phase
                         {
-                            //__we want only 1 Environemnt and 1 Task per email
+                            //__we want only 1 Environment and 1 Task per email
                             bool TaskNotRecorded = true;
                             bool EnvironmentNotRecorded = true;
                             List<string> usedIdentifiers = new List<string>();
@@ -51,10 +53,15 @@ namespace JsonDataGenerator
                             {
 
                                 StatusUpdate update = new StatusUpdate();
-                                update.ProjectID = project;
-                                update.PhaseID = p;// rnd.Next(6),//= update.PhaseID,
+                                update.ProjectID = projectID;
+                                update.ProjectName = projectName;
+                                update.PhaseID = p;
                                 update.VerticalID = n;
-                                update.RecordDate = DateTime.Now;
+                                update.RecordDate = now;
+                                if (rnd.Next(10) > 2) //___adjust by some random number of days
+                                {
+                                    update.RecordDate = now.Subtract(TimeSpan.FromDays(rnd.Next(60) + 1));
+                                }
                                 int doTagSwitch = rnd.Next(6);
 
                                 if (doTagSwitch < 3 && EnvironmentNotRecorded)

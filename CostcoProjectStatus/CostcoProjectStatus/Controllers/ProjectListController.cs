@@ -98,7 +98,7 @@ namespace CostcoProjectStatus.Controllers
             foreach(StatusUpdatesModel.Project project in ProjectNames)
             {
                 var passableProject = new Models.PassableProjectModel();
-                passableProject.ProjectID = project.ProjectID;
+                passableProject.ProjectID = project.ProjectID.ToString();
                 passableProject.VerticalID = project.VerticalID;
                 passableProject.LatestUpdate = project.LatestUpdate;
                 passableModelList.Add(passableProject);

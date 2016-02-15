@@ -6,19 +6,19 @@
     <edmx:Diagrams>
       <Diagram DiagramId="081ce6ff0664486e89424e4606fddc6b" Name="Diagram1">
         <EntityTypeShape EntityType="CostcoDevStatusModel.Phase" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CostcoDevStatusModel.Project" Width="1.5" PointX="3" PointY="3.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="CostcoDevStatusModel.StatusUpdate" Width="1.5" PointX="8.25" PointY="3.5" IsExpanded="true" />
         <EntityTypeShape EntityType="CostcoDevStatusModel.UserRole" Width="1.5" PointX="0.75" PointY="6.875" IsExpanded="true" FillColor="Maroon" />
         <EntityTypeShape EntityType="CostcoDevStatusModel.Vertical" Width="1.5" PointX="0.75" PointY="3.875" IsExpanded="true" />
-        <AssociationConnector Association="CostcoDevStatusModel.FK__StatusUpd__Phase__46E78A0C" ManuallyRouted="false" />
-        <AssociationConnector Association="CostcoDevStatusModel.FK__Project__Vertica__3F466844" ManuallyRouted="false" />
-        <AssociationConnector Association="CostcoDevStatusModel.FK__StatusUpd__Proje__45F365D3" ManuallyRouted="false" />
-        <AssociationConnector Association="CostcoDevStatusModel.FK__StatusUpd__Verti__5CD6CB2B" />
         <EntityTypeShape EntityType="CostcoDevStatusModel.AllowedUser" Width="1.5" PointX="3" PointY="6.875" FillColor="Maroon" />
         <AssociationConnector Association="CostcoDevStatusModel.FK__AllowedUs__RoleI__70DDC3D8" />
+        <EntityTypeShape EntityType="CostcoDevStatusModel.Project" Width="1.5" PointX="3" PointY="3.75" />
         <EntityTypeShape EntityType="CostcoDevStatusModel.ProjectPhase" Width="1.5" PointX="5.25" PointY="2.25" />
-        <AssociationConnector Association="CostcoDevStatusModel.FK__ProjectPh__Phase__0F624AF8" />
-        <AssociationConnector Association="CostcoDevStatusModel.FK__ProjectPh__Proje__10566F31" />
+        <EntityTypeShape EntityType="CostcoDevStatusModel.StatusUpdate" Width="1.5" PointX="8.25" PointY="2" />
+        <AssociationConnector Association="CostcoDevStatusModel.FK__ProjectPh__Phase__1AD3FDA4" />
+        <AssociationConnector Association="CostcoDevStatusModel.FK__StatusUpd__Phase__1F98B2C1" />
+        <AssociationConnector Association="CostcoDevStatusModel.FK__Project__Vertica__17F790F9" />
+        <AssociationConnector Association="CostcoDevStatusModel.FK__ProjectPh__Proje__1BC821DD" />
+        <AssociationConnector Association="CostcoDevStatusModel.FK__StatusUpd__Proje__1EA48E88" />
+        <AssociationConnector Association="CostcoDevStatusModel.FK__StatusUpd__Verti__208CD6FA" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

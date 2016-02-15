@@ -28,7 +28,7 @@ namespace JsonDataGenerator
             //Console.ReadLine();
 
             List<ProjectUpdate> projects = new List<ProjectUpdate>();
-            projects = UpdateGenerator.GenerateUpdates(8);
+            projects = UpdateGenerator.GenerateUpdates(4);
 
 
             foreach (var project in projects)

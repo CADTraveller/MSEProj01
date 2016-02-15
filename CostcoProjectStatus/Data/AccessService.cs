@@ -150,6 +150,13 @@ namespace DataService
             {
 
                 DateTime currentDT = DateTime.Now;
+                //__check for values that should be constant across updates
+                //___ProjectID, ProjectName, VerticalID;
+                StatusUpdate updateRef = updates.First();
+                Guid projectGuid = updateRef.ProjectID;
+                string projectName = updateRef.ProjectName;
+                int verticalID = Convert.ToInt32( updateRef.VerticalID);
+
                 foreach (StatusUpdate u in updates)
                 {
 
@@ -160,8 +167,10 @@ namespace DataService
                         context.Projects.Add(new Project()
                         {
                             ProjectID = u.ProjectID,
-                            VerticalID = u.VerticalID
+                            VerticalID = u.VerticalID,
+                            ProjectName = u.ProjectName
                         });
+                        Console.WriteLine("\nCreated Project:" + u.ProjectName + " With ID:" + u.ProjectID);
                         context.SaveChanges();
                     }
                     
@@ -195,6 +204,7 @@ namespace DataService
                     }
 
                     u.StatusSequence = iNewSequenceNumber;
+                    Console.WriteLine("\n--Added Update| updateKey=" + u.UpdateKey + ", updateValue=" + u.UpdateValue);
                     context.StatusUpdates.Add(u);                   
 
                 }
@@ -211,8 +221,9 @@ namespace DataService
 
         private List<StatusUpdate> GetAllUpdatesForProjectPhase(string projectID, int phaseID)
         {
+            Guid projectGuid = new Guid(projectID);
             List<StatusUpdate> updates = new List<StatusUpdate>();
-            updates = context.StatusUpdates.Where(p => p.ProjectID == projectID && p.PhaseID == phaseID).ToList();
+            updates = context.StatusUpdates.Where(p => p.ProjectID == projectGuid && p.PhaseID == phaseID).ToList();
             return updates;
         }
 
@@ -230,7 +241,8 @@ namespace DataService
 
         public List<StatusUpdate> GetAllUpdatesForProject(string projectID)
         {
-            return context.StatusUpdates.Where(s => s.ProjectID == projectID).ToList();
+            Guid projectGuid = new Guid(projectID);
+            return context.StatusUpdates.Where(s => s.ProjectID == projectGuid).ToList();
         }
 
         public List<Project> GetAllProjectsForVertical(int verticalID)
@@ -242,8 +254,9 @@ namespace DataService
 
         public List<StatusUpdate> GetAllUpdatesFromEmail(string projectID, int phaseID, int statusSequence)
         {
+            Guid projectGuid = new Guid(projectID);
             return context.StatusUpdates.Where(su =>
-            su.ProjectID == projectID &&
+            su.ProjectID == projectGuid &&
             su.PhaseID == phaseID &&
             su.StatusSequence == statusSequence).ToList();
         }
