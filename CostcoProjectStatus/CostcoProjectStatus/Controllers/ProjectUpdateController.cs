@@ -7,6 +7,9 @@ using Newtonsoft.Json;
 using System.Text;
 using DataService;
 using StatusUpdatesModel;
+using System.Net.Http;
+using System.Net;
+using System.Collections.Specialized;
 
 using HttpPost = System.Web.Mvc.HttpPostAttribute;
 
@@ -94,20 +97,38 @@ namespace CostcoProjectStatus.Controllers
                 return View();
             }
         }
-        
-        public string Update(string json)
+
+        [System.Web.Mvc.HttpPostAttribute]
+        public void Update(List<EmailObject> jsonList)
         {
-
-            if (!string.IsNullOrEmpty(json))
-            {
-
-                List<StatusUpdate> ListOfUpdates = new List<StatusUpdate>();
-                ListOfUpdates = JsonConvert.DeserializeObject<List<StatusUpdate>>(json);
-                DataAccess.RecordStatusUpdate(ListOfUpdates);
-                return "Success";
-            }
-
-            return "Failure";
+            List<StatusUpdate> ListOfUpdates = new List<StatusUpdate>();
+            DataAccess.RecordStatusUpdate(ListOfUpdates);
         }
+
+        public HttpResponseMessage Post(string value)
+        {
+            Console.WriteLine(value);
+            return new HttpResponseMessage(HttpStatusCode.OK);
+        }
+
+        List<EmailObject> EmailObjectList = new List<EmailObject>();
+    }
+
+    [Serializable]
+    public class EmailObject
+    {
+        public string ProjectID { get; set; }
+        public string PhaseID { get; set; }
+        public string VerticalID { get; set; }
+        public string UpdateKey { get; set; }
+        public string UpdateValue { get; set; }
+        public DateTime RecordedDate { get; set; }
+    }
+
+    [Serializable]
+    public class EmailObjectList
+    {
+        List<EmailObject> emailObjectList = new List<EmailObject>();
     }
 }
+
