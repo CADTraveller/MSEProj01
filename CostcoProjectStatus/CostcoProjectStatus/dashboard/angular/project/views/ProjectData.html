@@ -1,4 +1,14 @@
-﻿<div> <a href="#DashboardCtrl">Dashboard</a> > <a href="#ProjectList/{{ vId }}">{{ vName }}</a> > <a href="#ProjectUpdates/{{pId}}">{{ pId }}</a> > Email ID: {{ dataExtractionId }}</div>
+﻿<ol class="breadcrumb">
+    <li>
+        <a href="#DashboardCtrl">Dashboard</a>
+    </li>
+    <li><a href="#ProjectList/{{ vId }}">{{ vName }}</a>
+    </li>
+    <li>
+        <a href="#ProjectUpdates/{{pId}}">{{ pId }}</a>
+    </li>
+    <li class="active">Email ID: {{ dataExtractionId }}</li>
+</ol> 
 <br />
 <div border =1px >
     <table width="50%">
