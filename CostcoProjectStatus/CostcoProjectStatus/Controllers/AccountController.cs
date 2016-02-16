@@ -294,7 +294,7 @@ namespace CostcoProjectStatus.Controllers
                 // to get the value you use
                 value = Request.Form[keys[i]];
             }*/
-            returnURL = null;
+           // returnURL = null;
             return new ChallengeResult("Google", Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnURL }));
         }
 

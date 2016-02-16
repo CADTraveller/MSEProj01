@@ -17,11 +17,11 @@ namespace CostcoProjectStatus
                 "Account/{ExternalLogin}",
                  new { Controller = "Account", action = "ExternalLogin" }
                  );
-            //routes.MapRoute(
-            //    "Google API Sign-in",
-            //   "signin-google",
-            //     new { controller = "Account", action = "ExternalLoginCallbackRedirect" }
-            //);
+            routes.MapRoute(
+              "signin",
+             "signin",
+               new { controller = "Account", action = "ExternalLoginCallback" }
+          );
 
             routes.MapRoute(
                 "ProjectList",
