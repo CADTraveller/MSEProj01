@@ -24,8 +24,8 @@
     <tbody>
         <tr ng-repeat="project in projectList | orderBy:sortType:sortReverse">
             <td>
-                <a href="#ProjectUpdates/{{project.ProjectID}}">
-                    {{project.ProjectID}}
+                <a href="#ProjectUpdates/{{project.ProjectID}}/{{project.ProjectName}}">
+                    {{project.ProjectName}}
                 </a>
             </td>
             <td>{{ project.LatestUpdate | date:'short'  }}</td>

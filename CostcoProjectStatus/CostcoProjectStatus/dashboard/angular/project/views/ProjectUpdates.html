@@ -1,7 +1,7 @@
 ﻿<ol class="breadcrumb">
     <li><a href="#DashboardCtrl">Dashboard</a></li>
     <li><a href="#ProjectList/{{ vId }}">{{ vName }}</a></li>
-    <li class="active">{{ pId }}</li>
+    <li class="active">{{ pName }}</li>
     </ol>
 <div>
     <table width = "100%" cellpadding = "10" >
@@ -15,7 +15,7 @@
                 </div>
                 <div ng-if="inProgressPhases.indexOf($index) == -1">
                     <center>
-                        <img src="../../../../Content/Images/grey_circle.gif" height="50" width="50" /><br />
+                        <img src="../../../../Content/Images/grey_circle.gif" height="42" width="42" /><br />
                         {{ phaseEnum }}
                     </center>
                 </div>
@@ -23,7 +23,7 @@
         </tr>
     </table>
 </div>
-<h2>{{ pId }} Updates:</h2>
+<h2>{{ pName }} Updates:</h2>
 <table class="table table-striped">
     <tr><th>
     <a ng-click="sortType= 'keyName'; sortReverse = !sortReverse">
@@ -33,6 +33,6 @@
     </a>
 </th><th>Update Value</th><th>Phases</th><th>Date</th></tr>
     <tr ng-repeat="statusUpdate in statusUpdateList | orderBy:sortType:sortReverse">
-        <td> <a href="#ProjectData/{{ statusUpdate.ProjectID}}/{{statusUpdate.PhaseID}}/{{statusUpdate.StatusSequence}}">{{ statusUpdate.UpdateKey }}</a></td><td> {{ statusUpdate.UpdateValue }}</td><td> {{ phaseEnums[statusUpdate.PhaseID] }}</td><td>{{ statusUpdate.RecordDate | date:'short'}}</td>
+        <td> <a href="#ProjectData/{{ statusUpdate.ProjectID}}/{{ pName }}/{{statusUpdate.PhaseID}}/{{statusUpdate.StatusSequence}}">{{ statusUpdate.UpdateKey }}</a></td><td> {{ statusUpdate.UpdateValue }}</td><td> {{ phaseEnums[statusUpdate.PhaseID] }}</td><td>{{ statusUpdate.RecordDate | date:'short'}}</td>
     </tr>
 </table>
