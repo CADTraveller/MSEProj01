@@ -46,11 +46,11 @@
               templateUrl: 'angular/project/views/ProjectList.html',
               controller: 'projectListCtrl'
            })
-            .when('/ProjectUpdates/:projectId', {
+            .when('/ProjectUpdates/:projectId/:projectName', {
                 templateUrl: 'angular/project/views/ProjectUpdates.html',
                 controller: 'statusUpdatesCtrl'
             })
-            .when('/ProjectData/:projectId/:phaseId/:statusSequence', {
+            .when('/ProjectData/:projectId/:projectName/:phaseId/:statusSequence', {
                 templateUrl: 'angular/project/views/ProjectData.html',
                 controller: 'statusDataCtrl'
             })
@@ -122,6 +122,7 @@
             $scope.vName = VerticalEnum[$scope.vId];
             $scope.phaseEnums = PhaseEnum;
             $scope.pId = $routeParams.projectId;
+            $scope.pName = $routeParams.projectName;
             $scope.inProgressPhases = [];
             $scope.sortType = 'keyName';
             $scope.sortReverse = false;
@@ -148,6 +149,7 @@
                 console.log(data);
                 console.log($routeParams.projectId);
                 $scope.statusUpdateList = data;
+                $scope.pName = $routeParams.projectName;
                 $scope.date = $scope.statusUpdateList[0].RecordDate;
                 $scope.dataExtractionId = $scope.statusUpdateList[0].StatusSequence;
                 $scope.vId = $scope.statusUpdateList[0].VerticalID;
