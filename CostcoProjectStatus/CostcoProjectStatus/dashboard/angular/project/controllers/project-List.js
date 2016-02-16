@@ -54,6 +54,10 @@
                 templateUrl: 'angular/project/views/ProjectData.html',
                 controller: 'statusDataCtrl'
             })
+            .when('/Search/:projectText', {
+                templateUrl: 'angular/project/views/ProjectList.html',
+                controller: 'searchCtrl'
+            })
             .when('/DashboardCtrl', {
                 templateUrl: 'angular/project/views/Verticals.html',
                 controller: 'dashboardCtrl'
@@ -93,8 +97,13 @@
     }])
     .controller('projectListCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
         console.log($routeParams.vId);
+        $scope.progressNow = 10;
+        $scope.showError = 0;
+        $scope.showNoResults = 0;
         $http({ method: 'GET', url: '../ProjectList/GetStatusUpdates' }).success(function (data)
         {
+            $scope.progressNow = 50;
+            setInterval(function () { $scope.progressNow++; }, 500);
             console.log(data);
             console.log($routeParams.vId);
             $scope.sortType = 'projName';
@@ -102,10 +111,23 @@
             
             $scope.vId = $routeParams.vId;
             $scope.vName = VerticalEnum[$routeParams.vId];
-            $scope.projectList = data;
-            $scope.phaseEnum = PhaseEnum; 
+            $scope.projectList = [];
+            var projData, len;
+            var projListIter = 0;
+            for (projData = 0; projData < data.length; ++projData) {
+                if (data[projData].VerticalID == $scope.vId) {
+                    $scope.projectList[++projListIter] = data[projData];
+                }
+            }
+            if ($scope.projectList.length == 0) {
+                $scope.showNoResults = 1;
+            }
+            $scope.phaseEnum = PhaseEnum;
+            $scope.progressNow = 100;
             console.log($scope.phaseEnum);
-        }).error(function(data, status, headers, config) {
+        }).error(function (data, status, headers, config) {
+            $scope.showError = 1;
+            $scope.progressNow = 100;
             console.log(status);
             console.log(data);
             console.log(headers);
@@ -163,6 +185,41 @@
                 console.log(config);
             });
         }])
+    .controller('searchCtrl', ['$scope', '$http', '$routeParams', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
+        $scope.progressNow = 10;
+        $scope.showError = 0;
+        $scope.showNoResults = 0;
+        $http({ method: 'GET', url: '../ProjectList/GetStatusUpdates' }).success(function (data) {
+            $scope.progressNow = 50;
+            console.log(data);
+            console.log($routeParams.vId);
+            
+            $scope.sortType = 'projName';
+            $scope.sortReverse = false;
+
+            $scope.vName = $routeParams.projectText;
+            $scope.projectList = [];
+            var projData, len;
+            var projListIter = 0;
+            for (projData = 0; projData < data.length; ++projData) {
+                if (data[projData].ProjectName.search($routeParams.projectText) != -1) {
+                    $scope.projectList[++projListIter] = data[projData];
+                }
+            }
+            if ($scope.projectList.length == 0) {
+                $scope.showNoResults = 1;
+            }
+            $scope.phaseEnum = PhaseEnum;
+            $scope.progressNow = 100;
+            console.log($scope.phaseEnum);
+        }).error(function (data, status, headers, config) {
+            $scope.showError = 1;
+            console.log(status);
+            console.log(data);
+            console.log(headers);
+            console.log(config);
+        })
+    }])
  .controller('TabsDemoCtrl', function ($scope, $window) {
         $scope.tabs = [
           { title: 'Dynamic Title 1', content: 'Dynamic content 1' },
