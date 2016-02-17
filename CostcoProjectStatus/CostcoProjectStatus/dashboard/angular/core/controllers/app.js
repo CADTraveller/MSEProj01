@@ -10,7 +10,7 @@
 }
 $(document).ready(function() {
     $('#searchProj').click(function() {
-        document.location.href = '#/ProjectUpdates/'+ $('#searchText').val();
+        document.location.href = '#/Search/'+ $('#searchText').val();
     });
 });
 document.getElementById("VerticalList").innerHTML = "";

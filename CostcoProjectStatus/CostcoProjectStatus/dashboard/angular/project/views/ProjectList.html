@@ -3,6 +3,11 @@
     <li class="active"> {{ vName }}</li>
     </ol>
 <h2>{{ vName }} Projects: </h2>
+<div ng-if="showError == 1" class="alert alert-danger" role="alert">
+    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+    <span class="sr-only">Error:</span>
+    We're having issues connecting with the server. Perhaps you are stuck behind a firewall?
+</div>
 <table class="table table-striped">
     <thead>
         <tr>
@@ -32,3 +37,14 @@
         </tr>
     </tbody>
 </table>
+<div ng-if="showNoResults == 1" class="alert alert-warning" role="alert">
+    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+    <span class="sr-only">Warning:</span>
+    No results found!
+</div>
+<div ng-if="progressNow < 100" class="progress">
+    <div class="progress-bar progress-bar-striped active" role="progressbar"
+         aria-valuenow="{{ progressNow }}" aria-valuemin="0" aria-valuemax="100" style="width:{{ progressNow }}%">
+        {{ progressNow }}%
+    </div>
+</div>
