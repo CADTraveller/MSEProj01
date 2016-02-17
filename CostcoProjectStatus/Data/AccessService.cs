@@ -155,7 +155,7 @@ namespace DataService
                 StatusUpdate updateRef = updates.First();
                 Guid projectGuid = updateRef.ProjectID;
                 string projectName = updateRef.ProjectName;
-                int verticalID = Convert.ToInt32( updateRef.VerticalID);
+                int verticalID = Convert.ToInt32(updateRef.VerticalID);
 
                 foreach (StatusUpdate u in updates)
                 {
@@ -173,7 +173,7 @@ namespace DataService
                         Console.WriteLine("\nCreated Project:" + u.ProjectName + " With ID:" + u.ProjectID);
                         context.SaveChanges();
                     }
-                    
+
                     int iNewSequenceNumber = 0;
 
                     // check for existing entries for this Project & Phase & UpdateKey
@@ -205,7 +205,7 @@ namespace DataService
 
                     u.StatusSequence = iNewSequenceNumber;
                     Console.WriteLine("\n--Added Update| updateKey=" + u.UpdateKey + ", updateValue=" + u.UpdateValue);
-                    context.StatusUpdates.Add(u);                   
+                    context.StatusUpdates.Add(u);
 
                 }
                 context.SaveChanges();
@@ -259,6 +259,28 @@ namespace DataService
             su.ProjectID == projectGuid &&
             su.PhaseID == phaseID &&
             su.StatusSequence == statusSequence).ToList();
+        }
+
+        public List<Project> GetProjectIDs(string projectName = "", int verticalID = -1)
+        {
+            List<Project> projects = new List<Project>();
+            bool bHaveName = ! string.IsNullOrEmpty(projectName);
+            bool bHaveVertical = verticalID >= 0;
+            if (bHaveName && bHaveVertical)
+            {
+                projects = context.Projects.Where(p =>
+                p.ProjectName == projectName &&
+                p.VerticalID == verticalID).ToList();
+            }
+            else if (bHaveName && ! bHaveVertical)
+            {
+                projects = context.Projects.Where(p => p.ProjectName == projectName).ToList();
+            }
+            else if(! bHaveName && bHaveVertical)
+            {
+                projects = context.Projects.Where(p => p.VerticalID == verticalID).ToList();
+            }
+            return projects;
         }
 
         #endregion
