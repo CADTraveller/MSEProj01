@@ -12,16 +12,26 @@ namespace CostcoProjectStatus
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+            //routes.MapRoute(
+            //    "ExternalLoginCallback",
+            //    "Account/{ExternalLoginCallback}",
+            //     new { Controller = "Account", action = "ExternalLoginCallback", id = UrlParameter.Optional }
+            //     );
+
             routes.MapRoute(
-                "ExternalLogin", 
-                "Account/{ExternalLogin}",
-                 new { Controller = "Account", action = "ExternalLogin" }
+               "ExternalLogin", 
+                "Account/{ExternalLogin}/{id}",
+                 new { Controller = "Account", action = "ExternalLogin",id="" }
                  );
+            
             routes.MapRoute(
-              "signin",
-             "signin",
-               new { controller = "Account", action = "ExternalLoginCallback" }
+              name: "signin",
+              url: "signin-google",
+              defaults: new { controller = "Account", action = "ExternalLoginCallback" }
           );
+
+            
 
             routes.MapRoute(
                 "ProjectList",

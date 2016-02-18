@@ -294,7 +294,8 @@ namespace CostcoProjectStatus.Controllers
                 // to get the value you use
                 value = Request.Form[keys[i]];
             }*/
-           // returnURL = null;
+            //returnURL = "/signin-google";
+
             return new ChallengeResult("Google", Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnURL }));
         }
 
@@ -333,12 +334,12 @@ namespace CostcoProjectStatus.Controllers
             return RedirectToAction("VerifyCode", new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
         }
 
-       // [AllowAnonymous]
-        //public ActionResult ExternalLoginCallbackRedirect(string returnUrl)
-        //{
-        //    return RedirectPermanent("/Account/ExternalLoginCallback");
-        //}
-        //
+        [AllowAnonymous]
+        public ActionResult ExternalLoginCallbackRedirect(string returnUrl)
+        {
+            return RedirectPermanent("/Account/ExternalLoginCallback");
+        }
+
         // GET: /Account/ExternalLoginCallback
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
@@ -350,13 +351,24 @@ namespace CostcoProjectStatus.Controllers
             }
 
             // Sign in the user with this external login provider if the user already has a login
-            var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
-            switch (result)
+            //var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
+            var email = loginInfo.Email;
+            DataService.AccessService dataService = new DataService.AccessService();
+            var userExists = dataService.IsUserAuthorized(email);
+            if (userExists)
+            {
+                return Redirect("/dashboard/index.html");
+            }
+            else
+            {
+                return View("UnauthAccess");
+            }
+/*            switch (result)
             {
                 case SignInStatus.Success:
-                    var email = loginInfo.Email;
-                    DataService.AccessService dataService = new DataService.AccessService();
-                    var userExists = dataService.IsUserAuthorized(email);
+                    //var email = loginInfo.Email;
+                   // DataService.AccessService dataService = new DataService.AccessService();
+                    //var userExists = dataService.IsUserAuthorized(email);
                     if (userExists)
                     {
                         return View("Success");// or RedirectToAction("Success");
@@ -377,6 +389,7 @@ namespace CostcoProjectStatus.Controllers
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
                     return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
             }
+            */
         }
 
         //

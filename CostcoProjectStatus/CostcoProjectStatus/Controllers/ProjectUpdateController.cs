@@ -61,7 +61,7 @@ namespace CostcoProjectStatus.Controllers
         }
 
         // POST: ProjectUpdate/Edit/5
-       // [HttpPost]
+        // [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
         {
             try
@@ -83,7 +83,7 @@ namespace CostcoProjectStatus.Controllers
         }
 
         // POST: ProjectUpdate/Delete/5
-       // [HttpPost]
+        // [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {
             try
@@ -98,11 +98,27 @@ namespace CostcoProjectStatus.Controllers
             }
         }
 
-        [System.Web.Mvc.HttpPostAttribute]
+        // [System.Web.Mvc.HttpPostAttribute]
+        [System.Web.Mvc.HttpPost]
         public void Update(List<EmailObject> jsonList)
+        //        public void Update(String jsonList)
         {
-            List<StatusUpdate> ListOfUpdates = new List<StatusUpdate>();
-            DataAccess.RecordStatusUpdate(ListOfUpdates);
+            List<StatusUpdate> listOfUpdates = new List<StatusUpdate>();
+            foreach (EmailObject eo in jsonList)
+            {
+                StatusUpdate temp = new StatusUpdate();
+                temp.PhaseID = Convert.ToInt32(eo.PhaseID);
+                temp.ProjectID = Guid.Parse(eo.ProjectID);
+                temp.VerticalID = Convert.ToInt32(eo.VerticalID);
+                temp.UpdateKey = eo.UpdateKey;
+                temp.UpdateValue = eo.UpdateValue;
+
+                listOfUpdates.Add(temp);
+            }
+
+            //            List<StatusUpdate> listOfUpdates = Newtonsoft.Json.JsonConvert.DeserializeObject<List<StatusUpdate>>(jsonList);
+
+            DataAccess.RecordStatusUpdate(listOfUpdates);
         }
 
         public HttpResponseMessage Post(string value)
