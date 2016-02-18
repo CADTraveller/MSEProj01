@@ -146,34 +146,63 @@ namespace DataService
         {
             //__safety check, cannot record an empty list
             if (updates.Count == 0) return null;
+
+            //__check for existence of this project by ID, Name
+            Guid projectID = updates.FirstOrDefault(u => u.ProjectID != null).ProjectID;
+            string projectName = updates.FirstOrDefault(u => !string.IsNullOrEmpty(u.ProjectName)).ProjectName;
+            int? verticalID = updates.FirstOrDefault(u => u.VerticalID != null).VerticalID;
+            if (verticalID == null || verticalID < 0 || verticalID > 7) verticalID = 0;
+            bool hasID = projectID != Guid.Empty;
+            bool hasName = !string.IsNullOrEmpty(projectName);
+            if (!hasID && !hasName) return null;//__cannot record anonymous updates
+
+            if (hasID)
+            {
+                Project recordedProject = context.Projects.FirstOrDefault(p => p.ProjectID == projectID);
+                //__if no name is provided, use a placeholder
+
+                if (recordedProject == null) //__must  be a new project
+                {
+                    if (!hasName) projectName = "**Name Not Set**";
+                    context.Projects.Add(new Project()
+                    {
+                        ProjectID = projectID,
+                        ProjectName = projectName,
+                        VerticalID = verticalID
+                    });
+                }
+                else //__project already exists, so simply check if we need to update the name
+                {
+                    if (recordedProject.ProjectName != projectName)
+                        recordedProject.ProjectName = projectName;
+                }
+                context.SaveChanges();
+            }
+            else
+            {
+                //__reaching this code means we have a name but no ID
+                //__see if any ID Is already recorded
+                Project recordedProject = context.Projects.FirstOrDefault(p => p.ProjectName == projectName);
+                if (recordedProject != null) projectID = recordedProject.ProjectID;
+                else //__this must be new project, generate ID and record
+                {
+                    projectID = Guid.NewGuid();
+                    context.Projects.Add(new Project()
+                    {
+                        ProjectID = projectID,
+                        ProjectName = projectName,
+                        VerticalID = verticalID
+                    });
+                }
+                context.SaveChanges();
+            }
             try
             {
 
                 DateTime currentDT = DateTime.Now;
-                //__check for values that should be constant across updates
-                //___ProjectID, ProjectName, VerticalID;
-                StatusUpdate updateRef = updates.First();
-                Guid projectGuid = updateRef.ProjectID;
-                string projectName = updateRef.ProjectName;
-                int verticalID = Convert.ToInt32(updateRef.VerticalID);
 
                 foreach (StatusUpdate u in updates)
                 {
-
-                    //__check to see if Project exists, add it if not
-                    Project existingProjectEntry = context.Projects.FirstOrDefault(p => p.ProjectID == u.ProjectID);
-                    if (existingProjectEntry == null) //_if there is no existing entry then add one
-                    {
-                        context.Projects.Add(new Project()
-                        {
-                            ProjectID = u.ProjectID,
-                            VerticalID = u.VerticalID,
-                            ProjectName = u.ProjectName
-                        });
-                        Console.WriteLine("\nCreated Project:" + u.ProjectName + " With ID:" + u.ProjectID);
-                        context.SaveChanges();
-                    }
-
                     int iNewSequenceNumber = 0;
 
                     // check for existing entries for this Project & Phase & UpdateKey
@@ -204,6 +233,9 @@ namespace DataService
                     }
 
                     u.StatusSequence = iNewSequenceNumber;
+                    if (u.ProjectID == Guid.Empty) u.ProjectID = projectID;
+                    if (string.IsNullOrEmpty(u.ProjectName)) u.ProjectName = projectName;
+                    if (u.VerticalID == null || u.VerticalID < 0 || u.VerticalID > 7) u.VerticalID = verticalID;
                     Console.WriteLine("\n--Added Update| updateKey=" + u.UpdateKey + ", updateValue=" + u.UpdateValue);
                     context.StatusUpdates.Add(u);
 
@@ -213,7 +245,6 @@ namespace DataService
             catch (Exception e)
             {
                 throw e;
-                // return false;
             }
             return true;
         }
@@ -264,7 +295,7 @@ namespace DataService
         public List<Project> GetProjectIDs(string projectName = "", int verticalID = -1)
         {
             List<Project> projects = new List<Project>();
-            bool bHaveName = ! string.IsNullOrEmpty(projectName);
+            bool bHaveName = !string.IsNullOrEmpty(projectName);
             bool bHaveVertical = verticalID >= 0;
             if (bHaveName && bHaveVertical)
             {
@@ -272,11 +303,11 @@ namespace DataService
                 p.ProjectName == projectName &&
                 p.VerticalID == verticalID).ToList();
             }
-            else if (bHaveName && ! bHaveVertical)
+            else if (bHaveName && !bHaveVertical)
             {
                 projects = context.Projects.Where(p => p.ProjectName == projectName).ToList();
             }
-            else if(! bHaveName && bHaveVertical)
+            else if (!bHaveName && bHaveVertical)
             {
                 projects = context.Projects.Where(p => p.VerticalID == verticalID).ToList();
             }

@@ -97,6 +97,27 @@ namespace JsonDataGenerator
             return projectUpdates;
         }
 
+        public static List<string> GenerateProjectNames(int count)
+        {
+            List<string> names = new List<string>();
+            
+            for (int i=0; i< count; i++)
+            {
+                string name = generateRandomName();
+                while (names.Any(n => n == name)) name = generateRandomName();
+                names.Add(name);
+            }
+
+            return names;
+        }
+
+        private static string generateRandomName()
+        {
+            Random rnd = new Random();
+            string name = projectNames[rnd.Next(8)] + " " + projectTypes[rnd.Next(10)];
+            return name;
+        }
+
         private static List<string> projectNames = new List<string>()
         {
             "Website",
