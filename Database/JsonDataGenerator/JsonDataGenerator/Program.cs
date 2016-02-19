@@ -27,26 +27,35 @@ namespace JsonDataGenerator
             //Console.WriteLine(projectWritePath);
             //Console.ReadLine();
 
-            List<ProjectUpdate> projects = new List<ProjectUpdate>();
-            projects = UpdateGenerator.GenerateUpdates(4);
+            //List<ProjectUpdate> projects = new List<ProjectUpdate>();
+            //projects = UpdateGenerator.GenerateUpdates(4);
+            StatusUpdate DB = new StatusUpdate();
 
 
-            foreach (var project in projects)
-            {
-                List<StatusUpdate> updates = project.Updates;
-                AccessService dataPortal = new AccessService();
+            const string ConnectionString = "Server=tcp:costcosu.database.windows.net,1433;Database=CostcoDevStatus;User ID=SUAdmin@costcosu;Password=39ffbJeo;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
-                try
-                {
-                    dataPortal.RecordStatusUpdate(updates);
-                }
-                catch (Exception e)
-                {
+            CostcoDevStatusEntities context = CostcoDevStatusEntities.Create(ConnectionString);
+            List<Project> noNames = context.Projects.Where(p => string.IsNullOrEmpty(p.ProjectName)).ToList();
+            List<string> names = UpdateGenerator.GenerateProjectNames(noNames.Count);
+            for (int i = 0; i < noNames.Count; i++) noNames[i].ProjectName = names[i];
+            context.SaveChanges();
 
-                    throw e;
-                }
+        //foreach (var project in projects)
+        //{
+        //    List<StatusUpdate> updates = project.Updates;
+        //    AccessService dataPortal = new AccessService();
 
-            }            
-        }
+        //    try
+        //    {
+        //        dataPortal.RecordStatusUpdate(updates);
+        //    }
+        //    catch (Exception e)
+        //    {
+
+        //        throw e;
+        //    }
+
+        //}            
+    }
     }
 }
