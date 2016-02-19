@@ -16,22 +16,25 @@ namespace CostcoProjectStatus
             //routes.MapRoute(
             //    "ExternalLoginCallback",
             //    "Account/{ExternalLoginCallback}",
-            //     new { Controller = "Account", action = "ExternalLoginCallback", id = UrlParameter.Optional }
+            //     new { Controller = "Account", action = "ToExternalLoginCallBack", id = UrlParameter.Optional }
             //     );
 
-            routes.MapRoute(
-               "ExternalLogin", 
-                "Account/{ExternalLogin}/{id}",
-                 new { Controller = "Account", action = "ExternalLogin",id="" }
-                 );
-            
-            routes.MapRoute(
-              name: "signin",
-              url: "signin-google",
-              defaults: new { controller = "Account", action = "ExternalLoginCallback" }
-          );
+            //routes.MapRoute(
+            //   "ExternalLogin", 
+            //    "Account/{ExternalLogin}/{id}",
+            //     new { Controller = "Account", action = "ExternalLogin",id="" }
+            //     );
 
-            
+          //  routes.MapRoute(
+          //    name: "signin",
+          //    url: "signin-google",
+          //    defaults: new { controller = "RiderectToExternalLogingCallBackController", action = "ToExternalLoginCallBack" }
+          //);
+
+
+
+
+
 
             routes.MapRoute(
                 "ProjectList",

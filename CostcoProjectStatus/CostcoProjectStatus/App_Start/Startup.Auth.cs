@@ -60,8 +60,8 @@ namespace CostcoProjectStatus
 
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {
-                ClientId = "17455599033-8kfnhqqg5olaan3igeak9kt3orn1oije.apps.googleusercontent.com",
-                ClientSecret = "Rk_orZDxFwe9BCdIwuWDEwPf",
+                ClientId = "17455599033-ba8qcod8m4m3v8pbt7dj09v5trcmelah.apps.googleusercontent.com",
+                ClientSecret = "uEq1Hhb_JeD9rwM56Iwm2c-W",
                  Provider = new GoogleOAuth2AuthenticationProvider(),
                 //CallbackPath = new PathString("/Account/ExternalLoginCallback")
             });

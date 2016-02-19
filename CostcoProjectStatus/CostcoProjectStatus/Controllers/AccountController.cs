@@ -334,11 +334,11 @@ namespace CostcoProjectStatus.Controllers
             return RedirectToAction("VerifyCode", new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
         }
 
-        [AllowAnonymous]
-        public ActionResult ExternalLoginCallbackRedirect(string returnUrl)
-        {
-            return RedirectPermanent("/Account/ExternalLoginCallback");
-        }
+        //[AllowAnonymous]
+        //public ActionResult ExternalLoginCallbackRedirect(string returnUrl)
+        //{
+        //    return RedirectPermanent("/Account/ExternalLoginCallback");
+        //}
 
         // GET: /Account/ExternalLoginCallback
         [AllowAnonymous]
