@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using Microsoft.Office.Tools.Ribbon;
 using Office = Microsoft.Office.Core;
@@ -21,22 +22,22 @@ namespace ExcelDemo
         {
             ExcelIO.Application excelApp;
             ExcelTools.Workbook workbook;
-            ExcelIO.Sheets sheets;
+            ExcelIO.Worksheet activeSheet;
             try
             {
                 excelApp = Globals.ThisAddIn.Application;
-                workbook = Globals.Factory.GetVstoObject(excelApp.ActiveWorkbook);
-                sheets = workbook.Worksheets;
+                activeSheet = excelApp.ActiveSheet;
             }
             catch (Exception)
             {
                 MessageBox.Show("Problem Getting Workbooks & Sheets");
                 return;
             }
-            ExcelIO.Range selection;
+            ExcelIO.Range usedRange ;
             try
             {
-                selection = excelApp.Selection as ExcelIO.Range;
+
+                usedRange = activeSheet.UsedRange;
 
             }
             catch (Exception)
@@ -46,34 +47,39 @@ namespace ExcelDemo
                 return;
             }
 
-            int iNumColumns = selection.Columns.Count;
-            int iNumRows = selection.Rows.Count;
-            string[] alphas = new string[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P",
-            "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
-            
+            int iNumColumns = usedRange.Columns.Count;
+            int iNumRows = usedRange.Rows.Count;
+            //__validate IDs
+            //__validate PhaseID
+            //__validate VerticalID
+
             List<StatusUpdate> updates = new List<StatusUpdate>();
 
             //__skip header row, get values
-            for (int i = 2; i < iNumRows; i++)
+            for (int i = 2; i <= iNumRows; i++)
             {
                 StatusUpdate update = new StatusUpdate();
-                ExcelIO.Range cell = selection.Cells[i, 1];
+                ExcelIO.Range cell = usedRange.Cells[i, 1];
                 Guid projectID = new Guid(cell.Value.ToString());
                 update.ProjectID = projectID;
 
-                cell = selection.Cells[i, 2];
+                cell = usedRange.Cells[i, 2];
+                update.ProjectName = cell.Value.ToString();
+
+                cell = usedRange.Cells[i, 3];
                 int phaseID = Convert.ToInt32(cell.Value);
+                update.PhaseID = phaseID;
 
-                cell = selection.Cells[i, 3];
+                cell = usedRange.Cells[i, 4];
                 int verticalID = Convert.ToInt32(cell.Value);
+                update.VerticalID = verticalID;
 
-
-                for (int k = 4; k < alphas.Count(); k++)
+                for (int k = 5; k <= iNumColumns; k++)
                 {
-                    cell = selection.Cells[i, k];
+                    cell = usedRange.Cells[i, k];
                     string text = cell.Value.ToString();
-                    if (string.IsNullOrEmpty(text)) break;
-                    if (k % 2 == 0) update.UpdateKey = text;
+                   
+                    if (k%2 == 1) update.UpdateKey = text;
                     else update.UpdateValue = text;
                 }
 
@@ -81,12 +87,21 @@ namespace ExcelDemo
             }
 
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(updates);
+
+            using (var client = new WebClient())
+            {
+                client.Headers[HttpRequestHeader.ContentType] = "application/json";
+                var result = client.UploadString("http://costcodevops.azurewebsites.net/ProjectUpdate/Update", "Post", json);
+                //var result = client.UploadString("http://costcodevops.azurewebsites.net/ProjectUpdate/Update", "Post", json);
+                Console.WriteLine(result);
+            }
         }
     }
 
     public partial class StatusUpdate
     {
         public System.Guid ProjectID { get; set; }
+        public string ProjectName { get; set; }
         public int PhaseID { get; set; }
         public int StatusSequence { get; set; }
         public Nullable<int> VerticalID { get; set; }
