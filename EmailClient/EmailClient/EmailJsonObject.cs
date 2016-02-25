@@ -8,7 +8,8 @@ namespace EmailClient
 {
     class EmailJsonObject
     {
-        public string ProjectID;
+        public Guid ProjectID;
+        public string ProjectName;
         public string PhaseID;
         public string VerticalID;        
         public string UpdateKey;
