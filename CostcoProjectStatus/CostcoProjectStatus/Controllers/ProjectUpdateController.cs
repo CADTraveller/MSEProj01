@@ -134,7 +134,7 @@ namespace CostcoProjectStatus.Controllers
     [Serializable]
     public class EmailObject
     {
-        public string ProjectID { get; set; }
+        public Guid ProjectID { get; set; }
         public string ProjectName { get; set; }
         public string PhaseID { get; set; }
         public string VerticalID { get; set; }
