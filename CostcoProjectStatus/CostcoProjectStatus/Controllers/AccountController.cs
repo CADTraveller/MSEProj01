@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using CostcoProjectStatus.Models;
+using Newtonsoft.Json;
 
 namespace CostcoProjectStatus.Controllers
 {
@@ -262,7 +263,27 @@ namespace CostcoProjectStatus.Controllers
             AddErrors(result);
             return View();
         }
+        [AllowAnonymous]
+        //GET: /Account/IsLogged
+        public string IsLogin()
+        {
+            var loginInfo = CheckLogin();
+            if (loginInfo.Result == null)
+            {
+                return JsonConvert.SerializeObject(false);
+            }
+            return JsonConvert.SerializeObject(true);
+        }
+        public async Task<ActionResult> CheckLogin()
+        {
+            var extLogin = await AuthenticationManager.GetExternalLoginInfoAsync();
+            if (extLogin == null)
+            {
+                return null;
+            }
+            return Redirect("/dashboard/index.html");
 
+        }
         //
         // GET: /Account/ResetPasswordConfirmation
         [AllowAnonymous]

@@ -12,6 +12,7 @@ $(document).ready(function() {
     $('#searchProj').click(function() {
         document.location.href = '#/Search/'+ $('#searchText').val();
     });
+    checkLogin();
 });
 document.getElementById("VerticalList").innerHTML = "";
 for (var vertIter in VerticalEnum) {
@@ -29,4 +30,19 @@ function loginUser() {
         console.log(result.data);
 
     });
+}
+
+function checkLogin() {
+    alert("Checking Login");
+    $.get('../Account/IsLogged', function (result) {
+        if (result == "true") {
+            document.getElementById("noLogin").style.display = "none";
+            document.getElementById("yesLogin").style.display = "block";
+        } else {
+            document.getElementById("noLogin").style.display = "block";
+            document.getElementById("yesLogin").style.display = "none";
+        }
+
+    });
+
 }

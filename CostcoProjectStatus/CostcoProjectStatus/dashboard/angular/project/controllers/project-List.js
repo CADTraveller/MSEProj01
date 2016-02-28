@@ -97,7 +97,7 @@
     }])
     .controller('projectListCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
         console.log($routeParams.vId);
-        $scope.progressNow = 10;
+        $scope.progressNow = 12;
         $scope.showError = 0;
         $scope.showNoResults = 0;
         $http({ method: 'GET', url: '../ProjectList/GetStatusUpdates' }).success(function (data)
