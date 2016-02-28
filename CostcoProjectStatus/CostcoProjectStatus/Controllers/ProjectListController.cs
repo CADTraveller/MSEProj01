@@ -90,7 +90,6 @@ namespace CostcoProjectStatus.Controllers
                 return View();
             }
         }
-        
         public string Display()
         {
             var ProjectNames = DataAccsess.GetAllProjectNames();

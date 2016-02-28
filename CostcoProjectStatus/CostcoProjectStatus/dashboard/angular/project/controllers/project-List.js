@@ -89,7 +89,6 @@
             }
             $http.post('../Account/ExternalLogin', postData)
             .then(function (result) {
-                alert("coool!");
                 console.log(result.data);
 
             }); 
@@ -119,8 +118,13 @@
                     $scope.projectList[++projListIter] = data[projData];
                 }
             }
+            $scope.isLoggedOut = (document.getElementById("yesLogin").style.display == "none");
             if ($scope.projectList.length == 0) {
                 $scope.showNoResults = 1;
+                $scope.isLoggedOut = (document.getElementById("yesLogin").style.display == "none");
+            } else if ($scope.isLoggedOut) {
+                $scope.showNoResults = 1;
+                $scope.projectList = null
             }
             $scope.phaseEnum = PhaseEnum;
             $scope.progressNow = 100;

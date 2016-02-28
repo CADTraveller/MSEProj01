@@ -33,9 +33,14 @@ namespace CostcoProjectStatus
                  new { Controller="ProjectUpdate",action="Update"}
                 );
             routes.MapRoute(
-                "Account",
+                "LoginCheck",
                 "Account/IsLogged",
                 new { Controller = "Account", action = "IsLogin" }
+                );
+            routes.MapRoute(
+                "LogOff",
+                "Account/LogOff",
+                new { Controller = "Account", action = "LogOff" }
                 );
             routes.MapRoute(
                 name: "Default",
