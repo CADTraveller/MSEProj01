@@ -209,6 +209,7 @@
     <Compile Include="Controllers\ProjectListController.cs" />
     <Compile Include="Controllers\ProjectUpdateController.cs" />
     <Compile Include="Controllers\TreeViewDataController.cs" />
+    <Compile Include="Controllers\VerticalController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1094,6 +1095,7 @@
     <Folder Include="Views\RiderectToExternalLogingCallBack\" />
     <Folder Include="Views\TestPost\" />
     <Folder Include="Views\TreeViewData\" />
+    <Folder Include="Views\Vertical\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
