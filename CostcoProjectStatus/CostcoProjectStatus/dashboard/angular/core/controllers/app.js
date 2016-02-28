@@ -8,6 +8,7 @@
     eBusiness: 6,
     Corporate: 7,
 }
+var isLoggedIn = 0;
 $(document).ready(function() {
     $('#searchProj').click(function() {
         document.location.href = '#/Search/'+ $('#searchText').val();
@@ -33,14 +34,15 @@ function loginUser() {
 }
 
 function checkLogin() {
-    alert("Checking Login");
     $.get('../Account/IsLogged', function (result) {
         if (result == "true") {
             document.getElementById("noLogin").style.display = "none";
             document.getElementById("yesLogin").style.display = "block";
+            isLoggedIn = 1;
         } else {
             document.getElementById("noLogin").style.display = "block";
             document.getElementById("yesLogin").style.display = "none";
+            isLoggedIn = 0;
         }
 
     });
