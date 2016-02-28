@@ -89,7 +89,6 @@
             }
             $http.post('../Account/ExternalLogin', postData)
             .then(function (result) {
-                alert("coool!");
                 console.log(result.data);
 
             }); 
@@ -97,7 +96,7 @@
     }])
     .controller('projectListCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
         console.log($routeParams.vId);
-        $scope.progressNow = 10;
+        $scope.progressNow = 12;
         $scope.showError = 0;
         $scope.showNoResults = 0;
         $http({ method: 'GET', url: '../ProjectList/GetStatusUpdates' }).success(function (data)
@@ -119,8 +118,13 @@
                     $scope.projectList[++projListIter] = data[projData];
                 }
             }
+            $scope.isLoggedOut = (document.getElementById("yesLogin").style.display == "none");
             if ($scope.projectList.length == 0) {
                 $scope.showNoResults = 1;
+                $scope.isLoggedOut = (document.getElementById("yesLogin").style.display == "none");
+            } else if ($scope.isLoggedOut) {
+                $scope.showNoResults = 1;
+                $scope.projectList = null
             }
             $scope.phaseEnum = PhaseEnum;
             $scope.progressNow = 100;

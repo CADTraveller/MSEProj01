@@ -109,7 +109,7 @@ namespace CostcoProjectStatus.Controllers
                 StatusUpdate temp = new StatusUpdate();
                 temp.PhaseID = Convert.ToInt32(eo.PhaseID);
                 temp.ProjectName = eo.ProjectName;
-                temp.ProjectID = Guid.Parse(eo.ProjectID);
+                temp.ProjectID = eo.ProjectID;
                 temp.VerticalID = Convert.ToInt32(eo.VerticalID);
                 temp.UpdateKey = eo.UpdateKey;
                 temp.UpdateValue = eo.UpdateValue;
@@ -134,7 +134,7 @@ namespace CostcoProjectStatus.Controllers
     [Serializable]
     public class EmailObject
     {
-        public string ProjectID { get; set; }
+        public Guid ProjectID { get; set; }
         public string ProjectName { get; set; }
         public string PhaseID { get; set; }
         public string VerticalID { get; set; }

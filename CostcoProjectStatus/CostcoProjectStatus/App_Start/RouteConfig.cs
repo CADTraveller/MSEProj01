@@ -12,40 +12,11 @@ namespace CostcoProjectStatus
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
-            //routes.MapRoute(
-            //    "ExternalLoginCallback",
-            //    "Account/{ExternalLoginCallback}",
-            //     new { Controller = "Account", action = "ToExternalLoginCallBack", id = UrlParameter.Optional }
-            //     );
-
-            //routes.MapRoute(
-            //   "ExternalLogin", 
-            //    "Account/{ExternalLogin}/{id}",
-            //     new { Controller = "Account", action = "ExternalLogin",id="" }
-            //     );
-
-          //  routes.MapRoute(
-          //    name: "signin",
-          //    url: "signin-google",
-          //    defaults: new { controller = "RiderectToExternalLogingCallBackController", action = "ToExternalLoginCallBack" }
-          //);
-
-
-
-
-
-
             routes.MapRoute(
                 "ProjectList",
                 "ProjectList/{Display}",
                 new { Controller="ProjectList", action="Display",id=""}
                 );
-            //routes.MapRoute(
-             //   "ExternalLogin",
-             //   "AuthAccount/{ExternalLogin}",
-              //  new { Controller = "AuthAccount", action = "ExternalLogin" }
-               // );
             routes.MapRoute(
                 "StatusUpdateList",
                 "ProjectList/{GetProjectUpdates}/{id}",
@@ -61,16 +32,20 @@ namespace CostcoProjectStatus
                 "ProjectUpdate/{Update}",
                  new { Controller="ProjectUpdate",action="Update"}
                 );
-            //routes.MapRoute(
-            //    name: "LoginOverride",
-            //    url: "{Dashboard}/{*.}",
-            //    defaults: new { controller = "Projectlist", action = "Index" }
-            //);
-
+            routes.MapRoute(
+                "LoginCheck",
+                "Account/IsLogged",
+                new { Controller = "Account", action = "IsLogin" }
+                );
+            routes.MapRoute(
+                "LogOff",
+                "Account/LogOff",
+                new { Controller = "Account", action = "LogOff" }
+                );
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "ProjectList", action = "Display", id = "" }
             );
         }
     }

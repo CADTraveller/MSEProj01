@@ -228,3 +228,16 @@ _Pvt_Extensions
 
 # Paket dependency manager
 .paket/paket.exe
+/EmailClient/EmailClient/EmailClient/Properties/webjob-publish-settings.json
+/EmailClient/EmailClient/EmailClient/Properties/AssemblyInfo.cs
+/EmailClient/EmailClient/EmailClient/Program.cs
+/EmailClient/EmailClient/EmailClient/packages.config
+/EmailClient/EmailClient/EmailClient/ImapService.cs
+/EmailClient/EmailClient/EmailClient/EmailJsonObject.cs
+/EmailClient/EmailClient/EmailClient/EmailClient.csproj
+/EmailClient/EmailClient/EmailClient/App.config
+/EmailClient/consoletemp/Properties/AssemblyInfo.cs
+/EmailClient/consoletemp/Program.cs
+/EmailClient/consoletemp/packages.config
+/EmailClient/consoletemp/consoletemp.csproj
+/EmailClient/consoletemp/App.config

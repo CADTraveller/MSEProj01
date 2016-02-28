@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Net;
 using System.Net.Http;
+using System.Collections.Specialized;
 
 
 namespace EmailClient
@@ -32,7 +33,7 @@ namespace EmailClient
             // Select a mailbox. Case-insensitive
             imapClient.SelectMailbox("INBOX");
             string emailJson="";
-            
+            Guid projectid = Guid.NewGuid();
             Console.WriteLine(imapClient.GetMessageCount());
 
             imapClient.NewMessage += (sender, e) =>
@@ -58,7 +59,8 @@ namespace EmailClient
                 for (int i = 0; i < emailBody.Count(); i++)
                 {
                     EmailJsonObject emailJsonObject = new EmailJsonObject();
-                    emailJsonObject.ProjectID = emailSub[0];
+                    emailJsonObject.ProjectID = projectid;
+                    emailJsonObject.ProjectName = emailSub[0];
                     emailJsonObject.PhaseID = emailSub[1];
                     emailJsonObject.VerticalID = emailSub[2];
                     emailJsonObject.UpdateKey = emailBodyKeys[i];
@@ -67,67 +69,29 @@ namespace EmailClient
                     emailObjectlist.Add(emailJsonObject);
                 }
 
-               emailJson = JsonConvert.SerializeObject(emailObjectlist);
-               Console.WriteLine(emailJson);
-              // byte[] data = Encoding.UTF8.GetBytes(emailJson.ToString());
+               emailJson = JsonConvert.SerializeObject(emailObjectlist);              
                string result = "";
-
-
-                // Rest API call works with this URL
-
-               //using (var client = new HttpClient())
-               //{
-               //    client.BaseAddress = new Uri("http://localhost:61804");
-               //    var content = new FormUrlEncodedContent(new[] 
-               //          {
-               //              new KeyValuePair<string, string>("", "emailJson")
-               //          });
-               //    var res = client.PostAsync("/api/contact", content).Result;
-               //    string resultContent = res.Content.ReadAsStringAsync().Result;
-               //    Console.WriteLine(resultContent);
-               //}
-
-
-               //using (var client = new HttpClient())
-               //{
-               //    client.BaseAddress = new Uri("https://localhost:44300");
-               //    var content = new FormUrlEncodedContent(new[] 
-               //          {
-               //              new KeyValuePair<string, string>("", "emailJson")
-               //          });
-               //    var res = client.PostAsync("/ProjectUpdate/Update", content).Result;
-               //    string resultContent = res.Content.ReadAsStringAsync().Result;
-               //    Console.WriteLine(resultContent);
-               //}
-
-
-               //using (var client = new HttpClient())
-               //{
-               //    client.BaseAddress = new Uri("https://localhost:44300");
-               //    client.DefaultRequestHeaders.Accept.Clear();
-               //    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-
-               //    //New code
-               //    HttpRequestMessage response = await client.GetAsync("api/product/1");               
-
-                   
-               //}
 
                using (var client = new WebClient())
                {
-                   client.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
-                   var data = "=Karl";
-                   result = client.UploadString("https://localhost:44300/ProjectUpdate/Update", "Post", data);
+                   client.Headers[HttpRequestHeader.ContentType] = "application/json";
+                   result = client.UploadString("http://costcodevops.azurewebsites.net/ProjectUpdate/Update", "Post", emailJson);
+                   Console.WriteLine(result);
                    Console.WriteLine(result);
                }
 
-
-               
+               //using (var client = new WebClient())
+               //{
+               //    client.Headers[HttpRequestHeader.ContentType] = "application/json";
+               //    result = client.UploadString("https://localhost:44300/ProjectUpdate/Update", "Post", emailJson);
+               //    Console.WriteLine(result);
+               //}                      
+   
             };
            return emailJson;           
         }
 
-        
+
 
         public List<string> ParseSubject(string Subject)
         {

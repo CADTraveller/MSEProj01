@@ -6,7 +6,12 @@
 <div ng-if="showError == 1" class="alert alert-danger" role="alert">
     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
     <span class="sr-only">Error:</span>
-    We're having issues connecting with the server. Perhaps you are stuck behind a firewall?
+    <div ng-if="isLoggedOut == 1">
+        It appears you are logged out. Would you like to <a href="/Account/ExternalLogin">log in</a> again?
+    </div>
+    <div ng-if="isLoggedOut == 0">
+        We're having issues connecting with the server. Perhaps you are stuck behind a firewall?
+    </div>
 </div>
 <table class="table table-striped">
     <thead>
@@ -41,6 +46,9 @@
     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
     <span class="sr-only">Warning:</span>
     No results found!
+    <div ng-if="isLoggedOut == 1">
+        It appears you are logged out. Would you like to <a href="/Account/ExternalLogin">log in</a> again?
+    </div>
 </div>
 <div ng-if="progressNow < 100" class="progress">
     <div class="progress-bar progress-bar-striped active" role="progressbar"
