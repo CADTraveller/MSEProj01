@@ -49,10 +49,11 @@ namespace DataService
         #region Authentication Methods
         public bool AddUser(string email, int userRole)
         {
+           
             if (context.AllowedUsers.Any(a => a.Email == email)) return false;
             try
             {
-
+         
                 AllowedUser newUser = new AllowedUser()
                 {
                     Email = email,

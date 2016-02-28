@@ -353,43 +353,46 @@ namespace CostcoProjectStatus.Controllers
             // Sign in the user with this external login provider if the user already has a login
             //var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
             var email = loginInfo.Email;
+
             DataService.AccessService dataService = new DataService.AccessService();
             var userExists = dataService.IsUserAuthorized(email);
             if (userExists)
             {
                 return Redirect("/dashboard/index.html");
+
             }
             else
             {
                 return View("UnauthAccess");
             }
-/*            switch (result)
-            {
-                case SignInStatus.Success:
-                    //var email = loginInfo.Email;
-                   // DataService.AccessService dataService = new DataService.AccessService();
-                    //var userExists = dataService.IsUserAuthorized(email);
-                    if (userExists)
-                    {
-                        return View("Success");// or RedirectToAction("Success");
-                    }
-                    else
-                    {
-                        return View("UnauthAccess");
-                    }
-                //return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
-                case SignInStatus.Failure:
-                default:
-                    // If the user does not have an account, then prompt the user to create an account
-                    ViewBag.ReturnUrl = returnUrl;
-                    ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
-            }
-            */
+
+            //switch (result)
+            //            {
+            //                case SignInStatus.Success:
+            //                  //  var email = loginInfo.Email;
+            //                    DataService.AccessService dataService = new DataService.AccessService();
+            //                    var userExists = dataService.IsUserAuthorized(email);
+            //                    if (userExists)
+            //                    {
+            //                        return View("Success");// or RedirectToAction("Success");
+            //                    }
+            //                    else
+            //                    {
+            //                        return View("UnauthAccess");
+            //                    }
+            //                //return RedirectToLocal(returnUrl);
+            //                case SignInStatus.LockedOut:
+            //                    return View("Lockout");
+            //                case SignInStatus.RequiresVerification:
+            //                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
+            //                case SignInStatus.Failure:
+            //                default:
+            //                    // If the user does not have an account, then prompt the user to create an account
+            //                    ViewBag.ReturnUrl = returnUrl;
+            //                    ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
+            //                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
+            //            }
+
         }
 
         //

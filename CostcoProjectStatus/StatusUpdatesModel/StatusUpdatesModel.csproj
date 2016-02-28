@@ -82,11 +82,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StatusUpdatesModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="StatusUpdatesModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>StatusUpdatesModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="StatusUpdatesModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

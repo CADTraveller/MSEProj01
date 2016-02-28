@@ -107,12 +107,14 @@ namespace CostcoProjectStatus.Controllers
             string result = JsonConvert.SerializeObject(passableModelList);
             return result;
         }
+        
         public string GetStatusUpdates(String id)
         {
             var ProjectUpdates = DataAccsess.GetAllUpdatesForProject(id);
             string result = JsonConvert.SerializeObject(ProjectUpdates);
             return result;
         }
+        
         public string GetStatusData(String projectId, String phaseId, String statusSequence)
         {
             var statusData = DataAccsess.GetAllUpdatesFromEmail(projectId, Convert.ToInt32(phaseId), Convert.ToInt32(statusSequence));
