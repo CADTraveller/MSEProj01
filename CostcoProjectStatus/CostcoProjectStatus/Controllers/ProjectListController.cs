@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using DataService;
 using Newtonsoft.Json;
+using CostcoProjectStatus.CustomAttributes;
 
 namespace CostcoProjectStatus.Controllers
 {
@@ -96,7 +97,7 @@ namespace CostcoProjectStatus.Controllers
             string result = JsonConvert.SerializeObject(ProjectNames);
             return result;
         }
-        
+        [AuthAttribute]
         public string GetStatusUpdates(String id)
         {
             var ProjectUpdates = DataAccsess.GetAllUpdatesForProject(id);
