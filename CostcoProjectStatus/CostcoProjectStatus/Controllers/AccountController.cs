@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using CostcoProjectStatus.Models;
 using Newtonsoft.Json;
+using CostcoProjectStatus.CustomAttributes;
 
 namespace CostcoProjectStatus.Controllers
 {
@@ -362,7 +363,8 @@ namespace CostcoProjectStatus.Controllers
         //}
 
         // GET: /Account/ExternalLoginCallback
-        [AllowAnonymous]
+        [BasicAuthentication]
+        //[AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
