@@ -250,7 +250,6 @@ namespace DataService
             return true;
         }
 
-
         private List<StatusUpdate> GetAllUpdatesForProjectPhase(string projectID, int phaseID)
         {
             Guid projectGuid = new Guid(projectID);
@@ -265,10 +264,16 @@ namespace DataService
             DateTime now = DateTime.Now;
             foreach (var project in projects)
             {
-                project.LatestUpdate = now;
+                ///TODO Get date of latest update for each project
+                List<Project> recordedProjects = GetProjectIDs(project.ProjectName);
+                if (recordedProjects.Count == 0) continue;
+                Guid projectID = recordedProjects.First().ProjectID;
+                List<ProjectPhase> records = context.ProjectPhases.Where(p => p.ProjectID == projectID).ToList();
+                records = records.OrderBy(r => r.LatestUpdate).ToList();
+                DateTime lastUpdateDate = (DateTime)records.Last().LatestUpdate;
+                project.LatestUpdate = lastUpdateDate;
             }
             return projects;
-
         }
 
         public List<StatusUpdate> GetAllUpdatesForProject(string projectID)

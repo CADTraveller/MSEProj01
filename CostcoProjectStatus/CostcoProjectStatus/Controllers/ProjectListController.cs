@@ -98,7 +98,7 @@ namespace CostcoProjectStatus.Controllers
             return result;
         }
         //[AuthAttribute]
-        [BasicAuthentication]
+    //    [BasicAuthentication]
         public string GetStatusUpdates(String id)
         {
             var ProjectUpdates = DataAccsess.GetAllUpdatesForProject(id);

@@ -363,7 +363,7 @@ namespace CostcoProjectStatus.Controllers
         //}
 
         // GET: /Account/ExternalLoginCallback
-        [BasicAuthentication]
+   //     [BasicAuthentication]
         //[AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
