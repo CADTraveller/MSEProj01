@@ -96,16 +96,26 @@ namespace CostcoProjectStatus.Controllers
             string result = JsonConvert.SerializeObject(ProjectNames);
             return result;
         }
-        
+
         public string GetStatusUpdates(String id)
         {
+            var test = this.Session["userId"];
             var ProjectUpdates = DataAccsess.GetAllUpdatesForProject(id);
             string result = JsonConvert.SerializeObject(ProjectUpdates);
             return result;
         }
-        
+
+        private void CheckLoginStatus()
+        {
+            
+             
+
+
+        }
+
         public string GetStatusData(String projectId, String phaseId, String statusSequence)
         {
+            //CostcoProjectStatus.Controllers.AccountController.
             var statusData = DataAccsess.GetAllUpdatesFromEmail(projectId, Convert.ToInt32(phaseId), Convert.ToInt32(statusSequence));
             string result = JsonConvert.SerializeObject(statusData);
             return result;

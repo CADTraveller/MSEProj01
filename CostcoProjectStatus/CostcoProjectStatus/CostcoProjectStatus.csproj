@@ -82,6 +82,10 @@
       <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Owin.Security.Providers, Version=1.25.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.Security.Providers.1.27\lib\net45\Owin.Security.Providers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -203,6 +207,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AuthAccountController.cs" />
     <Compile Include="App_Start\HomeController.cs" />
+    <Compile Include="Controllers\EnvironmentController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PostTestController.cs" />
@@ -1088,6 +1093,7 @@
     <Folder Include="Content\App_LocalResources\" />
     <Folder Include="dashboard\angular\core\views\" />
     <Folder Include="Views\AuthAccount\" />
+    <Folder Include="Views\Environment\" />
     <Folder Include="Views\Help\" />
     <Folder Include="Views\PostTest\" />
     <Folder Include="Views\ProjectList\" />
