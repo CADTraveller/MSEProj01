@@ -292,6 +292,11 @@ namespace DataService
             su.PhaseID == phaseID &&
             su.StatusSequence == statusSequence).ToList();
         }
+        public List<Vertical> GetAllVerticals()
+        {
+            return context.Verticals.AsEnumerable().ToList();
+        }
+        
 
         public List<Project> GetProjectIDs(string projectName = "", int verticalID = -1)
         {

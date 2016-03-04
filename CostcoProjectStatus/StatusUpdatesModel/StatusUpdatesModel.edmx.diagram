@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="081ce6ff0664486e89424e4606fddc6b" Name="Diagram1" ZoomLevel="73">
+      <Diagram DiagramId="081ce6ff0664486e89424e4606fddc6b" Name="Diagram1" ZoomLevel="83">
         <EntityTypeShape EntityType="CostcoDevStatusModel.Phase" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CostcoDevStatusModel.UserRole" Width="1.5" PointX="0.75" PointY="6.875" IsExpanded="true" FillColor="Maroon" />
         <EntityTypeShape EntityType="CostcoDevStatusModel.Vertical" Width="1.5" PointX="0.75" PointY="3.875" IsExpanded="true" />
