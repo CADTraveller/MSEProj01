@@ -15,7 +15,8 @@ namespace CostcoProjectStatus.Controllers
         public string GetAllVertical()
         {
             AccessService DataAccess = new AccessService();
-            var verticals = DataAccess.GetAllVerticals();
+            //var verticals = DataAccess.GetAllVerticals();
+            var verticals = true;
             string result = JsonConvert.SerializeObject(verticals);
             return result;
             

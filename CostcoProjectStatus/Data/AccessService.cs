@@ -250,7 +250,6 @@ namespace DataService
             return true;
         }
 
-
         private List<StatusUpdate> GetAllUpdatesForProjectPhase(string projectID, int phaseID)
         {
             Guid projectGuid = new Guid(projectID);
@@ -265,10 +264,16 @@ namespace DataService
             DateTime now = DateTime.Now;
             foreach (var project in projects)
             {
-                project.LatestUpdate = now;
+                ///TODO Get date of latest update for each project
+                List<Project> recordedProjects = GetProjectIDs(project.ProjectName);
+                if (recordedProjects.Count == 0) continue;
+                Guid projectID = recordedProjects.First().ProjectID;
+                List<ProjectPhase> records = context.ProjectPhases.Where(p => p.ProjectID == projectID).ToList();
+                records = records.OrderBy(r => r.LatestUpdate).ToList();
+                DateTime lastUpdateDate = (DateTime)records.Last().LatestUpdate;
+                project.LatestUpdate = lastUpdateDate;
             }
             return projects;
-
         }
 
         public List<StatusUpdate> GetAllUpdatesForProject(string projectID)
@@ -276,6 +281,48 @@ namespace DataService
             Guid projectGuid = new Guid(projectID);
             return context.StatusUpdates.Where(s => s.ProjectID == projectGuid).ToList();
         }
+
+        public List<StatusUpdate> GetUpdatesForKey(string updateKey, Guid? projectID = null, int phaseID = -1,
+            bool getOnlyLatest = false)
+        {
+
+            bool getUpdatesForSpecificProject = projectID != null;
+            bool getUpdatesForSpecificPhase = phaseID >= 0;
+
+            //__first get just the updates with the key of interest
+            List<StatusUpdate> updates = context.StatusUpdates.Where(su => su.UpdateKey == updateKey).ToList();
+
+                
+            if (updates.Count == 0) return updates;//__nothing found, return empty list
+
+            if (getUpdatesForSpecificProject)
+                updates = updates.Where(su => su.ProjectID == projectID).ToList();
+            if (updates.Count == 0) return updates; //__still nothing found
+
+            if (getUpdatesForSpecificPhase) updates = updates.Where(su => su.PhaseID == phaseID).ToList();
+            if (updates.Count == 0) return updates;
+
+            if (getOnlyLatest)
+            {
+                updates.OrderBy(su => su.RecordDate);
+                StatusUpdate lastUpdate = updates.Last();
+                updates.Clear();
+                updates.Add(lastUpdate);
+            }
+            return updates;
+        }
+
+        public List<KeyValuePair<int, string>> GetAllVerticals()
+        {
+            string[] names = Enum.GetNames(typeof (Verticals));
+            int[] values = (int[])Enum.GetValues(typeof (Verticals));
+            List<KeyValuePair<int, string>> verticals = new List<KeyValuePair<int, string>>();
+            for (int i = 0; i < names.Length; i++)
+            {
+                verticals.Add(new KeyValuePair<int, string>(values[i], names[i]));
+            }
+            return verticals;
+        }  
 
         public List<Project> GetAllProjectsForVertical(int verticalID)
         {

@@ -10,8 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using CostcoProjectStatus.Models;
 using Newtonsoft.Json;
-using System.Net;
-using System.IO;
+using CostcoProjectStatus.CustomAttributes;
 
 namespace CostcoProjectStatus.Controllers
 {
@@ -266,7 +265,7 @@ namespace CostcoProjectStatus.Controllers
             return View();
         }
         [AllowAnonymous]
-       // GET: /Account/IsLogged
+        //GET: /Account/IsLogged
         public string IsLogin()
         {
             var loginInfo = CheckLogin();
@@ -286,7 +285,7 @@ namespace CostcoProjectStatus.Controllers
             return Redirect("/dashboard/index.html");
 
         }
-
+        //
         // GET: /Account/ResetPasswordConfirmation
         [AllowAnonymous]
         public ActionResult ResetPasswordConfirmation()
@@ -364,7 +363,8 @@ namespace CostcoProjectStatus.Controllers
         //}
 
         // GET: /Account/ExternalLoginCallback
-        [AllowAnonymous]
+   //     [BasicAuthentication]
+        //[AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
@@ -372,24 +372,9 @@ namespace CostcoProjectStatus.Controllers
             {
                 return RedirectToAction("Login");
             }
-            this.Session.Add("userId", loginInfo.Email);
-            this.Session.Add("userName", loginInfo.DefaultUserName);
-            
-            //WebRequest request = WebRequest.Create(
-            //    "https://www.googleapis.com/oauth2/v1/certs"
-            //);
 
-            // StreamReader reader = new StreamReader(request.GetResponse().GetResponseStream());
-
-            // string responseFromServer = reader.ReadToEnd();
-            //HttpContext.GetOwinContext.Request();
             // Sign in the user with this external login provider if the user already has a login
             //var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
-        //    //string rawurl=HttpContext.GetOwinContext;
-        //    string refreshToken = loginInfo.ExternalIdentity.Claims
-        //.Where(i => i.Type == "RefreshToken")
-        //.Select(i => i.Value)
-        //.SingleOrDefault();
             var email = loginInfo.Email;
 
             DataService.AccessService dataService = new DataService.AccessService();
@@ -563,11 +548,7 @@ namespace CostcoProjectStatus.Controllers
                     properties.Dictionary[XsrfKey] = UserId;
                 }
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
-                string accesstoken  =context.HttpContext.Request.Params["SERVER_NAME"];
-                string test = context.HttpContext.Request.Params["LOGON_USER"];
-               
-                         }
-            
+            }
         }
         #endregion
         

@@ -215,6 +215,7 @@
     <Compile Include="Controllers\ProjectUpdateController.cs" />
     <Compile Include="Controllers\TreeViewDataController.cs" />
     <Compile Include="Controllers\VerticalController.cs" />
+    <Compile Include="CustomAttributes\BasicAuthenticationAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
