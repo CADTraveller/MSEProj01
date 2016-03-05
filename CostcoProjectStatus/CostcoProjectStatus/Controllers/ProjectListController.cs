@@ -101,6 +101,8 @@ namespace CostcoProjectStatus.Controllers
     //    [BasicAuthentication]
         public string GetStatusUpdates(String id)
         {
+            var test = this.Session["userId"];
+       //     this.Session.Add("userName", loginInfo.DefaultUserName); 
             var ProjectUpdates = DataAccsess.GetAllUpdatesForProject(id);
             string result = JsonConvert.SerializeObject(ProjectUpdates);
             return result;
@@ -111,6 +113,13 @@ namespace CostcoProjectStatus.Controllers
             var statusData = DataAccsess.GetAllUpdatesFromEmail(projectId, Convert.ToInt32(phaseId), Convert.ToInt32(statusSequence));
             string result = JsonConvert.SerializeObject(statusData);
             return result;
+        }
+        public string GetprojectUpdates(string updateKey, Guid? projectID , int phaseID,bool getOnlyLatest)
+        {
+            var ProjectUpdateKeys = DataAccsess.GetUpdatesForKey(updateKey, projectID, phaseID, getOnlyLatest);
+            string result = JsonConvert.SerializeObject(ProjectUpdateKeys);
+            return result;
+
         }
         //
         // POST: /Account/ExternalLogin
