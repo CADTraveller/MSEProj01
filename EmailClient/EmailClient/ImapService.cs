@@ -30,10 +30,11 @@ namespace EmailClient
         {
             // Connect to the IMAP server. The 'true' parameter specifies to use SSL, which is important (for Gmail at least)
             ImapClient imapClient = new ImapClient(ConfigurationManager.AppSettings["ImapServer"], ConfigurationManager.AppSettings["UserId"], ConfigurationManager.AppSettings["Password"], AuthMethods.Login, 993, true);
+
+          //  ImapClient imapClient = new ImapClient(ConfigurationManager.AppSettings["ImapServer"], "jayasreetestemail@gmail.com", "7Ywy7N[S", AuthMethods.Login, 993, true);
             // Select a mailbox. Case-insensitive
             imapClient.SelectMailbox("INBOX");
-            string emailJson="";
-            Guid projectid = Guid.NewGuid();
+            string emailJson="";           
             Console.WriteLine(imapClient.GetMessageCount());
 
             imapClient.NewMessage += (sender, e) =>
@@ -59,10 +60,10 @@ namespace EmailClient
                 for (int i = 0; i < emailBody.Count(); i++)
                 {
                     EmailJsonObject emailJsonObject = new EmailJsonObject();
-                    emailJsonObject.ProjectID = projectid;
-                    emailJsonObject.ProjectName = emailSub[0];
+                    emailJsonObject.ProjectID = Guid.Parse(emailSub[0]);                 
                     emailJsonObject.PhaseID = emailSub[1];
                     emailJsonObject.VerticalID = emailSub[2];
+                    emailJsonObject.ProjectName = emailSub[3];
                     emailJsonObject.UpdateKey = emailBodyKeys[i];
                     emailJsonObject.UpdateValue = emailBodyValues[i];
                     emailJsonObject.RecordedDate = msg.Date;
@@ -85,6 +86,7 @@ namespace EmailClient
                //    client.Headers[HttpRequestHeader.ContentType] = "application/json";
                //    result = client.UploadString("https://localhost:44300/ProjectUpdate/Update", "Post", emailJson);
                //    Console.WriteLine(result);
+               //    Console.WriteLine(result);
                //}                      
    
             };
@@ -97,9 +99,10 @@ namespace EmailClient
         {
             List<string> li = new List<string>();
             string[] sub = Subject.Split('|');
-            li.Add(sub[0]);
-            li.Add(sub[1]);
-            li.Add(sub[2]);
+            li.Add(sub[0]); // project Id
+            li.Add(sub[1]); // Phase Id
+            li.Add(sub[2]); // Vertical Id
+            li.Add(sub[3]); // Project Name
             return li;
 
         }
