@@ -347,7 +347,7 @@ namespace DataService
             foreach (Project project in projects)
             {
                 Guid projectID = project.ProjectID;
-                var lastUpdateDate = context.StatusUpdates.Where(p => p.ProjectID == projectID && p.RecordDate != null).Max(p => p.RecordDate);
+                var lastUpdateDate = context.ProjectPhases.Where(p => p.ProjectID == projectID && p.LatestUpdate != null).Max(p => p.LatestUpdate);
                 project.LatestUpdate = (DateTime)lastUpdateDate;
             }
             return projects;
