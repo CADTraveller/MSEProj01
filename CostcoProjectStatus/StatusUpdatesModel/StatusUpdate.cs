@@ -22,8 +22,13 @@ namespace StatusUpdatesModel
         public string UpdateKey { get; set; }
         public string UpdateValue { get; set; }
     
+        [Newtonsoft.Json.JsonIgnore]
         public virtual Phase Phase { get; set; }
+
+        [Newtonsoft.Json.JsonIgnore]
         public virtual Project Project { get; set; }
+
+        [Newtonsoft.Json.JsonIgnore]
         public virtual Vertical Vertical { get; set; }
     }
 }
