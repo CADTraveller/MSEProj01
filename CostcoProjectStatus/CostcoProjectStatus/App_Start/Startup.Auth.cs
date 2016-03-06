@@ -6,6 +6,10 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using CostcoProjectStatus.Models;
+using System.Threading.Tasks;
+using Owin.Security.Providers;
+
+
 
 namespace CostcoProjectStatus
 {
@@ -58,13 +62,71 @@ namespace CostcoProjectStatus
             //   appId: "",
             //   appSecret: "");
 
+
+
+
+
+
+
+
+
+
+
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {
                 ClientId = "17455599033-ba8qcod8m4m3v8pbt7dj09v5trcmelah.apps.googleusercontent.com",
                 ClientSecret = "uEq1Hhb_JeD9rwM56Iwm2c-W",
-                 Provider = new GoogleOAuth2AuthenticationProvider(),
+              //  AccessType = "offline",
+
+                Provider = new GoogleOAuth2AuthenticationProvider
+                {
+
+                    OnAuthenticated = async context =>
+                    {
+                        // Retrieve the OAuth access token to store for subsequent API calls
+                        string accessToken = context.AccessToken;
+
+                        // Retrieve the name of the user in Google
+                        string googleName = context.Name;
+
+                        // Retrieve the user's email address
+                        string googleEmailAddress = context.Email;
+
+                        // You can even retrieve the full JSON-serialized user
+                        var serializedUser = context.User;
+                    }
+                }
+
+
+
+
+
+
+
+
+                //Provider = new Microsoft.Owin.Security.Google.GoogleOAuth2AuthenticationProvider
+                //{
+                //    OnAuthenticated = context =>
+                //    {
+                //        if (!String.IsNullOrEmpty(context.RefreshToken))
+                //        {
+                //            context.Identity.AddClaim(new  Claim("RefreshToken", context.RefreshToken));
+                //        }
+                //        return Task.FromResult<object>(null);
+
+
+                //Provider = new GoogleOAuth2AuthenticationProvider(),
                 //CallbackPath = new PathString("/Account/ExternalLoginCallback")
+                //}
+                // }
             });
+
+
+
+
+
+
+
         }
     }
 }

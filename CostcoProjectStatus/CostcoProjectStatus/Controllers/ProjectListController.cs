@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using DataService;
 using Newtonsoft.Json;
+using CostcoProjectStatus.CustomAttributes;
 
 namespace CostcoProjectStatus.Controllers
 {
@@ -90,35 +91,36 @@ namespace CostcoProjectStatus.Controllers
                 return View();
             }
         }
-        
         public string Display()
         {
             var ProjectNames = DataAccsess.GetAllProjectNames();
-            List<Models.PassableProjectModel> passableModelList = new List<Models.PassableProjectModel>();
-            foreach(StatusUpdatesModel.Project project in ProjectNames)
-            {
-                var passableProject = new Models.PassableProjectModel();
-                passableProject.ProjectID = project.ProjectID.ToString();
-                passableProject.ProjectName = project.ProjectName.ToString();
-                passableProject.VerticalID = project.VerticalID;
-                passableProject.LatestUpdate = project.LatestUpdate;
-                passableModelList.Add(passableProject);
-            }
-            string result = JsonConvert.SerializeObject(passableModelList);
+            string result = JsonConvert.SerializeObject(ProjectNames);
             return result;
         }
+        //[AuthAttribute]
+    //    [BasicAuthentication]
         public string GetStatusUpdates(String id)
         {
+            var test = this.Session["userId"];
+       //     this.Session.Add("userName", loginInfo.DefaultUserName); 
             var ProjectUpdates = DataAccsess.GetAllUpdatesForProject(id);
             string result = JsonConvert.SerializeObject(ProjectUpdates);
             return result;
         }
+        
         public string GetStatusData(String projectId, String phaseId, String statusSequence)
         {
             var statusData = DataAccsess.GetAllUpdatesFromEmail(projectId, Convert.ToInt32(phaseId), Convert.ToInt32(statusSequence));
             string result = JsonConvert.SerializeObject(statusData);
             return result;
         }
+        //public string GetprojectUpdates( Guid projectID )
+        //{
+        //    var ProjectUpdateKeys = DataAccsess.GetUpdatesForKey(projectID);
+        //    string result = JsonConvert.SerializeObject(ProjectUpdateKeys);
+        //    return result;
+
+        //}
         //
         // POST: /Account/ExternalLogin
         [HttpPost]

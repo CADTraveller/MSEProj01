@@ -9,6 +9,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using CostcoProjectStatus.Models;
+using Newtonsoft.Json;
+using CostcoProjectStatus.CustomAttributes;
 
 namespace CostcoProjectStatus.Controllers
 {
@@ -262,7 +264,27 @@ namespace CostcoProjectStatus.Controllers
             AddErrors(result);
             return View();
         }
+        [AllowAnonymous]
+        //GET: /Account/IsLogged
+        public string IsLogin()
+        {
+            var loginInfo = CheckLogin();
+            if (loginInfo.Result == null)
+            {
+                return JsonConvert.SerializeObject(false);
+            }
+            return JsonConvert.SerializeObject(true);
+        }
+        public async Task<ActionResult> CheckLogin()
+        {
+            var extLogin = await AuthenticationManager.GetExternalLoginInfoAsync();
+            if (extLogin == null)
+            {
+                return null;
+            }
+            return Redirect("/dashboard/index.html");
 
+        }
         //
         // GET: /Account/ResetPasswordConfirmation
         [AllowAnonymous]
@@ -341,7 +363,8 @@ namespace CostcoProjectStatus.Controllers
         //}
 
         // GET: /Account/ExternalLoginCallback
-        [AllowAnonymous]
+   //     [BasicAuthentication]
+        //[AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
@@ -353,43 +376,46 @@ namespace CostcoProjectStatus.Controllers
             // Sign in the user with this external login provider if the user already has a login
             //var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
             var email = loginInfo.Email;
+
             DataService.AccessService dataService = new DataService.AccessService();
             var userExists = dataService.IsUserAuthorized(email);
             if (userExists)
             {
                 return Redirect("/dashboard/index.html");
+
             }
             else
             {
                 return View("UnauthAccess");
             }
-/*            switch (result)
-            {
-                case SignInStatus.Success:
-                    //var email = loginInfo.Email;
-                   // DataService.AccessService dataService = new DataService.AccessService();
-                    //var userExists = dataService.IsUserAuthorized(email);
-                    if (userExists)
-                    {
-                        return View("Success");// or RedirectToAction("Success");
-                    }
-                    else
-                    {
-                        return View("UnauthAccess");
-                    }
-                //return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
-                case SignInStatus.Failure:
-                default:
-                    // If the user does not have an account, then prompt the user to create an account
-                    ViewBag.ReturnUrl = returnUrl;
-                    ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
-            }
-            */
+
+            //switch (result)
+            //            {
+            //                case SignInStatus.Success:
+            //                  //  var email = loginInfo.Email;
+            //                    DataService.AccessService dataService = new DataService.AccessService();
+            //                    var userExists = dataService.IsUserAuthorized(email);
+            //                    if (userExists)
+            //                    {
+            //                        return View("Success");// or RedirectToAction("Success");
+            //                    }
+            //                    else
+            //                    {
+            //                        return View("UnauthAccess");
+            //                    }
+            //                //return RedirectToLocal(returnUrl);
+            //                case SignInStatus.LockedOut:
+            //                    return View("Lockout");
+            //                case SignInStatus.RequiresVerification:
+            //                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
+            //                case SignInStatus.Failure:
+            //                default:
+            //                    // If the user does not have an account, then prompt the user to create an account
+            //                    ViewBag.ReturnUrl = returnUrl;
+            //                    ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
+            //                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
+            //            }
+
         }
 
         //
@@ -433,11 +459,10 @@ namespace CostcoProjectStatus.Controllers
         //
         // POST: /Account/LogOff
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return Redirect("/dashboard/index.html");
         }
 
         //

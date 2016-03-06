@@ -49,10 +49,11 @@ namespace DataService
         #region Authentication Methods
         public bool AddUser(string email, int userRole)
         {
+           
             if (context.AllowedUsers.Any(a => a.Email == email)) return false;
             try
             {
-
+         
                 AllowedUser newUser = new AllowedUser()
                 {
                     Email = email,
@@ -249,12 +250,17 @@ namespace DataService
             return true;
         }
 
-
         private List<StatusUpdate> GetAllUpdatesForProjectPhase(string projectID, int phaseID)
         {
             Guid projectGuid = new Guid(projectID);
             List<StatusUpdate> updates = new List<StatusUpdate>();
             updates = context.StatusUpdates.Where(p => p.ProjectID == projectGuid && p.PhaseID == phaseID).ToList();
+
+            //__now also write ProjectName to each update
+            foreach (StatusUpdate update in updates)
+            {
+                update.ProjectName = context.Projects.FirstOrDefault(p => p.ProjectID == update.ProjectID).ProjectName;
+            }
             return updates;
         }
 
@@ -263,34 +269,107 @@ namespace DataService
             List<Project> projects = context.Projects.AsEnumerable().ToList();
             DateTime now = DateTime.Now;
             foreach (var project in projects)
-            {
-                project.LatestUpdate = now;
+            {                
+                List<Project> recordedProjects = GetProjectIDs(project.ProjectName);
+                if (recordedProjects.Count == 0) continue;
+                Guid projectID = recordedProjects.First().ProjectID;
+                List<ProjectPhase> records = context.ProjectPhases.Where(p => p.ProjectID == projectID).ToList();
+                records = records.OrderBy(r => r.LatestUpdate).ToList();
+                DateTime lastUpdateDate = (DateTime)records.Last().LatestUpdate;
+                project.LatestUpdate = lastUpdateDate;
             }
             return projects;
-
         }
 
         public List<StatusUpdate> GetAllUpdatesForProject(string projectID)
         {
             Guid projectGuid = new Guid(projectID);
-            return context.StatusUpdates.Where(s => s.ProjectID == projectGuid).ToList();
+            string projectName = context.Projects.FirstOrDefault(p => p.ProjectID == projectGuid).ProjectName;
+            if (string.IsNullOrEmpty(projectName)) return new List<StatusUpdate>();//__return empty list when project not found
+            var updates = context.StatusUpdates.Where(s => s.ProjectID == projectGuid).ToList();
+            foreach (var update in updates) update.ProjectName = projectName;
+            
+            return updates;
         }
+
+        public List<StatusUpdate> GetUpdatesForKey(string updateKey, Guid? projectID = null, int phaseID = -1,
+            bool getOnlyLatest = false)
+        {
+
+            bool getUpdatesForSpecificProject = projectID != null;
+            bool getUpdatesForSpecificPhase = phaseID >= 0;
+
+            //__first get just the updates with the key of interest
+            List<StatusUpdate> updates = context.StatusUpdates.Where(su => su.UpdateKey == updateKey).ToList();
+
+                
+            if (updates.Count == 0) return updates;//__nothing found, return empty list
+
+            if (getUpdatesForSpecificProject)
+                updates = updates.Where(su => su.ProjectID == projectID).ToList();
+            if (updates.Count == 0) return updates; //__still nothing found
+
+            if (getUpdatesForSpecificPhase) updates = updates.Where(su => su.PhaseID == phaseID).ToList();
+            if (updates.Count == 0) return updates;
+
+            if (getOnlyLatest)
+            {
+                updates.OrderBy(su => su.RecordDate);
+                StatusUpdate lastUpdate = updates.Last();
+                updates.Clear();
+                updates.Add(lastUpdate);
+            }
+
+            //__now also write ProjectName to each update
+            foreach (StatusUpdate update in updates)
+            {
+                update.ProjectName = context.Projects.FirstOrDefault(p => p.ProjectID == update.ProjectID).ProjectName;
+            }
+            return updates;
+        }
+
+        public List<KeyValuePair<int, string>> GetAllVerticals()
+        {
+            string[] names = Enum.GetNames(typeof (Verticals));
+            int[] values = (int[])Enum.GetValues(typeof (Verticals));
+            List<KeyValuePair<int, string>> verticals = new List<KeyValuePair<int, string>>();
+            for (int i = 0; i < names.Length; i++)
+            {
+                verticals.Add(new KeyValuePair<int, string>(values[i], names[i]));
+            }
+            return verticals;
+        }  
 
         public List<Project> GetAllProjectsForVertical(int verticalID)
         {
             //return context.Projects.Where(p => p.VerticalID == verticalID).Select(p => p.ProjectID).ToList();
-            return context.Projects.Where(p => p.VerticalID == verticalID).ToList();
-
+            var projects = context.Projects.Where(p => p.VerticalID == verticalID).ToList();
+            foreach (Project project in projects)
+            {
+                Guid projectID = project.ProjectID;
+                var lastUpdateDate = context.ProjectPhases.Where(p => p.ProjectID == projectID && p.LatestUpdate != null).Max(p => p.LatestUpdate);
+                project.LatestUpdate = (DateTime)lastUpdateDate;
+            }
+            return projects;
         }
 
         public List<StatusUpdate> GetAllUpdatesFromEmail(string projectID, int phaseID, int statusSequence)
         {
             Guid projectGuid = new Guid(projectID);
-            return context.StatusUpdates.Where(su =>
+            var updates = context.StatusUpdates.Where(su =>
             su.ProjectID == projectGuid &&
             su.PhaseID == phaseID &&
             su.StatusSequence == statusSequence).ToList();
+
+            //__now also write ProjectName to each update
+            foreach (StatusUpdate update in updates)
+            {
+                update.ProjectName = context.Projects.FirstOrDefault(p => p.ProjectID == update.ProjectID).ProjectName;
+            }
+            return updates;
         }
+        
+        
 
         public List<Project> GetProjectIDs(string projectName = "", int verticalID = -1)
         {

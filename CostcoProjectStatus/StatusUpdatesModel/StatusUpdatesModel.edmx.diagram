@@ -4,15 +4,15 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="081ce6ff0664486e89424e4606fddc6b" Name="Diagram1">
+      <Diagram DiagramId="081ce6ff0664486e89424e4606fddc6b" Name="Diagram1" ZoomLevel="110">
         <EntityTypeShape EntityType="CostcoDevStatusModel.Phase" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CostcoDevStatusModel.UserRole" Width="1.5" PointX="0.75" PointY="6.875" IsExpanded="true" FillColor="Maroon" />
         <EntityTypeShape EntityType="CostcoDevStatusModel.Vertical" Width="1.5" PointX="0.75" PointY="3.875" IsExpanded="true" />
         <EntityTypeShape EntityType="CostcoDevStatusModel.AllowedUser" Width="1.5" PointX="3" PointY="6.875" FillColor="Maroon" />
         <AssociationConnector Association="CostcoDevStatusModel.FK__AllowedUs__RoleI__70DDC3D8" />
-        <EntityTypeShape EntityType="CostcoDevStatusModel.Project" Width="1.5" PointX="3" PointY="3.75" />
-        <EntityTypeShape EntityType="CostcoDevStatusModel.ProjectPhase" Width="1.5" PointX="5.25" PointY="2.25" />
-        <EntityTypeShape EntityType="CostcoDevStatusModel.StatusUpdate" Width="1.5" PointX="8.25" PointY="2" />
+        <EntityTypeShape EntityType="CostcoDevStatusModel.Project" Width="1.5" PointX="5.5" PointY="4.375" />
+        <EntityTypeShape EntityType="CostcoDevStatusModel.ProjectPhase" Width="1.5" PointX="0.5" PointY="0.875" />
+        <EntityTypeShape EntityType="CostcoDevStatusModel.StatusUpdate" Width="1.5" PointX="9" PointY="0.875" />
         <AssociationConnector Association="CostcoDevStatusModel.FK__ProjectPh__Phase__1AD3FDA4" />
         <AssociationConnector Association="CostcoDevStatusModel.FK__StatusUpd__Phase__1F98B2C1" />
         <AssociationConnector Association="CostcoDevStatusModel.FK__Project__Vertica__17F790F9" />
