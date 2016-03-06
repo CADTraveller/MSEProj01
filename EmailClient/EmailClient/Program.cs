@@ -12,7 +12,7 @@ namespace EmailClient
         static void Main(string[] args)
         {
 
-         var emailObject= new ImapService().ParseNewEmail();  
+         var emailObject= new ImapService().ParseNewEmail();           
          Console.ReadLine();
         }
     }
