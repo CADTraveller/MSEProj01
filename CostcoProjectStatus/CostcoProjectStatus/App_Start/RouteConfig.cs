@@ -13,19 +13,24 @@ namespace CostcoProjectStatus
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.MapRoute(
-                "ProjectList",
-                "ProjectList/{Display}",
-                new { Controller="ProjectList", action="Display",id=""}
-                );
-            routes.MapRoute(
                 "StatusUpdateList",
-                "ProjectList/{GetProjectUpdates}/{id}",
+                "ProjectList/GetProjectUpdates/{id}",
                 new { Controller = "ProjectList", action = "GetStatusUpdates", id = "id" }
                 );
             routes.MapRoute(
                 "StatusDataList",
-                "ProjectList/{GetStatusData}/{projectId}/{phaseId}/{statusSequence}",
+                "ProjectList/GetStatusData/{projectId}/{phaseId}/{statusSequence}",
                 new { Controller = "ProjectList", action = "GetStatusData", projectId = "projectId", phaseId = "phaseId", statusSequence = "statusSequence"  }
+                );
+            routes.MapRoute(
+                "VerticalList",
+                "Vertical/GetAllVertical",
+                 new { Controller = "Vertical", action = "GetAllVertical" }
+                );
+            routes.MapRoute(
+                "VerticalProjects",
+                "Vertical/GetVerticalProjects/{VerticalId}",
+                 new { Controller = "Vertical", action = "GetVerticalProjects", VerticalId = "VerticalId" }
                 );
             routes.MapRoute(
                 "ProjectUpdate",

@@ -58,10 +58,6 @@
                 templateUrl: 'angular/project/views/ProjectList.html',
                 controller: 'searchCtrl'
             })
-            .when('/DashboardCtrl', {
-                templateUrl: 'angular/project/views/Verticals.html',
-                controller: 'dashboardCtrl'
-            })
       .otherwise({
           redirectTo: '/Welcome'
       });
@@ -76,10 +72,6 @@
             // Left blank and ready for new code!
 
         }])
-    .controller('dashboardCtrl', function ($scope, VerticalEnum) {
-        console.log(VerticalEnum[0]);
-        $scope.VEnum = VerticalEnum;
-    })
     .controller('loginCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
 
         $scope.login = function () {
@@ -99,14 +91,11 @@
         $scope.progressNow = 12;
         $scope.showError = 0;
         $scope.showNoResults = 0;
-        $http({ method: 'GET', url: '../ProjectList/GetStatusUpdates' }).success(function (data)
+        $http({ method: 'GET', url: '../Vertical/GetVerticalProjects/' + $routeParams.vId }).success(function (data)
         {
             $scope.progressNow = 50;
             setInterval(function () { $scope.progressNow++; }, 500);
             console.log(data);
-            console.log($routeParams.vId);
-            $scope.sortType = 'projName';
-            $scope.sortReverse = false;
             
             $scope.vId = $routeParams.vId;
             $scope.vName = VerticalEnum[$routeParams.vId];
@@ -114,9 +103,7 @@
             var projData, len;
             var projListIter = 0;
             for (projData = 0; projData < data.length; ++projData) {
-                if (data[projData].VerticalID == $scope.vId) {
                     $scope.projectList[++projListIter] = data[projData];
-                }
             }
             $scope.isLoggedOut = (document.getElementById("yesLogin").style.display == "none");
             if ($scope.projectList.length == 0) {

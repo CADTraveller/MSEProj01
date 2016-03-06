@@ -1,12 +1,8 @@
-﻿var VerticalEnum = {
+﻿var EnvironmentalEnum = {
     Warehouse: 0,
     Merchandising: 1,
     Membership: 2,
     Distribution: 3,
-    International: 4,
-    Ancillary: 5,
-    eBusiness: 6,
-    Corporate: 7,
 }
 var isLoggedIn = 0;
 $(document).ready(function() {
@@ -15,10 +11,20 @@ $(document).ready(function() {
     });
     checkLogin();
 });
+
+// Populates the Verticals Filter in the nav bar
 document.getElementById("VerticalList").innerHTML = "";
-for (var vertIter in VerticalEnum) {
+$.get('/Vertical/GetAllVertical', function (result) {
+    var vertJSON = JSON.parse(result);
+    for (var vertIter = 0; vertIter < vertJSON.length; vertIter++) {
+        var vertObj = vertJSON[vertIter];
+        document.getElementById("VerticalList").innerHTML += "<li><a href='#ProjectList/" + vertObj.Key + "'>" + vertObj.Value.replace("_", " ") + "</a></li>";
+    }
+
+});
+/*for (var vertIter in VerticalEnum) {
     document.getElementById("VerticalList").innerHTML += "<li><a href='#ProjectList/" + VerticalEnum[vertIter] + "'>" + vertIter + " Solutions</a></li>";
-}
+}*/
 
 function loginUser() {
     var loginData = {

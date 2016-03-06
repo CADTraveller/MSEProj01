@@ -10,32 +10,33 @@ namespace CostcoProjectStatus.Controllers
 {
     public class VerticalController : Controller
     {
-        // GET: Vertical
-
+        // GET: VerticalList
         public string GetAllVertical()
         {
             AccessService DataAccess = new AccessService();
             var verticals = DataAccess.GetAllVerticals();
-            //var verticals = true;
             string result = JsonConvert.SerializeObject(verticals);
             return result;
             
         }
+        // GET: GetVerticalProjects
         public string GetVerticalProjects(int VerticalId)
         {
             AccessService DataAccess = new AccessService();
-            var VerticalProjets = DataAccess.GetAllProjectsForVertical(VerticalId);
-            string result = JsonConvert.SerializeObject(VerticalProjets);
+            var VerticalProjects = DataAccess.GetAllProjectsForVertical(VerticalId);
+            var passProjectList = new List<StatusUpdatesModel.Project>();
+            foreach (StatusUpdatesModel.Project project in VerticalProjects)
+            {
+                StatusUpdatesModel.Project tempProject = new StatusUpdatesModel.Project();
+                tempProject.LatestUpdate= project.LatestUpdate;
+                tempProject.ProjectID = project.ProjectID;
+                tempProject.ProjectName = project.ProjectName;
+                passProjectList.Add(tempProject);
+            }
+            string result = JsonConvert.SerializeObject(passProjectList);
             return result;
 
         }
-
-
-
-
-
-
-
         public ActionResult Index()
         {
             return View();
