@@ -114,13 +114,13 @@ namespace CostcoProjectStatus.Controllers
             string result = JsonConvert.SerializeObject(statusData);
             return result;
         }
-        public string GetprojectUpdates(string updateKey, Guid? projectID , int phaseID,bool getOnlyLatest)
-        {
-            var ProjectUpdateKeys = DataAccsess.GetUpdatesForKey(updateKey, projectID, phaseID, getOnlyLatest);
-            string result = JsonConvert.SerializeObject(ProjectUpdateKeys);
-            return result;
+        //public string GetprojectUpdates( Guid projectID )
+        //{
+        //    var ProjectUpdateKeys = DataAccsess.GetUpdatesForKey(projectID);
+        //    string result = JsonConvert.SerializeObject(ProjectUpdateKeys);
+        //    return result;
 
-        }
+        //}
         //
         // POST: /Account/ExternalLogin
         [HttpPost]
