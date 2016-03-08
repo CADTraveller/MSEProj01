@@ -94,25 +94,52 @@ namespace CostcoProjectStatus.Controllers
         public string Display()
         {
             var ProjectNames = DataAccsess.GetAllProjectNames();
-            string result = JsonConvert.SerializeObject(ProjectNames);
+            string result = JsonConvert.SerializeObject("");
             return result;
         }
         //[AuthAttribute]
     //    [BasicAuthentication]
         public string GetStatusUpdates(String id)
         {
-            var test = this.Session["userId"];
-       //     this.Session.Add("userName", loginInfo.DefaultUserName); 
-            var ProjectUpdates = DataAccsess.GetAllUpdatesForProject(id);
-            string result = JsonConvert.SerializeObject(ProjectUpdates);
-            return result;
+            try
+            {
+                if (this.Session["username"].ToString() != null)
+                {
+                    var ProjectUpdates = DataAccsess.GetAllUpdatesForProject(id);
+                    string result = JsonConvert.SerializeObject(ProjectUpdates);
+                    return result;
+                }
+            } catch (Exception e)
+            {
+                string emptyException = JsonConvert.SerializeObject("");
+                return emptyException;
+            }
+            string empty = JsonConvert.SerializeObject("");
+            return empty;
+
         }
         
         public string GetStatusData(String projectId, String phaseId, String statusSequence)
         {
-            var statusData = DataAccsess.GetAllUpdatesFromEmail(projectId, Convert.ToInt32(phaseId), Convert.ToInt32(statusSequence));
-            string result = JsonConvert.SerializeObject(statusData);
-            return result;
+
+            try
+            {
+                if (this.Session["username"].ToString() != null)
+                {
+                    var statusData = DataAccsess.GetAllUpdatesFromEmail(projectId, Convert.ToInt32(phaseId), Convert.ToInt32(statusSequence));
+                    string result = JsonConvert.SerializeObject(statusData);
+                    return result;
+                }
+            }
+            catch (Exception e)
+            {
+                string emptyException = JsonConvert.SerializeObject("");
+                return emptyException;
+            }
+            string empty = JsonConvert.SerializeObject("");
+            return empty;
+
+           
         }
         //public string GetprojectUpdates( Guid projectID )
         //{

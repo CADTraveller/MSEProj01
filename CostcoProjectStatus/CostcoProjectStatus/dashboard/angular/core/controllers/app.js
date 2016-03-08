@@ -46,19 +46,18 @@ function logoutUser() {
     $.post('../Account/LogOff', loginData)
     .then(function (result) {
         console.log(result.data);
-
+        location.reload();
+        window.location = "#Welcome";
     });
 }
 
 function checkLogin() {
     $.get('../Account/IsLogged', function (result) {
-        if (result == "true") {
-            document.getElementById("noLogin").style.display = "none";
-            document.getElementById("yesLogin").style.display = "block";
+        if (result != "null") {
+            document.getElementById("login").innerHTML = "Logged in as " + result + ": <a title=\"Logout Link\" onclick=\"logoutUser()\">Logout</a>";
             isLoggedIn = 1;
         } else {
-            document.getElementById("noLogin").style.display = "block";
-            document.getElementById("yesLogin").style.display = "none";
+            document.getElementById("login").innerHTML = "<a title=\"Login Link\" href=\"/Account/ExternalLogin\">Login</a>";
             isLoggedIn = 0;
         }
 

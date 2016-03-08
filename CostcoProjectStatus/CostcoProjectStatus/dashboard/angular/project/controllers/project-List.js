@@ -105,14 +105,7 @@
             for (projData = 0; projData < data.length; ++projData) {
                     $scope.projectList[++projListIter] = data[projData];
             }
-            $scope.isLoggedOut = (document.getElementById("yesLogin").style.display == "none");
-            if ($scope.projectList.length == 0) {
-                $scope.showNoResults = 1;
-                $scope.isLoggedOut = (document.getElementById("yesLogin").style.display == "none");
-            } else if ($scope.isLoggedOut) {
-                $scope.showNoResults = 1;
-                $scope.projectList = null
-            }
+
             $scope.phaseEnum = PhaseEnum;
             $scope.progressNow = 100;
             console.log($scope.phaseEnum);
@@ -157,7 +150,7 @@
             console.log($routeParams.projectId);
             console.log($routeParams.phaseId);
             console.log($routeParams.statusSequence);
-            $http({ method: 'GET', url: '../ProjectList/GetProjectUpdates/'+$routeParams.projectId+"/"+$routeParams.phaseId+"/"+$routeParams.statusSequence }).success(function (data)
+            $http({ method: 'GET', url: '../ProjectList/GetStatusData/'+$routeParams.projectId+"/"+$routeParams.phaseId+"/"+$routeParams.statusSequence }).success(function (data)
             {
                 console.log(data);
                 console.log($routeParams.projectId);
