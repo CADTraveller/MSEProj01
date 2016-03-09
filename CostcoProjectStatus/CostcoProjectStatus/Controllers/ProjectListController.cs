@@ -102,7 +102,8 @@ namespace CostcoProjectStatus.Controllers
         public string GetStatusUpdates(String id)
         {
             var test = this.Session["userId"];
-       //     this.Session.Add("userName", loginInfo.DefaultUserName); 
+          
+            //this.Session.Add("userName", loginInfo.DefaultUserName); 
             var ProjectUpdates = DataAccsess.GetAllUpdatesForProject(id);
             string result = JsonConvert.SerializeObject(ProjectUpdates);
             return result;
