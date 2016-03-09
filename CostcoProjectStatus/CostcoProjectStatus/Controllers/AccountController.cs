@@ -270,16 +270,26 @@ namespace CostcoProjectStatus.Controllers
         public string IsLogin()
         {
             var loginInfo = CheckLogin();
-            if (loginInfo.Result == null)
+            try
             {
-                return JsonConvert.SerializeObject(false);
+             if (loginInfo.Result == null)
+                {
+                    return JsonConvert.SerializeObject(null);
+                 }
+            } catch (Exception e)
+            {
+                return JsonConvert.SerializeObject(null);
             }
-            return JsonConvert.SerializeObject(true);
+            
+
+            // Not sure if this is the right way to handle this
+            return JsonConvert.SerializeObject(this.Session["username"].ToString());
+
         }
         public async Task<ActionResult> CheckLogin()
         {
             var extLogin = await AuthenticationManager.GetExternalLoginInfoAsync();
-            if (extLogin == null)
+            if (extLogin == null || extLogin.Email != this.Session["username"].ToString())
             {
                 return null;
             }
@@ -378,7 +388,7 @@ namespace CostcoProjectStatus.Controllers
             // Sign in the user with this external login provider if the user already has a login
             //var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
             var email = loginInfo.Email;
-
+            this.Session["username"] = loginInfo.Email;
             DataService.AccessService dataService = new DataService.AccessService();
             var userExists = dataService.IsUserAuthorized(email);
             if (userExists)
@@ -463,6 +473,14 @@ namespace CostcoProjectStatus.Controllers
         [HttpPost]
         public ActionResult LogOff()
         {
+            Console.Write(this.Session["username"]);
+            Console.Write(this.Session.SessionID);
+            this.Session["username"] = "";
+            this.Session.Clear();
+            this.Session.Abandon();
+            this.Session.RemoveAll();
+            Console.Write(this.Session.SessionID);
+            Console.Write(this.Session["username"]);
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return Redirect("/dashboard/index.html");
         }

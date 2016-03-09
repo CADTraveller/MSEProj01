@@ -255,6 +255,12 @@ namespace DataService
             Guid projectGuid = new Guid(projectID);
             List<StatusUpdate> updates = new List<StatusUpdate>();
             updates = context.StatusUpdates.Where(p => p.ProjectID == projectGuid && p.PhaseID == phaseID).ToList();
+
+            //__now also write ProjectName to each update
+            foreach (StatusUpdate update in updates)
+            {
+                update.ProjectName = context.Projects.FirstOrDefault(p => p.ProjectID == update.ProjectID).ProjectName;
+            }
             return updates;
         }
 
@@ -263,8 +269,7 @@ namespace DataService
             List<Project> projects = context.Projects.AsEnumerable().ToList();
             DateTime now = DateTime.Now;
             foreach (var project in projects)
-            {
-                ///TODO Get date of latest update for each project
+            {                
                 List<Project> recordedProjects = GetProjectIDs(project.ProjectName);
                 if (recordedProjects.Count == 0) continue;
                 Guid projectID = recordedProjects.First().ProjectID;
@@ -279,7 +284,12 @@ namespace DataService
         public List<StatusUpdate> GetAllUpdatesForProject(string projectID)
         {
             Guid projectGuid = new Guid(projectID);
-            return context.StatusUpdates.Where(s => s.ProjectID == projectGuid).ToList();
+            string projectName = context.Projects.FirstOrDefault(p => p.ProjectID == projectGuid).ProjectName;
+            if (string.IsNullOrEmpty(projectName)) return new List<StatusUpdate>();//__return empty list when project not found
+            var updates = context.StatusUpdates.Where(s => s.ProjectID == projectGuid).ToList();
+            foreach (var update in updates) update.ProjectName = projectName;
+            
+            return updates;
         }
 
         public List<StatusUpdate> GetUpdatesForKey(string updateKey, Guid? projectID = null, int phaseID = -1,
@@ -309,6 +319,12 @@ namespace DataService
                 updates.Clear();
                 updates.Add(lastUpdate);
             }
+
+            //__now also write ProjectName to each update
+            foreach (StatusUpdate update in updates)
+            {
+                update.ProjectName = context.Projects.FirstOrDefault(p => p.ProjectID == update.ProjectID).ProjectName;
+            }
             return updates;
         }
 
@@ -327,17 +343,30 @@ namespace DataService
         public List<Project> GetAllProjectsForVertical(int verticalID)
         {
             //return context.Projects.Where(p => p.VerticalID == verticalID).Select(p => p.ProjectID).ToList();
-            return context.Projects.Where(p => p.VerticalID == verticalID).ToList();
-
+            var projects = context.Projects.Where(p => p.VerticalID == verticalID).ToList();
+            foreach (Project project in projects)
+            {
+                Guid projectID = project.ProjectID;
+                var lastUpdateDate = context.ProjectPhases.Where(p => p.ProjectID == projectID && p.LatestUpdate != null).Max(p => p.LatestUpdate);
+                project.LatestUpdate = (DateTime)lastUpdateDate;
+            }
+            return projects;
         }
 
         public List<StatusUpdate> GetAllUpdatesFromEmail(string projectID, int phaseID, int statusSequence)
         {
             Guid projectGuid = new Guid(projectID);
-            return context.StatusUpdates.Where(su =>
+            var updates = context.StatusUpdates.Where(su =>
             su.ProjectID == projectGuid &&
             su.PhaseID == phaseID &&
             su.StatusSequence == statusSequence).ToList();
+
+            //__now also write ProjectName to each update
+            foreach (StatusUpdate update in updates)
+            {
+                update.ProjectName = context.Projects.FirstOrDefault(p => p.ProjectID == update.ProjectID).ProjectName;
+            }
+            return updates;
         }
         
         

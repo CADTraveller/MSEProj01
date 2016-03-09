@@ -80,6 +80,7 @@
     <None Include="Properties\PublishProfiles\costcosutest1 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\EmailClient20160120030800 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\EmailClient20160210065135 - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\EmailClient20160306125331 - Web Deploy.pubxml" />
     <None Include="Properties\webjob-publish-settings.json" />
   </ItemGroup>
   <ItemGroup>

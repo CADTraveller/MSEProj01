@@ -22,16 +22,28 @@ namespace CostcoProjectStatus.Controllers
         // GET: GetVerticalProjects
         public string GetVerticalProjects(int VerticalId)
         {
-            AccessService DataAccess = new AccessService();
-            var VerticalProjects = DataAccess.GetAllProjectsForVertical(VerticalId);
             var passProjectList = new List<StatusUpdatesModel.Project>();
-            foreach (StatusUpdatesModel.Project project in VerticalProjects)
+            try {
+                if (this.Session["username"].ToString() != null)
+                {
+                    AccessService DataAccess = new AccessService();
+                    var VerticalProjects = DataAccess.GetAllProjectsForVertical(VerticalId);
+
+                    foreach (StatusUpdatesModel.Project project in VerticalProjects)
+                    {
+                        StatusUpdatesModel.Project tempProject = new StatusUpdatesModel.Project();
+                        tempProject.LatestUpdate = project.LatestUpdate;
+                        tempProject.ProjectID = project.ProjectID;
+                        tempProject.ProjectName = project.ProjectName;
+                        passProjectList.Add(tempProject);
+
+                    }
+                }
+            } catch (Exception e)
             {
-                StatusUpdatesModel.Project tempProject = new StatusUpdatesModel.Project();
-                tempProject.LatestUpdate= project.LatestUpdate;
-                tempProject.ProjectID = project.ProjectID;
-                tempProject.ProjectName = project.ProjectName;
-                passProjectList.Add(tempProject);
+                // Probably not the best way to handle this
+                string empty = JsonConvert.SerializeObject(passProjectList);
+                return empty;
             }
             string result = JsonConvert.SerializeObject(passProjectList);
             return result;
