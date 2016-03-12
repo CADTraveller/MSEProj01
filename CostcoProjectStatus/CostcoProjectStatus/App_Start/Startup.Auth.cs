@@ -38,7 +38,7 @@ namespace CostcoProjectStatus
                         validateInterval: TimeSpan.FromMinutes(30),
                         regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
                 }
-            });            
+            });
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
             // Enables the application to temporarily store user information when they are verifying the second factor in the two-factor authentication process.
@@ -76,7 +76,7 @@ namespace CostcoProjectStatus
             {
                 ClientId = "17455599033-ba8qcod8m4m3v8pbt7dj09v5trcmelah.apps.googleusercontent.com",
                 ClientSecret = "uEq1Hhb_JeD9rwM56Iwm2c-W",
-              //  AccessType = "offline",
+                //  AccessType = "offline",
 
                 Provider = new GoogleOAuth2AuthenticationProvider
                 {
