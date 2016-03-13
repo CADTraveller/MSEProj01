@@ -1,0 +1,1 @@
+﻿delete from AllowedUser where Email = 'Test@mail.com';
