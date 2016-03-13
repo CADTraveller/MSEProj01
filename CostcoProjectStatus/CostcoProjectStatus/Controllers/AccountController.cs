@@ -60,8 +60,10 @@ namespace CostcoProjectStatus.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            ViewBag.ReturnUrl = returnUrl;
-            return View();
+            //ViewBag.ReturnUrl = returnUrl;
+            //return View();
+            return new ChallengeResult("Google", Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
+
         }
 
         //
