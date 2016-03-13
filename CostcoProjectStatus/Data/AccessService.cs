@@ -57,7 +57,7 @@ namespace DataService
                 AllowedUser newUser = new AllowedUser()
                 {
                     Email = email,
-                    UserID = new Guid(),
+                    UserID = Guid.NewGuid(),
                     RoleID = userRole
                 };
                 context.AllowedUsers.Add(newUser);
