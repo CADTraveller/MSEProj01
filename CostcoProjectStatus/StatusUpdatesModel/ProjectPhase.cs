@@ -20,10 +20,7 @@ namespace StatusUpdatesModel
         public Nullable<int> UpdateCount { get; set; }
         public Nullable<System.DateTime> LatestUpdate { get; set; }
     
-        [Newtonsoft.Json.JsonIgnore]
         public virtual Phase Phase { get; set; }
-
-        [Newtonsoft.Json.JsonIgnore]
         public virtual Project Project { get; set; }
     }
 }

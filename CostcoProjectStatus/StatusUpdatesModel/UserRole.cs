@@ -24,7 +24,6 @@ namespace StatusUpdatesModel
         public string Name { get; set; }
         public string Description { get; set; }
     
-        [Newtonsoft.Json.JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AllowedUser> AllowedUsers { get; set; }
     }

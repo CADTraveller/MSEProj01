@@ -271,21 +271,14 @@ namespace CostcoProjectStatus.Controllers
         //GET: /Account/IsLogged
         public string IsLogin()
         {
-            var loginInfo = CheckLogin();
-            try
-            {
-             if (loginInfo.Result == null)
-                {
-                    return JsonConvert.SerializeObject(null);
-                 }
-            } catch (Exception e)
-            {
-                return JsonConvert.SerializeObject(null);
-            }
-            
+               try
+               {
+                return JsonConvert.SerializeObject(this.Session["username"].ToString());
 
-            // Not sure if this is the right way to handle this
-            return JsonConvert.SerializeObject(this.Session["username"].ToString());
+               } catch (Exception e)
+               {
+                   return JsonConvert.SerializeObject(null);
+               }
 
         }
         public async Task<ActionResult> CheckLogin()
