@@ -106,7 +106,25 @@ namespace CostcoProjectStatus.Controllers
                 if (this.Session["username"].ToString() != null)
                 {
                     var ProjectUpdates = DataAccsess.GetAllUpdatesForProject(id);
-                    string result = JsonConvert.SerializeObject(ProjectUpdates);
+                    var passedStatusUpdateList = new List<StatusUpdatesModel.StatusUpdate>();
+                    foreach (StatusUpdatesModel.StatusUpdate passedStatusUpdate in ProjectUpdates)
+                    {
+                        StatusUpdatesModel.StatusUpdate tempStatusUpdate = new StatusUpdatesModel.StatusUpdate();
+                        //tempStatusUpdate.Phase = passedStatusUpdate.Phase;
+                        tempStatusUpdate.PhaseID = passedStatusUpdate.PhaseID;
+                        //tempStatusUpdate.Project = passedStatusUpdate.Project;
+                        tempStatusUpdate.ProjectID = passedStatusUpdate.ProjectID;
+                        tempStatusUpdate.ProjectName = passedStatusUpdate.ProjectName;
+                        tempStatusUpdate.RecordDate = passedStatusUpdate.RecordDate;
+                        tempStatusUpdate.StatusSequence = passedStatusUpdate.StatusSequence;
+                        tempStatusUpdate.UpdateKey = passedStatusUpdate.UpdateKey;
+                        tempStatusUpdate.UpdateValue = passedStatusUpdate.UpdateValue;
+                        //tempStatusUpdate.Vertical = passedStatusUpdate.Vertical;
+                        tempStatusUpdate.VerticalID = passedStatusUpdate.VerticalID;
+                        passedStatusUpdateList.Add(tempStatusUpdate);
+
+                    }
+                    string result = JsonConvert.SerializeObject(passedStatusUpdateList);
                     return result;
                 }
             } catch (Exception e)
@@ -127,7 +145,25 @@ namespace CostcoProjectStatus.Controllers
                 if (this.Session["username"].ToString() != null)
                 {
                     var statusData = DataAccsess.GetAllUpdatesFromEmail(projectId, Convert.ToInt32(phaseId), Convert.ToInt32(statusSequence));
-                    string result = JsonConvert.SerializeObject(statusData);
+                    var passedStatusUpdateList = new List<StatusUpdatesModel.StatusUpdate>();
+                    foreach (StatusUpdatesModel.StatusUpdate passedStatusUpdate in statusData)
+                    {
+                        StatusUpdatesModel.StatusUpdate tempStatusUpdate = new StatusUpdatesModel.StatusUpdate();
+                        //tempStatusUpdate.Phase = passedStatusUpdate.Phase;
+                        tempStatusUpdate.PhaseID = passedStatusUpdate.PhaseID;
+                        //tempStatusUpdate.Project = passedStatusUpdate.Project;
+                        tempStatusUpdate.ProjectID = passedStatusUpdate.ProjectID;
+                        tempStatusUpdate.ProjectName = passedStatusUpdate.ProjectName;
+                        tempStatusUpdate.RecordDate = passedStatusUpdate.RecordDate;
+                        tempStatusUpdate.StatusSequence = passedStatusUpdate.StatusSequence;
+                        tempStatusUpdate.UpdateKey = passedStatusUpdate.UpdateKey;
+                        tempStatusUpdate.UpdateValue = passedStatusUpdate.UpdateValue;
+                        //tempStatusUpdate.Vertical = passedStatusUpdate.Vertical;
+                        tempStatusUpdate.VerticalID = passedStatusUpdate.VerticalID;
+                        passedStatusUpdateList.Add(tempStatusUpdate);
+
+                    }
+                    string result = JsonConvert.SerializeObject(passedStatusUpdateList);
                     return result;
                 }
             }

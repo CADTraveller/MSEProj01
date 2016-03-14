@@ -105,7 +105,7 @@
     .controller('statusUpdatesCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum','PhaseEnum',function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
         console.log($routeParams.projectId);
         $http({ method: 'GET', url: '../ProjectList/GetProjectUpdates/' + $routeParams.projectId }).success(function (data) {
-            console.log(data);
+            console.log("data from Get Project Updates:" + data);
             console.log($routeParams.projectId);
             $scope.statusUpdateList = data;
             $scope.vId = $scope.statusUpdateList[0].VerticalID;
