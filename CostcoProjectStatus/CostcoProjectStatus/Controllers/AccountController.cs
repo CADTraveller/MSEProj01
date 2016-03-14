@@ -314,16 +314,17 @@ namespace CostcoProjectStatus.Controllers
         public ActionResult ExternalLogin(String provider, String returnURL)
         {
             // Request a redirect to the external login provider
-          /*  string[] keys = Request.Form.AllKeys;
-            var value = "";
-            for (int i = 0; i < keys.Length; i++)
-            {
-                // here you get the name eg test[0].quantity
-                // keys[i];
-                // to get the value you use
-                value = Request.Form[keys[i]];
-            }*/
+            /*  string[] keys = Request.Form.AllKeys;
+              var value = "";
+              for (int i = 0; i < keys.Length; i++)
+              {
+                  // here you get the name eg test[0].quantity
+                  // keys[i];
+                  // to get the value you use
+                  value = Request.Form[keys[i]];
+              }*/
             //returnURL = "/signin-google";
+            this.Session["salt"] = "salt";
 
             return new ChallengeResult("Google", Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnURL }));
         }
