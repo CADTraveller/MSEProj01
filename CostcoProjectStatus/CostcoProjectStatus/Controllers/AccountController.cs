@@ -379,7 +379,8 @@ namespace CostcoProjectStatus.Controllers
 
             if (loginInfo == null)
             {
-                return RedirectToAction("Login");
+                return Redirect("/dashboard/index.html");
+                //return RedirectToAction("Login");
             }
 
             // Sign in the user with this external login provider if the user already has a login
