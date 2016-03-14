@@ -30,10 +30,7 @@
     })
     .config(function ($routeProvider) {
         $routeProvider
-           .when('/Login', {
-                templateUrl: 'angular/project/views/Login.html',
-                controller: 'loginCtrl'
-           })
+           
             .when('/Welcome', {
                 templateUrl: 'angular/project/views/Welcome.html',
                 controller: 'welcomeCtrl'
@@ -72,20 +69,7 @@
             // Left blank and ready for new code!
 
         }])
-    .controller('loginCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
-
-        $scope.login = function () {
-            var postData = {
-                provider: 'Google',
-                returnURL: ''
-            }
-            $http.post('../Account/ExternalLogin', postData)
-            .then(function (result) {
-                console.log(result.data);
-
-            }); 
-        }
-    }])
+    
     .controller('projectListCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
         console.log($routeParams.vId);
         $scope.progressNow = 12;

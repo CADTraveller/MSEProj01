@@ -29,7 +29,8 @@ namespace CostcoProjectStatus
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                LoginPath = new PathString("/Account/Login"),
+                // LoginPath = new PathString("/Account/Login"),
+                LoginPath = new PathString("/index.html"),
                 Provider = new CookieAuthenticationProvider
                 {
                     // Enables the application to validate the security stamp when the user logs in.
@@ -78,24 +79,24 @@ namespace CostcoProjectStatus
                 ClientSecret = "uEq1Hhb_JeD9rwM56Iwm2c-W",
                 //  AccessType = "offline",
 
-                Provider = new GoogleOAuth2AuthenticationProvider
-                {
+                //Provider = new GoogleOAuth2AuthenticationProvider
+                //{
 
-                    OnAuthenticated = async context =>
-                    {
-                        // Retrieve the OAuth access token to store for subsequent API calls
-                        string accessToken = context.AccessToken;
+                //    OnAuthenticated = async context =>
+                //    {
+                //        // Retrieve the OAuth access token to store for subsequent API calls
+                //        string accessToken = context.AccessToken;
 
-                        // Retrieve the name of the user in Google
-                        string googleName = context.Name;
+                //        // Retrieve the name of the user in Google
+                //        string googleName = context.Name;
 
-                        // Retrieve the user's email address
-                        string googleEmailAddress = context.Email;
+                //        // Retrieve the user's email address
+                //        string googleEmailAddress = context.Email;
 
-                        // You can even retrieve the full JSON-serialized user
-                        var serializedUser = context.User;
-                    }
-                }
+                //        // You can even retrieve the full JSON-serialized user
+                //        var serializedUser = context.User;
+                //    }
+                //}
 
 
 
