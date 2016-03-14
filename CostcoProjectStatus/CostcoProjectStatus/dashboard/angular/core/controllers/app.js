@@ -39,7 +39,6 @@ function loginUser() {
 }
 
 function logoutUser() {
-    alert("logging out user");
     var loginData = {
         __RequestVerificationToken: 'MM5q2ZfVeJVJjjI5Rtw7Y2-ySXDNfiSUNLebsu5CUEawInv6snZFAF6OmM1dp-juQHSTgqZPOEwCKj6U0OyA19d7JxJER_r0ismwhM3uCRqHJs0iSJt6t9-RY20x5e0DfbFehQ_Ncj3uImYqBdC6TQ2'
     }
