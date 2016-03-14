@@ -62,6 +62,7 @@ namespace CostcoProjectStatus.Controllers
         {
             //ViewBag.ReturnUrl = returnUrl;
             //return View();
+            this.Session["salt"] = "salt";
             return new ChallengeResult("Google", Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
 
         }
