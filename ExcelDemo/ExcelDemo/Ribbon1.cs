@@ -70,7 +70,7 @@ namespace ExcelDemo
                 cell = usedRange.Cells[i, 4];
                 int verticalID = Convert.ToInt32(cell.Value);
 
-                for (int k = 5; k <= iNumColumns; k++)
+                for (int k = 5; k <= iNumColumns; k+=2)
                 {
                     StatusUpdate update = new StatusUpdate();
                     update.ProjectID = projectID;
@@ -78,11 +78,10 @@ namespace ExcelDemo
                     update.VerticalID = verticalID;
                     update.ProjectName = projectName;
                     cell = usedRange.Cells[i, k];
-                    string text = cell.Value.ToString();
-
-                    if (k % 2 == 1) update.UpdateKey = text;
-                    else update.UpdateValue = text;
-                    updates.Add(update);
+                    update.UpdateKey = cell.Value.ToString();
+                    cell = usedRange.Cells[i, k];
+                    update.UpdateValue = cell.Value.ToString();
+                    updates.Add(update);                    
                 }
 
             }
