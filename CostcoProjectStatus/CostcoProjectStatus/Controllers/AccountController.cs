@@ -62,6 +62,7 @@ namespace CostcoProjectStatus.Controllers
         {
             //ViewBag.ReturnUrl = returnUrl;
             //return View();
+            this.Session["salt"] = "salt";
             return new ChallengeResult("Google", Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
 
         }
@@ -271,21 +272,14 @@ namespace CostcoProjectStatus.Controllers
         //GET: /Account/IsLogged
         public string IsLogin()
         {
-            var loginInfo = CheckLogin();
-            try
-            {
-             if (loginInfo.Result == null)
-                {
-                    return JsonConvert.SerializeObject(null);
-                 }
-            } catch (Exception e)
-            {
-                return JsonConvert.SerializeObject(null);
-            }
-            
+               try
+               {
+                return JsonConvert.SerializeObject(this.Session["username"].ToString());
 
-            // Not sure if this is the right way to handle this
-            return JsonConvert.SerializeObject(this.Session["username"].ToString());
+               } catch (Exception e)
+               {
+                   return JsonConvert.SerializeObject(null);
+               }
 
         }
         public async Task<ActionResult> CheckLogin()
@@ -320,16 +314,17 @@ namespace CostcoProjectStatus.Controllers
         public ActionResult ExternalLogin(String provider, String returnURL)
         {
             // Request a redirect to the external login provider
-          /*  string[] keys = Request.Form.AllKeys;
-            var value = "";
-            for (int i = 0; i < keys.Length; i++)
-            {
-                // here you get the name eg test[0].quantity
-                // keys[i];
-                // to get the value you use
-                value = Request.Form[keys[i]];
-            }*/
+            /*  string[] keys = Request.Form.AllKeys;
+              var value = "";
+              for (int i = 0; i < keys.Length; i++)
+              {
+                  // here you get the name eg test[0].quantity
+                  // keys[i];
+                  // to get the value you use
+                  value = Request.Form[keys[i]];
+              }*/
             //returnURL = "/signin-google";
+            this.Session["salt"] = "salt";
 
             return new ChallengeResult("Google", Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnURL }));
         }
@@ -384,7 +379,8 @@ namespace CostcoProjectStatus.Controllers
 
             if (loginInfo == null)
             {
-                return RedirectToAction("Login");
+                return Redirect("/dashboard/index.html");
+                //return RedirectToAction("Login");
             }
 
             // Sign in the user with this external login provider if the user already has a login
