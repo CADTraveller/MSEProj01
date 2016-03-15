@@ -13,6 +13,6 @@ To run every part of the system, the following configuration is required:<br>
 3) Safari/Firefox/Chrome. NO IE.<br>
 
 To send an email into the system, use the following format:<br>
-To: jayasreetestemail@gmail.com<br>
+To: \<theemailaddress\>@emailaddressserver.com<br>
 Subject: \<GUID\>|\<Phase Number\>|\<Vertical Number\>|\<Project Name\><br>
 Body: \<Key\>|\<Value\>|\<Key2\>|\<Value2\>.... etc<br>
