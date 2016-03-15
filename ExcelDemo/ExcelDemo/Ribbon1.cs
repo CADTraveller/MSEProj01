@@ -20,9 +20,9 @@ namespace ExcelDemo
 
         private void button1_Click(object sender, RibbonControlEventArgs e)
         {
-            ExcelIO.Application excelApp;
-            ExcelTools.Workbook workbook;
+            ExcelIO.Application excelApp; 
             ExcelIO.Worksheet activeSheet;
+
             try
             {
                 excelApp = Globals.ThisAddIn.Application;
@@ -87,14 +87,24 @@ namespace ExcelDemo
             }
 
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(updates);
-
-            using (var client = new WebClient())
+            int updateCount = updates.Count;
+            try
             {
-                client.Headers[HttpRequestHeader.ContentType] = "application/json";
-                var result = client.UploadString("http://costcodevops.azurewebsites.net/ProjectUpdate/Update", "Post", json);
-                //var result = client.UploadString("http://costcodevops.azurewebsites.net/ProjectUpdate/Update", "Post", json);
-                Console.WriteLine(result);
+
+                using (var client = new WebClient())
+                {
+                    client.Headers[HttpRequestHeader.ContentType] = "application/json";
+                    var result = client.UploadString("http://costcodevops.azurewebsites.net/ProjectUpdate/Update", "Post", json);
+                    //var result = client.UploadString("http://costcodevops.azurewebsites.net/ProjectUpdate/Update", "Post", json);
+                    Console.WriteLine(result);
+                }
             }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            MessageBox.Show("Successfully posted " + updateCount + " updates to CostcoDevOps Azure");
         }
     }
 
