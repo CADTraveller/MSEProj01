@@ -30,7 +30,7 @@ namespace EmailClient
         {
             // Connect to the IMAP server. The 'true' parameter specifies to use SSL, which is important (for Gmail at least)
             ImapClient imapClient = new ImapClient(ConfigurationManager.AppSettings["ImapServer"], ConfigurationManager.AppSettings["UserId"], ConfigurationManager.AppSettings["Password"], AuthMethods.Login, 993, true);
-
+            var userName = ConfigurationManager.AppSettings["UserID"];
           //  ImapClient imapClient = new ImapClient(ConfigurationManager.AppSettings["ImapServer"], "jayasreetestemail@gmail.com", "7Ywy7N[S", AuthMethods.Login, 993, true);
             // Select a mailbox. Case-insensitive
             imapClient.SelectMailbox("INBOX");

@@ -396,6 +396,18 @@ namespace DataService
             return projects;
         }
 
+        public Guid GetProjectIDbyName(string projectName)
+        {
+            Project project = context.Projects.FirstOrDefault(p => p.ProjectName == projectName);
+            Guid? projectID = project?.ProjectID ;
+            if (projectID == null) projectID = Guid.Empty;
+            return (Guid)projectID;
+        }
+
+        public string GetProjectNameForID(Guid projectID)
+        {
+            return context.Projects.FirstOrDefault(p => p.ProjectID == projectID).ProjectName;
+        }
         #endregion
     }
 }

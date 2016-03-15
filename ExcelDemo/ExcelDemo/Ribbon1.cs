@@ -20,7 +20,7 @@ namespace ExcelDemo
 
         private void button1_Click(object sender, RibbonControlEventArgs e)
         {
-            ExcelIO.Application excelApp; 
+            ExcelIO.Application excelApp;
             ExcelIO.Worksheet activeSheet;
 
             try
@@ -33,7 +33,7 @@ namespace ExcelDemo
                 MessageBox.Show("Problem Getting Workbooks & Sheets");
                 return;
             }
-            ExcelIO.Range usedRange ;
+            ExcelIO.Range usedRange;
             try
             {
 
@@ -58,32 +58,33 @@ namespace ExcelDemo
             //__skip header row, get values
             for (int i = 2; i <= iNumRows; i++)
             {
-                StatusUpdate update = new StatusUpdate();
                 ExcelIO.Range cell = usedRange.Cells[i, 1];
                 Guid projectID = new Guid(cell.Value.ToString());
-                update.ProjectID = projectID;
 
                 cell = usedRange.Cells[i, 2];
-                update.ProjectName = cell.Value.ToString();
+                string projectName = cell.Value.ToString();
 
                 cell = usedRange.Cells[i, 3];
                 int phaseID = Convert.ToInt32(cell.Value);
-                update.PhaseID = phaseID;
 
                 cell = usedRange.Cells[i, 4];
                 int verticalID = Convert.ToInt32(cell.Value);
-                update.VerticalID = verticalID;
 
                 for (int k = 5; k <= iNumColumns; k++)
                 {
+                    StatusUpdate update = new StatusUpdate();
+                    update.ProjectID = projectID;
+                    update.PhaseID = phaseID;
+                    update.VerticalID = verticalID;
+                    update.ProjectName = projectName;
                     cell = usedRange.Cells[i, k];
                     string text = cell.Value.ToString();
-                   
-                    if (k%2 == 1) update.UpdateKey = text;
+
+                    if (k % 2 == 1) update.UpdateKey = text;
                     else update.UpdateValue = text;
+                    updates.Add(update);
                 }
 
-                updates.Add(update);
             }
 
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(updates);

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Newtonsoft.Json;
 using DataService;
 using StatusUpdatesModel;
@@ -26,6 +27,9 @@ namespace JsonDataGenerator
                 Console.WriteLine("Select action to take:");
                 Console.WriteLine("--> 1) Clear all data");
                 Console.WriteLine("--> 2) Create sample data");
+                Console.WriteLine("--> 3) Delete Project by ID");
+                Console.WriteLine("--> 4) Delete Project by Name");
+                Console.WriteLine("--> 5) Exit application");
                 Console.WriteLine("??\n");
 
                 try
@@ -59,6 +63,35 @@ namespace JsonDataGenerator
                             errorMessage = "";
                         }
                         break;
+                    case 3:
+                        Console.WriteLine("Enter ProjectID Guid");
+                        string projectID = Console.ReadLine();
+                        try
+                        {
+                            deleteProject(projectID, null);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine("Error deleting project, " + e.Message);
+                            continue;
+                        }
+                        break;
+                    case 4:
+                        Console.WriteLine("Enter Project Name");
+                        string projectName = Console.ReadLine();
+                        try
+                        {
+                            deleteProject(null, projectName);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine("Error deleting project, " + e.Message);
+                            continue;
+                        }
+                        break;
+                    case 5:
+                        return;
+                        break;
                     default:
                         return;
                 }
@@ -66,18 +99,65 @@ namespace JsonDataGenerator
             }
         }
 
+        private static void deleteProject(string projectIDstring = null, string projectName = null)
+        {
+            AccessService dataService = new AccessService();
+            Guid projectID = new Guid();
+            if (string.IsNullOrEmpty(projectIDstring) )
+            {
+                projectID = dataService.GetProjectIDbyName(projectName);
+            }
+            else
+            {
+                try
+                {
+                    projectID = new Guid(projectIDstring);
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Problem creating Guid, delete has failed");
+                    return;
+                }
+            }
+
+            if (projectID == Guid.Empty)
+            {
+                Console.WriteLine("Problem getting ID for " + projectName);
+                return;
+            }
+
+            projectName = dataService.GetProjectNameForID(projectID);
+            int updatesRemoved = 0;
+            var context = createContext();
+            List<StatusUpdate> updatesToRemove = context.StatusUpdates.Where(u => u.ProjectID == projectID).ToList();
+            updatesRemoved = updatesToRemove.Count;
+            context.StatusUpdates.RemoveRange(updatesToRemove);
+            context.SaveChanges();
+            Console.WriteLine("Removed " + updatesRemoved + " updates from Status Update Table");
+
+            List<ProjectPhase> projectPhases = context.ProjectPhases.Where(p => p.ProjectID == projectID).ToList();
+
+            int phaseEntryCount = projectPhases.Count(p => p.ProjectID == projectID);
+            context.ProjectPhases.RemoveRange(projectPhases);
+            context.SaveChanges();
+            Console.WriteLine("Removed " + phaseEntryCount + " ProjectPhase entries");
+
+            Project projectToDelete = context.Projects.FirstOrDefault(p => p.ProjectID == projectID);
+            context.Projects.Remove(projectToDelete);
+            context.SaveChanges();
+            Console.WriteLine("Project " + projectName + " with ID=" + projectID + " is removed");
+        
+        }
+
         private static bool deleteAllData()
         {
             try
             {
-
-                const string ConnectionString = "Server=tcp:costcosu.database.windows.net,1433;Database=CostcoDevStatus;User ID=SUAdmin@costcosu;Password=39ffbJeo;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-
-                CostcoDevStatusEntities context = CostcoDevStatusEntities.Create(ConnectionString);
+                CostcoDevStatusEntities context = createContext();
                 IEnumerable<StatusUpdate> updates = context.StatusUpdates;
                 foreach (StatusUpdate update in updates)
                 {
-                    Console.WriteLine("Removing Status Update " + update.ProjectName + "," + update.UpdateKey );
+                    Console.WriteLine("Removing Status Update " + update.ProjectName + "," + update.UpdateKey);
                     context.StatusUpdates.Remove(update);
                 }
                 context.SaveChanges();
@@ -85,7 +165,7 @@ namespace JsonDataGenerator
                 IEnumerable<ProjectPhase> statusSequences = context.ProjectPhases;
                 foreach (ProjectPhase statusSequence in statusSequences)
                 {
-                    Console.WriteLine("Removing ProjectPhase record " + statusSequence.Project.ProjectName + "_" 
+                    Console.WriteLine("Removing ProjectPhase record " + statusSequence.Project.ProjectName + "_"
                         + statusSequence.UpdateKey);
                     context.ProjectPhases.Remove(statusSequence);
                 }
@@ -105,6 +185,14 @@ namespace JsonDataGenerator
                 return false;
             }
             return true;
+        }
+
+        private static CostcoDevStatusEntities createContext()
+        {
+            const string ConnectionString = "Server=tcp:costcosu.database.windows.net,1433;Database=CostcoDevStatus;User ID=SUAdmin@costcosu;Password=39ffbJeo;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+
+            CostcoDevStatusEntities context = CostcoDevStatusEntities.Create(ConnectionString);
+            return context;
         }
 
         private static bool writeSampleData()
