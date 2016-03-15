@@ -274,8 +274,8 @@ namespace CostcoProjectStatus.Controllers
         {
                try
                {
-                return JsonConvert.SerializeObject(this.Session["username"].ToString());
-
+                    return JsonConvert.SerializeObject(this.Session["username"].ToString());
+                
                } catch (Exception e)
                {
                    return JsonConvert.SerializeObject(null);
@@ -328,7 +328,7 @@ namespace CostcoProjectStatus.Controllers
 
             return new ChallengeResult("Google", Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnURL }));
         }
-
+        
         //
         // GET: /Account/SendCode
         [AllowAnonymous]
@@ -371,11 +371,26 @@ namespace CostcoProjectStatus.Controllers
         //}
 
         // GET: /Account/ExternalLoginCallback
-   //     [BasicAuthentication]
+        //     [BasicAuthentication]
         //[AllowAnonymous]
-        public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
+        //public async bool IsAuthorizedUser()
+        //{
+        //    var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
+        //    var email = loginInfo.Email;
+        //    this.Session["username"] = loginInfo.Email;
+        //    DataService.AccessService dataService = new DataService.AccessService();
+        //    var userExists = dataService.IsUserAuthorized(email);
+
+        //    if (userExists)
+        //    {
+        //        return true;
+        //    }
+        //    else
+        //        return false;
+        //}
+         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
-            var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
+             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
 
             if (loginInfo == null)
             {
@@ -388,7 +403,7 @@ namespace CostcoProjectStatus.Controllers
             var email = loginInfo.Email;
             this.Session["username"] = loginInfo.Email;
             DataService.AccessService dataService = new DataService.AccessService();
-            var userExists = dataService.IsUserAuthorized(email);
+             var  userExists = dataService.IsUserAuthorized(email);
             if (userExists)
             {
                 return Redirect("/dashboard/index.html");
@@ -456,7 +471,7 @@ namespace CostcoProjectStatus.Controllers
                     if (result.Succeeded)
                     {
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                        return RedirectToLocal(returnUrl);
+                       return RedirectToLocal(returnUrl);
                     }
                 }
                 AddErrors(result);

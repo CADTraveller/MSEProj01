@@ -103,7 +103,8 @@ namespace CostcoProjectStatus.Controllers
         {
             try
             {
-                if (this.Session["username"].ToString() != null)
+                
+                if (this.Session["username"].ToString() != null && DataAccsess.IsUserAuthorized(this.Session["username"].ToString()))
                 {
                     var ProjectUpdates = DataAccsess.GetAllUpdatesForProject(id);
                     var passedStatusUpdateList = new List<StatusUpdatesModel.StatusUpdate>();
@@ -142,7 +143,7 @@ namespace CostcoProjectStatus.Controllers
 
             try
             {
-                if (this.Session["username"].ToString() != null)
+                if (this.Session["username"].ToString() != null && DataAccsess.IsUserAuthorized(this.Session["username"].ToString()))
                 {
                     var statusData = DataAccsess.GetAllUpdatesFromEmail(projectId, Convert.ToInt32(phaseId), Convert.ToInt32(statusSequence));
                     var passedStatusUpdateList = new List<StatusUpdatesModel.StatusUpdate>();
