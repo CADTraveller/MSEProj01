@@ -240,6 +240,7 @@ namespace DataService
                     if (u.ProjectID == Guid.Empty) u.ProjectID = projectID;
                     if (string.IsNullOrEmpty(u.ProjectName)) u.ProjectName = projectName;
                     if (u.VerticalID == null || u.VerticalID < 0 || u.VerticalID > 7) u.VerticalID = verticalID;
+                    u.RecordDate = DateTime.Now;
                     Console.WriteLine("\n--Added Update| updateKey=" + u.UpdateKey + ", updateValue=" + u.UpdateValue);
                     context.StatusUpdates.Add(u);
 
