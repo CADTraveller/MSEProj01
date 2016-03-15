@@ -147,12 +147,15 @@ namespace DataService
         {
             //__safety check, cannot record an empty list
             if (updates.Count == 0) return null;
+            StatusUpdate refUpdate = updates[0];
 
             //__check for existence of this project by ID, Name
-            Guid projectID = updates.FirstOrDefault(u => u.ProjectID != null).ProjectID;
-            string projectName = updates.FirstOrDefault(u => !string.IsNullOrEmpty(u.ProjectName)).ProjectName;
-            int? verticalID = updates.FirstOrDefault(u => u.VerticalID != null).VerticalID;
+            Guid projectID = refUpdate.ProjectID;
+            string projectName = refUpdate.ProjectName;
+            int? verticalID = refUpdate.VerticalID;
             if (verticalID == null || verticalID < 0 || verticalID > 7) verticalID = 0;
+            int? phaseID = refUpdate.PhaseID;
+            if (phaseID < 0 || phaseID > 6) return false;
             bool hasID = projectID != Guid.Empty;
             bool hasName = !string.IsNullOrEmpty(projectName);
             if (!hasID && !hasName) return null;//__cannot record anonymous updates
