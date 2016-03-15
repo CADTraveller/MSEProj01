@@ -79,7 +79,7 @@ namespace ExcelDemo
                     update.ProjectName = projectName;
                     cell = usedRange.Cells[i, k];
                     update.UpdateKey = cell.Value.ToString();
-                    cell = usedRange.Cells[i, k];
+                    cell = usedRange.Cells[i, k+1];
                     update.UpdateValue = cell.Value.ToString();
                     updates.Add(update);                    
                 }
