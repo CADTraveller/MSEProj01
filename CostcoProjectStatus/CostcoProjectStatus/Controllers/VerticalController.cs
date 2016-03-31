@@ -22,11 +22,12 @@ namespace CostcoProjectStatus.Controllers
         // GET: GetVerticalProjects
         public string GetVerticalProjects(int VerticalId)
         {
+            AccessService DataAccess = new AccessService();
             var passProjectList = new List<StatusUpdatesModel.Project>();
             try {
-                if (this.Session["username"].ToString() != null)
+                if (this.Session["username"].ToString() != null && DataAccess.IsUserAuthorized(this.Session["username"].ToString()))
                 {
-                    AccessService DataAccess = new AccessService();
+                   // AccessService DataAccess = new AccessService();
                     var VerticalProjects = DataAccess.GetAllProjectsForVertical(VerticalId);
 
                     foreach (StatusUpdatesModel.Project project in VerticalProjects)

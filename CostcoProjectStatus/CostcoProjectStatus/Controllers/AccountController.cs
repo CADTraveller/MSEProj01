@@ -62,7 +62,7 @@ namespace CostcoProjectStatus.Controllers
         {
             //ViewBag.ReturnUrl = returnUrl;
             //return View();
-            this.Session["salt"] = "salt";
+            //this.Session["salt"] = "salt";
             return new ChallengeResult("Google", Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
 
         }
@@ -406,6 +406,13 @@ namespace CostcoProjectStatus.Controllers
              var  userExists = dataService.IsUserAuthorized(email);
             if (userExists)
             {
+                this.Session.Contents.Remove("Salt");
+                this.Session.Contents.RemoveAll();
+                this.Session.Clear();
+                this.Session.Abandon();
+                this.Session.RemoveAll();
+
+                this.Session["P"] = "P";
                 return Redirect("/dashboard/index.html");
 
             }
@@ -486,9 +493,10 @@ namespace CostcoProjectStatus.Controllers
         [HttpPost]
         public ActionResult LogOff()
         {
-            Console.Write(this.Session["username"]);
-            Console.Write(this.Session.SessionID);
+           
             this.Session["username"] = "";
+            this.Session.Contents.Remove("Salt");
+            this.Session.Contents.RemoveAll();
             this.Session.Clear();
             this.Session.Abandon();
             this.Session.RemoveAll();

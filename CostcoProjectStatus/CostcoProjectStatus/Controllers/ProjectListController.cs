@@ -101,6 +101,7 @@ namespace CostcoProjectStatus.Controllers
     //    [BasicAuthentication]
         public string GetStatusUpdates(String id)
         {
+
             try
             {
                 
@@ -187,12 +188,12 @@ namespace CostcoProjectStatus.Controllers
         //}
         //
         // POST: /Account/ExternalLogin
-        [HttpPost]
-        public ActionResult ExternalLogin(string provider, string returnUrl)
-        {
-            // Request a redirect to the external login provider
-            return null;
-        }
+        //[HttpPost]
+        //public ActionResult ExternalLogin(string provider, string returnUrl)
+        //{
+        //    Request a redirect to the external login provider
+        //    return null;
+        //}
 
 
     }
