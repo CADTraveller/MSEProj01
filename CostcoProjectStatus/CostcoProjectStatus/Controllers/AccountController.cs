@@ -502,7 +502,13 @@ namespace CostcoProjectStatus.Controllers
             this.Session.RemoveAll();
             Console.Write(this.Session.SessionID);
             Console.Write(this.Session["username"]);
+
+            Response.Cookies.Clear();
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            HttpCookie c = new HttpCookie("login");
+            c.Expires = DateTime.Now.AddDays(-1);
+            Response.Cookies.Add(c);
+            Session.Clear();
             return Redirect("/dashboard/index.html");
         }
 
