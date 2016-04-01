@@ -240,6 +240,7 @@ namespace DataService
                     if (u.ProjectID == Guid.Empty) u.ProjectID = projectID;
                     if (string.IsNullOrEmpty(u.ProjectName)) u.ProjectName = projectName;
                     if (u.VerticalID == null || u.VerticalID < 0 || u.VerticalID > 7) u.VerticalID = verticalID;
+                    u.RecordDate = DateTime.Now;
                     Console.WriteLine("\n--Added Update| updateKey=" + u.UpdateKey + ", updateValue=" + u.UpdateValue);
                     context.StatusUpdates.Add(u);
 
@@ -396,6 +397,18 @@ namespace DataService
             return projects;
         }
 
+        public Guid GetProjectIDbyName(string projectName)
+        {
+            Project project = context.Projects.FirstOrDefault(p => p.ProjectName == projectName);
+            Guid? projectID = project?.ProjectID ;
+            if (projectID == null) projectID = Guid.Empty;
+            return (Guid)projectID;
+        }
+
+        public string GetProjectNameForID(Guid projectID)
+        {
+            return context.Projects.FirstOrDefault(p => p.ProjectID == projectID).ProjectName;
+        }
         #endregion
     }
 }

@@ -101,9 +101,11 @@ namespace CostcoProjectStatus.Controllers
     //    [BasicAuthentication]
         public string GetStatusUpdates(String id)
         {
+
             try
             {
-                if (this.Session["username"].ToString() != null)
+                
+                if (this.Session["username"].ToString() != null && DataAccsess.IsUserAuthorized(this.Session["username"].ToString()))
                 {
                     var ProjectUpdates = DataAccsess.GetAllUpdatesForProject(id);
                     var passedStatusUpdateList = new List<StatusUpdatesModel.StatusUpdate>();
@@ -142,7 +144,7 @@ namespace CostcoProjectStatus.Controllers
 
             try
             {
-                if (this.Session["username"].ToString() != null)
+                if (this.Session["username"].ToString() != null && DataAccsess.IsUserAuthorized(this.Session["username"].ToString()))
                 {
                     var statusData = DataAccsess.GetAllUpdatesFromEmail(projectId, Convert.ToInt32(phaseId), Convert.ToInt32(statusSequence));
                     var passedStatusUpdateList = new List<StatusUpdatesModel.StatusUpdate>();
@@ -186,12 +188,12 @@ namespace CostcoProjectStatus.Controllers
         //}
         //
         // POST: /Account/ExternalLogin
-        [HttpPost]
-        public ActionResult ExternalLogin(string provider, string returnUrl)
-        {
-            // Request a redirect to the external login provider
-            return null;
-        }
+        //[HttpPost]
+        //public ActionResult ExternalLogin(string provider, string returnUrl)
+        //{
+        //    Request a redirect to the external login provider
+        //    return null;
+        //}
 
 
     }

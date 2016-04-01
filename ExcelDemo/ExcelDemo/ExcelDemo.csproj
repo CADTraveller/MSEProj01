@@ -185,7 +185,6 @@
     <EmbeddedResource Include="Ribbon1.resx">
       <DependentUpon>Ribbon1.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="ExcelDemo_2_TemporaryKey.pfx" />
     <None Include="ExcelDemo_4_TemporaryKey.pfx" />
     <None Include="ExcelDemo_TemporaryKey.pfx" />
     <None Include="packages.config" />
@@ -222,10 +221,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>ExcelDemo_2_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>ExcelDemo_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>6BCD9E765664050DACA8C460FBF851007E2CAD71</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>24CBD5B13B516BF4D0CA248B970F91FB5FD3BA20</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
