@@ -418,7 +418,7 @@ namespace CostcoProjectStatus.Controllers
             }
             else
             {
-                return View("UnauthAccess");
+                return Redirect("/dashboard/index.html");
             }
 
             //switch (result)
