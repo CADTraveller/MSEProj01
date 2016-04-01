@@ -274,7 +274,15 @@ namespace CostcoProjectStatus.Controllers
         {
                try
                {
+                DataService.AccessService dataService = new DataService.AccessService();
+                var userExists = dataService.IsUserAuthorized(this.Session["username"].ToString());
+                if (userExists)
+                {
                     return JsonConvert.SerializeObject(this.Session["username"].ToString());
+                } else
+                {
+                    return JsonConvert.SerializeObject("NOT AUTHORIZED");
+                }
                 
                } catch (Exception e)
                {
