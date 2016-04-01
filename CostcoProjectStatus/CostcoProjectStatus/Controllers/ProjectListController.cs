@@ -94,7 +94,7 @@ namespace CostcoProjectStatus.Controllers
         public string Display()
         {
             var ProjectNames = DataAccsess.GetAllProjectNames();
-            string result = JsonConvert.SerializeObject("");
+            string result = "<script>window.location.replace(\"/dashboard/index.html\");</script>";
             return result;
         }
         //[AuthAttribute]
