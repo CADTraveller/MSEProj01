@@ -406,13 +406,13 @@ namespace CostcoProjectStatus.Controllers
              var  userExists = dataService.IsUserAuthorized(email);
             if (userExists)
             {
-                this.Session.Contents.Remove("Salt");
-                this.Session.Contents.RemoveAll();
-                this.Session.Clear();
-                this.Session.Abandon();
-                this.Session.RemoveAll();
+                //this.Session.Contents.Remove("Salt");
+                //this.Session.Contents.RemoveAll();
+                //this.Session.Clear();
+                //this.Session.Abandon();
+                //this.Session.RemoveAll();
 
-                this.Session["P"] = "P";
+                //this.Session["P"] = "P";
                 return Redirect("/dashboard/index.html");
 
             }
