@@ -274,7 +274,15 @@ namespace CostcoProjectStatus.Controllers
         {
                try
                {
+                DataService.AccessService dataService = new DataService.AccessService();
+                var userExists = dataService.IsUserAuthorized(this.Session["username"].ToString());
+                if (userExists)
+                {
                     return JsonConvert.SerializeObject(this.Session["username"].ToString());
+                } else
+                {
+                    return JsonConvert.SerializeObject("NOT AUTHORIZED");
+                }
                 
                } catch (Exception e)
                {
@@ -406,19 +414,19 @@ namespace CostcoProjectStatus.Controllers
              var  userExists = dataService.IsUserAuthorized(email);
             if (userExists)
             {
-                this.Session.Contents.Remove("Salt");
-                this.Session.Contents.RemoveAll();
-                this.Session.Clear();
-                this.Session.Abandon();
-                this.Session.RemoveAll();
+                //this.Session.Contents.Remove("Salt");
+                //this.Session.Contents.RemoveAll();
+                //this.Session.Clear();
+                //this.Session.Abandon();
+                //this.Session.RemoveAll();
 
-                this.Session["P"] = "P";
+                //this.Session["P"] = "P";
                 return Redirect("/dashboard/index.html");
 
             }
             else
             {
-                return View("UnauthAccess");
+                return Redirect("/dashboard/index.html");
             }
 
             //switch (result)
@@ -502,7 +510,13 @@ namespace CostcoProjectStatus.Controllers
             this.Session.RemoveAll();
             Console.Write(this.Session.SessionID);
             Console.Write(this.Session["username"]);
+
+            Response.Cookies.Clear();
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            HttpCookie c = new HttpCookie("login");
+            c.Expires = DateTime.Now.AddDays(-1);
+            Response.Cookies.Add(c);
+            Session.Clear();
             return Redirect("/dashboard/index.html");
         }
 
