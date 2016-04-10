@@ -17,4 +17,5 @@ namespace EmailClient
         public DateTime RecordedDate;
 
     }
+
 }
