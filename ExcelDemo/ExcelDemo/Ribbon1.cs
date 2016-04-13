@@ -86,7 +86,10 @@ namespace ExcelDemo
 
             }
 
-            string json = Newtonsoft.Json.JsonConvert.SerializeObject(updates);
+            StatusUpdatePacket packet = new StatusUpdatePacket();
+            packet.StatusUpdateList = updates;
+            packet.AppId = "excelCostco";
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(packet);
             int updateCount = updates.Count;
             try
             {
@@ -95,7 +98,6 @@ namespace ExcelDemo
                 {
                     client.Headers[HttpRequestHeader.ContentType] = "application/json";
                     var result = client.UploadString("http://costcodevops.azurewebsites.net/ProjectUpdate/Update", "Post", json);
-                    //var result = client.UploadString("http://costcodevops.azurewebsites.net/ProjectUpdate/Update", "Post", json);
                     Console.WriteLine(result);
                 }
             }
@@ -118,5 +120,10 @@ namespace ExcelDemo
         public Nullable<System.DateTime> RecordDate { get; set; }
         public string UpdateKey { get; set; }
         public string UpdateValue { get; set; }
+    }
+    public class StatusUpdatePacket
+    {
+        public string AppId { get; set; }
+        public List<StatusUpdate> StatusUpdateList { get; set; }
     }
 }

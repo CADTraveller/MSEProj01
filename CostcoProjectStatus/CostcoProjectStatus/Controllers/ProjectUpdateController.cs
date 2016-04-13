@@ -100,26 +100,27 @@ namespace CostcoProjectStatus.Controllers
 
         // [System.Web.Mvc.HttpPostAttribute]
         [System.Web.Mvc.HttpPost]
-        public void Update(List<EmailObject> jsonList)
+        public void Update(AppPacket jsonPacket)
         //        public void Update(String jsonList)
         {
-            List<StatusUpdate> listOfUpdates = new List<StatusUpdate>();
-            foreach (EmailObject eo in jsonList)
+            // need to read this dynamically through csv after Hasnath checks in her code
+            if (jsonPacket.AppId == "excelCostco" || jsonPacket.AppId == "emailCostco")
             {
-                StatusUpdate temp = new StatusUpdate();
-                temp.PhaseID = Convert.ToInt32(eo.PhaseID);
-                temp.ProjectName = eo.ProjectName;
-                temp.ProjectID = eo.ProjectID;
-                temp.VerticalID = Convert.ToInt32(eo.VerticalID);
-                temp.UpdateKey = eo.UpdateKey;
-                temp.UpdateValue = eo.UpdateValue;
+                List<StatusUpdate> listOfUpdates = new List<StatusUpdate>();
+                foreach (AppObject eo in jsonPacket.StatusUpdateList)
+                {
+                    StatusUpdate temp = new StatusUpdate();
+                    temp.PhaseID = Convert.ToInt32(eo.PhaseID);
+                    temp.ProjectName = eo.ProjectName;
+                    temp.ProjectID = eo.ProjectID;
+                    temp.VerticalID = Convert.ToInt32(eo.VerticalID);
+                    temp.UpdateKey = eo.UpdateKey;
+                    temp.UpdateValue = eo.UpdateValue;
 
-                listOfUpdates.Add(temp);
+                    listOfUpdates.Add(temp);
+                }
+                DataAccess.RecordStatusUpdate(listOfUpdates);
             }
-
-            //            List<StatusUpdate> listOfUpdates = Newtonsoft.Json.JsonConvert.DeserializeObject<List<StatusUpdate>>(jsonList);
-
-            DataAccess.RecordStatusUpdate(listOfUpdates);
         }
 
         public HttpResponseMessage Post(string value)
@@ -128,11 +129,16 @@ namespace CostcoProjectStatus.Controllers
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
 
-        List<EmailObject> EmailObjectList = new List<EmailObject>();
+       // List<EmailObject> EmailObjectList = new List<EmailObject>();
     }
-
     [Serializable]
-    public class EmailObject
+    public class AppPacket
+    {
+        public string AppId { get; set; }
+        public List<AppObject> StatusUpdateList { get; set; }
+    }
+    [Serializable]
+    public class AppObject
     {
         public Guid ProjectID { get; set; }
         public string ProjectName { get; set; }
@@ -146,7 +152,7 @@ namespace CostcoProjectStatus.Controllers
     [Serializable]
     public class EmailObjectList
     {
-        List<EmailObject> emailObjectList = new List<EmailObject>();
+      //  List<EmailObject> emailObjectList = new List<EmailObject>();
     }
 }
 
