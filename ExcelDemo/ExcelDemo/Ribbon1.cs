@@ -97,7 +97,7 @@ namespace ExcelDemo
                 using (var client = new WebClient())
                 {
                     client.Headers[HttpRequestHeader.ContentType] = "application/json";
-                    var result = client.UploadString("https://localhost:44300/ProjectUpdate/Update", "Post", json);
+                    var result = client.UploadString("http://costcodevops.azurewebsites.net/ProjectUpdate/Update", "Post", json);
                     Console.WriteLine(result);
                 }
             }
