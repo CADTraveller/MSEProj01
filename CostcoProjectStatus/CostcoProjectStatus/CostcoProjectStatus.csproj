@@ -230,6 +230,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Images\green_circle.png" />
     <Content Include="Content\Images\grey_circle.gif" />
+    <Content Include="Content\Images\logo.png" />
     <Content Include="dashboard\angular\project\controllers\tabsController.js" />
     <Content Include="dashboard\Login.html" />
     <Content Include="dashboard\angular\project\views\ProjectData.html" />
