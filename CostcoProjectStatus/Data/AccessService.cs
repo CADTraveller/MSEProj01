@@ -74,6 +74,10 @@ namespace DataService
         {
             return context.AllowedUsers.Any(u => u.Email == email);
         }
+        public bool IsAppAuthorized(string app)
+        {
+            return context.AllowedApps.Any(u => u.App == app);
+        }
 
         /// <summary>
         /// Checks for the user in the database. If found RoleID (0,1,2) is returned
