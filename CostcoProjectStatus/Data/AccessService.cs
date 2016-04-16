@@ -100,7 +100,7 @@ namespace DataService
 
         public bool UpdateUserRole(string email, int newUserRole)
         {
-            if (context.AllowedUsers.Any(a => a.Email == email)) return false;
+            if (!context.AllowedUsers.Any(a => a.Email == email)) return false;
             try
             {
 
@@ -141,6 +141,22 @@ namespace DataService
             user.Email = newEmail;
             context.SaveChanges();
             return true;
+        }
+
+        public bool UpdateUserEmail(Guid userID, string newEmail)
+        {
+            AllowedUser user = context.AllowedUsers.FirstOrDefault(u => u.UserID == userID);
+            if (user == null) return false;
+            user.Email = newEmail;
+            context.SaveChanges();
+            return true;
+        }
+
+        public Guid GetUserID(string email)
+        {
+            AllowedUser user = context.AllowedUsers.FirstOrDefault(u => u.Email == email);
+            if (user == null) return Guid.Empty;
+            return user.UserID;
         }
         #endregion
 

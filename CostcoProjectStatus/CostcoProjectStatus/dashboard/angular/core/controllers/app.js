@@ -53,7 +53,7 @@ function logoutUser() {
 function checkLogin() {
     $.get('../Account/IsLogged', function (result) {
         if (result != "null") {
-            document.getElementById("login").innerHTML = "Logged in as " + result + ": <a title=\"Logout Link\" onclick=\"logoutUser()\">Logout</a>";
+            document.getElementById("login").innerHTML =  result + "<a title=\"Logout Link\" onclick=\"logoutUser()\">Logout</a>";
             isLoggedIn = 1;
         } else {
             document.getElementById("login").innerHTML = "<a title=\"Login Link\" href=\"/Account/ExternalLogin\">Login</a>";

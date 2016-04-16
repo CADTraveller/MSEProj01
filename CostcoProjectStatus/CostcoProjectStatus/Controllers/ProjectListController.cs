@@ -104,7 +104,7 @@ namespace CostcoProjectStatus.Controllers
 
             try
             {
-                
+               
                 if (this.Session["username"].ToString() != null && DataAccsess.IsUserAuthorized(this.Session["username"].ToString()))
                 {
                     var ProjectUpdates = DataAccsess.GetAllUpdatesForProject(id);
