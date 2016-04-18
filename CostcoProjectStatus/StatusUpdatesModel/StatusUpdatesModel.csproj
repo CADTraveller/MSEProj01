@@ -55,10 +55,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AllowedApp.cs">
+      <DependentUpon>StatusUpdatesModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="AllowedUser.cs">
       <DependentUpon>StatusUpdatesModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="AllowedApps.cs" />
     <Compile Include="Partial\CostcoDevStatusEntities.cs" />
     <Compile Include="Partial\Project.cs" />
     <Compile Include="Partial\StatusUpdate.cs" />
