@@ -244,7 +244,6 @@
     <Content Include="Content\Site.css" />
     <Content Include="dashboard\angular\core\controllers\app.js" />
     <Content Include="dashboard\angular\project\controllers\project-List.js" />
-    <Content Include="js\TreeController.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
     <Content Include="Scripts\angular-animate.js" />
