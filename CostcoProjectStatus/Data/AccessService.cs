@@ -76,7 +76,7 @@ namespace DataService
         }
         public bool IsAppAuthorized(string app)
         {
-            return true;//context.AllowedApps.Any(u => u.App == app);
+            return context.AllowedApps.Any(u => u.Name == app);
         }
 
         /// <summary>
