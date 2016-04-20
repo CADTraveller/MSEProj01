@@ -32,5 +32,6 @@ namespace StatusUpdatesModel
         public virtual DbSet<Project> Projects { get; set; }
         public virtual DbSet<ProjectPhase> ProjectPhases { get; set; }
         public virtual DbSet<StatusUpdate> StatusUpdates { get; set; }
+        public virtual DbSet<AllowedApp> AllowedApps { get; set; }
     }
 }

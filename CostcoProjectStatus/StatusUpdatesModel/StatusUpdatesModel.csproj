@@ -55,6 +55,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AllowedApp.cs">
+      <DependentUpon>StatusUpdatesModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="AllowedUser.cs">
       <DependentUpon>StatusUpdatesModel.tt</DependentUpon>
     </Compile>

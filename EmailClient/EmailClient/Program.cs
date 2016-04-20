@@ -11,9 +11,15 @@ namespace EmailClient
     {
         static void Main(string[] args)
         {
-
-         var emailObject= new ImapService().ParseNewEmail();           
-         Console.ReadLine();
+            // This code has to run in an endless loop as per Microsoft Webjob's website:
+            // "Code for a continuous job needs to be written to run in an endless loop."
+            // https://azure.microsoft.com/en-us/documentation/articles/web-sites-create-web-jobs/
+            int temp = 0;
+            while (temp < 1)
+            {
+                var emailObject = new ImapService().ParseNewEmail();
+                Console.ReadLine();
+            }
         }
     }
 }

@@ -2,7 +2,7 @@
     Warehouse: 0,
     Merchandising: 1,
     Membership: 2,
-    Distribution: 3,
+    Distribution: 3
 }
 var isLoggedIn = 0;
 $(document).ready(function() {
