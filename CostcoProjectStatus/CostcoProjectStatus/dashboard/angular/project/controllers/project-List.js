@@ -30,7 +30,11 @@
     })
     .config(function ($routeProvider) {
         $routeProvider
-           .when('/AllVerticals', {
+            .when('/OverviewChart',{
+                templateUrl: 'angular/project/views/OverviewChart.html',
+                controller: 'OverviewChart'
+            })
+            .when('/AllVerticals', {
                templateUrl: 'angular/project/views/AllVerticals.html',
                controller: 'AllVerticalsCtrl'
            })
@@ -63,6 +67,11 @@
       });
     })
     .controller('welcomeCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
+
+        // Left blank and ready for new code!
+
+    }])
+    .controller('OverviewChart', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
 
         // Left blank and ready for new code!
 
