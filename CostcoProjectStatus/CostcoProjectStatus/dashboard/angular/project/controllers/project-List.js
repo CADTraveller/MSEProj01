@@ -30,7 +30,10 @@
     })
     .config(function ($routeProvider) {
         $routeProvider
-           
+           .when('/AllVerticals', {
+               templateUrl: 'angular/project/views/AllVerticals.html',
+               controller: 'AllVerticalsCtrl'
+           })
             .when('/Welcome', {
                 templateUrl: 'angular/project/views/Welcome.html',
                 controller: 'welcomeCtrl'
@@ -62,6 +65,10 @@
     .controller('welcomeCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
 
         // Left blank and ready for new code!
+
+    }])
+
+    .controller('AllVerticalsCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
 
     }])
     .controller('updateCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {

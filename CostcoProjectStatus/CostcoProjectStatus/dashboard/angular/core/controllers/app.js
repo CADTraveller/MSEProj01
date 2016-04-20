@@ -13,15 +13,19 @@ $(document).ready(function() {
 });
 
 // Populates the Verticals Filter in the nav bar
-document.getElementById("VerticalList").innerHTML = "";
-$.get('/Vertical/GetAllVertical', function (result) {
-    var vertJSON = JSON.parse(result);
-    for (var vertIter = 0; vertIter < vertJSON.length; vertIter++) {
-        var vertObj = vertJSON[vertIter];
-        document.getElementById("VerticalList").innerHTML += "<li><a href='#ProjectList/" + vertObj.Key + "'>" + vertObj.Value.replace("_", " ") + "</a></li>";
-    }
 
-});
+document.getElementById("VerticalList").innerHTML = "";
+    $.get('/Vertical/GetAllVertical', function (result) {
+        var vertJSON = JSON.parse(result);
+        for (var vertIter = 0; vertIter < vertJSON.length; vertIter++) {
+            var vertObj = vertJSON[vertIter];
+            document.getElementById("VerticalList").innerHTML += "<li><a href='#ProjectList/" + vertObj.Key + "'>" + vertObj.Value.replace("_", " ") + "</a></li>";
+        }
+
+    });
+
+
+
 /*for (var vertIter in VerticalEnum) {
     document.getElementById("VerticalList").innerHTML += "<li><a href='#ProjectList/" + VerticalEnum[vertIter] + "'>" + vertIter + " Solutions</a></li>";
 }*/
@@ -53,10 +57,12 @@ function logoutUser() {
 function checkLogin() {
     $.get('../Account/IsLogged', function (result) {
         if (result != "null") {
-            document.getElementById("login").innerHTML =  result + "<a title=\"Logout Link\" onclick=\"logoutUser()\">Logout</a>";
+            document.getElementById("login").innerHTML = result + "<a title=\"Logout Link\" onclick=\"logoutUser()\">Logout</a>";
+            window.location = "#AllVerticals";
             isLoggedIn = 1;
         } else {
-            document.getElementById("login").innerHTML = "<a title=\"Login Link\" href=\"/Account/ExternalLogin\">Login</a>";
+            document.getElementById("login").innerHTML = "<a title=\"Login Link\" href=\"/Account/ExternalLogin\">Login </a>";
+            window.location = "#Welcome";
             isLoggedIn = 0;
         }
 

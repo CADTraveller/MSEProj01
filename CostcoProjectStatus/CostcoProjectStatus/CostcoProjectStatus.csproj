@@ -95,7 +95,6 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -231,7 +230,11 @@
     <Content Include="Content\Images\green_circle.png" />
     <Content Include="Content\Images\grey_circle.gif" />
     <Content Include="Content\Images\logo.png" />
+    <Content Include="Content\Images\Warehouse.png" />
+    <Content Include="Content\Images\website.png" />
+    <Content Include="Content\Images\website_rev1.png" />
     <Content Include="dashboard\angular\project\controllers\tabsController.js" />
+    <Content Include="dashboard\angular\project\views\AllVerticals.html" />
     <Content Include="dashboard\Login.html" />
     <Content Include="dashboard\angular\project\views\ProjectData.html" />
     <Content Include="dashboard\angular\project\views\ProjectUpdates.html" />
