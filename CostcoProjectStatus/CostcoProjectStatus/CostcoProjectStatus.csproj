@@ -235,6 +235,7 @@
     <Content Include="Content\Images\website_rev1.png" />
     <Content Include="dashboard\angular\project\controllers\tabsController.js" />
     <Content Include="dashboard\angular\project\views\AllVerticals.html" />
+    <Content Include="dashboard\angular\project\views\OverviewChart.html" />
     <Content Include="dashboard\Login.html" />
     <Content Include="dashboard\angular\project\views\ProjectData.html" />
     <Content Include="dashboard\angular\project\views\ProjectUpdates.html" />
