@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using DataService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StatusUpdatesModel;
+using System.Data.SqlClient;
+using System.IO;
 
 namespace DataService.Tests
 {
@@ -10,11 +12,7 @@ namespace DataService.Tests
     public class AccessServiceTests
     {
         int VERTICALENUM = 8;
-        [TestMethod()]
-        public void IsUserAuthorizedTest()
-        {
-            Assert.IsTrue(true);
-        }
+        public static string ConnectionString = "Server=tcp:costcosu.database.windows.net,1433;Database=CostcoDevStatus;User ID=SUAdmin@costcosu;Password=39ffbJeo;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
         [TestMethod()]
         public void GetUserRoleTest()
@@ -78,6 +76,43 @@ namespace DataService.Tests
                 for (int verticalIter = 0; verticalIter < VERTICALENUM; verticalIter++)
                 {
                     List<Project> allProjectsList = dataAccess.GetAllProjectsForVertical(verticalIter);
+
+                    // Got to make sure that the data is the same
+                    using (SqlConnection sqlConnection = new SqlConnection())
+                    {
+                        sqlConnection.ConnectionString = ConnectionString;
+
+
+                        SqlCommand sqlCommand = new SqlCommand("select * from Project where VerticalID=\'" + verticalIter + "\'", sqlConnection);
+                        sqlCommand.CommandTimeout = 30;
+
+
+                        sqlConnection.Open();
+                        SqlDataReader sqlReader = sqlCommand.ExecuteReader();
+                        int sqlCount = 0;
+
+                        while (sqlReader.Read())
+                        {
+                            // could make this more efficient if i knew hot to cast a sql object into a type
+                            bool isProjectThere = false;
+                            Project currProject = new Project();
+                            currProject.ProjectID = new Guid(sqlReader["ProjectID"].ToString());
+                            currProject.ProjectName = sqlReader["ProjectName"].ToString();
+                            foreach (Project testProject in allProjectsList)
+                            {
+                                if (testProject.ProjectID.Equals(currProject.ProjectID))
+                                {
+                                    isProjectThere = true;
+                                }
+                            }
+
+                            Assert.IsTrue(isProjectThere, "Project " + currProject.ProjectName + " does not exist in vertical " + verticalIter);
+                            sqlCount++;
+                        }
+                        sqlConnection.Close();
+                        Assert.AreEqual(sqlCount, allProjectsList.Count, "The number of projects are not equal. The database has " + sqlCount + " and the Access Service layer is returning " + allProjectsList.Count + " for vertical " + verticalIter);
+                    }
+
                     Assert.AreNotEqual(allProjectsList, null);
                 }
 
@@ -112,10 +147,11 @@ namespace DataService.Tests
         /// <param name="illVertNum"> Fake vertical ID which the access layer should return null</param>
         private void checkForGetAllProjectsForVerticalFailure(int illVertNum)
         {
-            try {
+            try
+            {
                 var dataAccess = new AccessService();
                 List<Project> illegalVertical = dataAccess.GetAllProjectsForVertical(illVertNum);
-                if ((illegalVertical != null && illegalVertical.Count > 0) && (illVertNum > 7 || illVertNum < 0 ))
+                if ((illegalVertical != null && illegalVertical.Count > 0) && (illVertNum > 7 || illVertNum < 0))
                 {
                     Assert.Fail("The vertical ID " + illVertNum + "exists and it should not!");
                 }
@@ -125,6 +161,170 @@ namespace DataService.Tests
                 Assert.Fail("checkForGetAllProjectsForVerticalFailure in GetAppProjectsForVerticalAsync failed with this exception: " + e.Message);
             }
 
+        }
+        /// <summary>
+        /// Tests the adding of new users. Note that the new user function does not check for illegal user roles.
+        /// </summary>
+        /// <param name="illVertNum"> Fake vertical ID which the access layer should return null</param>
+        [TestMethod()]
+        public void AddDeleteUserTest()
+        {
+            var dataAccess = new AccessService();
+            // Make sure that these domains are not there
+            Assert.IsFalse(dataAccess.IsUserAuthorized("faketestuser@fakedomain.com"));
+            Assert.IsFalse(dataAccess.IsUserAuthorized("faketestuser1@fakedomain.com"));
+            Assert.IsFalse(dataAccess.IsUserAuthorized("faketestuser2@fakedomain.com"));
+
+            // Make sure that you can add users
+            Assert.IsTrue(dataAccess.AddUser("faketestuser@fakedomain.com", 0));
+            Assert.IsTrue(dataAccess.AddUser("faketestuser1@fakedomain.com", 1));
+            Assert.IsTrue(dataAccess.AddUser("faketestuser2@fakedomain.com", 2));
+
+            // Check that the users are actually in the DB
+            Assert.IsTrue(dataAccess.IsUserAuthorized("faketestuser@fakedomain.com"));
+            Assert.IsTrue(dataAccess.IsUserAuthorized("faketestuser1@fakedomain.com"));
+            Assert.IsTrue(dataAccess.IsUserAuthorized("faketestuser2@fakedomain.com"));
+
+
+            // Make sure that you canNOT add users already in the DB
+            Assert.IsFalse(dataAccess.AddUser("faketestuser@fakedomain.com", 0));
+            Assert.IsFalse(dataAccess.AddUser("faketestuser1@fakedomain.com", 1));
+            Assert.IsFalse(dataAccess.AddUser("faketestuser2@fakedomain.com", 2));
+
+            // Make sure that you can delete users
+            Assert.IsTrue(dataAccess.DeleteUser("faketestuser@fakedomain.com"));
+            Assert.IsTrue(dataAccess.DeleteUser("faketestuser1@fakedomain.com"));
+            Assert.IsTrue(dataAccess.DeleteUser("faketestuser2@fakedomain.com"));
+
+            // Make sure that these domains are not there
+            Assert.IsFalse(dataAccess.IsUserAuthorized("faketestuser@fakedomain.com"));
+            Assert.IsFalse(dataAccess.IsUserAuthorized("faketestuser1@fakedomain.com"));
+            Assert.IsFalse(dataAccess.IsUserAuthorized("faketestuser2@fakedomain.com"));
+        }
+
+        [TestMethod()]
+        public void IsUserAuthorizedTest()
+        {
+            var dataAccess = new AccessService();
+            Assert.IsTrue(dataAccess.IsUserAuthorized("costcosu@gmail.com"));
+            Assert.IsFalse(dataAccess.IsUserAuthorized("nobodyhere@somedomain.com"));
+        }
+
+        [TestMethod()]
+        public void GetProjectNameForIDTest()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void GetProjectIDbyNameTest()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void GetProjectIDsTest()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void GetAllUpdatesFromEmailTest()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void GetAllVerticalsTest()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void GetUpdatesForKeyTest()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void GetAllUpdatesForProjectTest()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void GetAllProjectNamesTest()
+        {
+            var dataAccess = new AccessService();
+            List<Project> allProjectsList = dataAccess.GetAllProjectNames();
+
+            // Got to make sure that the data is the same
+            using (SqlConnection sqlConnection = new SqlConnection())
+            {
+                  sqlConnection.ConnectionString = ConnectionString;
+
+                  SqlCommand sqlCommand = new SqlCommand("select * from Project", sqlConnection);
+                  sqlCommand.CommandTimeout = 30;
+
+
+                   sqlConnection.Open();
+                   SqlDataReader sqlReader = sqlCommand.ExecuteReader();
+                   int sqlCount = 0;
+
+                   while (sqlReader.Read())
+                        {
+                            // could make this more efficient if i knew hot to cast a sql object into a type
+                            bool isProjectThere = false;
+                            Project currProject = new Project();
+                            currProject.ProjectID = new Guid(sqlReader["ProjectID"].ToString());
+                            currProject.ProjectName = sqlReader["ProjectName"].ToString();
+                            foreach (Project testProject in allProjectsList)
+                            {
+                                if (testProject.ProjectID.Equals(currProject.ProjectID))
+                                {
+                                    isProjectThere = true;
+                                }
+                            }
+
+                            Assert.IsTrue(isProjectThere, "Project " + currProject.ProjectName + " does not exist in the list of projects");
+                            sqlCount++;
+                        }
+                        sqlConnection.Close();
+                        Assert.AreEqual(sqlCount, allProjectsList.Count, "The number of projects are not equal. The database has " + sqlCount + " and the Access Service layer is returning " + allProjectsList.Count + " for this list of projects");
+             }
+        }
+
+        [TestMethod()]
+        public void RecordStatusUpdateTest()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void UpdateUserEmailTest()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void UpdateUserRoleTest()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void IsAppAuthorizedTest()
+        {
+            var dataAccess = new AccessService();
+
+                // Make sure the authorized apps are authorized
+            Assert.IsTrue(dataAccess.IsAppAuthorized("excelCostco"));
+            Assert.IsTrue(dataAccess.IsAppAuthorized("emailCostco"));
+
+            // Throw in some fake ones to be sure it's working
+            Assert.IsFalse(dataAccess.IsAppAuthorized("junkApp"));
+            Assert.IsFalse(dataAccess.IsAppAuthorized("1"));
+            Assert.IsFalse(dataAccess.IsAppAuthorized("password"));
         }
     }
 }
