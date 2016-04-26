@@ -7,7 +7,8 @@
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'smart-table'
+    'smart-table',
+    'highcharts-ng'
 ])
     .constant('VerticalEnum', {
         0: 'Warehouse Solutions',
