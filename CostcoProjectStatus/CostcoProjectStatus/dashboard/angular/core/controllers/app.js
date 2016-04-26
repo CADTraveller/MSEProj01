@@ -14,15 +14,6 @@ $(document).ready(function() {
 
 // Populates the Verticals Filter in the nav bar
 
-document.getElementById("VerticalList").innerHTML = "";
-    $.get('/Vertical/GetAllVertical', function (result) {
-        var vertJSON = JSON.parse(result);
-        for (var vertIter = 0; vertIter < vertJSON.length; vertIter++) {
-            var vertObj = vertJSON[vertIter];
-            document.getElementById("VerticalList").innerHTML += "<li><a href='#ProjectList/" + vertObj.Key + "'>" + vertObj.Value.replace("_", " ") + "</a></li>";
-        }
-
-    });
 
 
 
@@ -60,6 +51,18 @@ function checkLogin() {
             document.getElementById("login").innerHTML = result + "<a title=\"Logout Link\" onclick=\"logoutUser()\">Logout</a>";
             window.location = "#AllVerticals";
             isLoggedIn = 1;
+           
+                           document.getElementById("VerticalList").innerHTML = "";
+                    $.get('/Vertical/GetAllVertical', function (result) {
+                        var vertJSON = JSON.parse(result);
+                        for (var vertIter = 0; vertIter < vertJSON.length; vertIter++) {
+                            var vertObj = vertJSON[vertIter];
+                            document.getElementById("VerticalList").innerHTML += "<li><a href='#ProjectList/" + vertObj.Key + "'>" + vertObj.Value.replace("_", " ") + "</a></li>";
+                        }
+
+                    });
+
+
         } else {
             document.getElementById("login").innerHTML = "<a title=\"Login Link\" href=\"/Account/ExternalLogin\">Login </a>";
             window.location = "#Welcome";

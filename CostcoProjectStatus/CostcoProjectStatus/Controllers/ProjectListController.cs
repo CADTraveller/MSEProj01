@@ -36,6 +36,7 @@ namespace CostcoProjectStatus.Controllers
         [HttpPost]
         public ActionResult Create(FormCollection collection)
         {
+
             try
             {
                 // TODO: Add insert logic here

@@ -30,6 +30,10 @@
     })
     .config(function ($routeProvider) {
         $routeProvider
+            .when('/DashboardCtrl', {
+                templateUrl: 'angular/project/views/AllVerticals.html',
+                controller: 'AllVerticalsCtrl'
+            })
             .when('/OverviewChart',{
                 templateUrl: 'angular/project/views/OverviewChart.html',
                 controller: 'OverviewChart'
@@ -54,6 +58,10 @@
                 templateUrl: 'angular/project/views/ProjectUpdates.html',
                 controller: 'statusUpdatesCtrl'
             })
+             //.when('/ProjectUpdates/:projectId/:projectName', {
+             //    templateUrl: 'angular/project/views/ProjectUpdates.html',
+             //    controller: 'DevelopmentstatusUpdatesCtrl'
+             //})
             .when('/ProjectData/:projectId/:projectName/:phaseId/:statusSequence', {
                 templateUrl: 'angular/project/views/ProjectData.html',
                 controller: 'statusDataCtrl'
@@ -204,6 +212,39 @@
             console.log(config);
         })
     }])
+
+    .controller('DevelopmentstatusUpdatesCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
+        console.log($routeParams.projectId);
+        $http({ method: 'GET', url: '../ProjectList/GetProjectUpdates/' + $routeParams.projectId }).success(function (data) {
+            console.log("data from Get Project Updates:" + data);
+            console.log($routeParams.projectId);
+            $scope.statusUpdateList = data;
+            $scope.vId = $scope.statusUpdateList[0].VerticalID;
+            $scope.vName = VerticalEnum[$scope.vId];
+            $scope.phaseEnums = PhaseEnum;
+            $scope.pId = $routeParams.projectId;
+            $scope.pName = $routeParams.projectName;
+            $scope.inProgressPhases = [];
+            $scope.sortType = 'keyName';
+            $scope.sortReverse = false;
+            angular.forEach($scope.statusUpdateList, function (value, key) {
+                console.log($scope.statusUpdateList[key].PhaseID);
+
+                this.push($scope.statusUpdateList[key].PhaseID);
+
+            }, $scope.inProgressPhases);
+            console.log($scope.inProgressPhases);
+        }).error(function (data, status, headers, config) {
+            console.log(status);
+            console.log(data);
+            console.log(headers);
+            console.log(config);
+        })
+    }])
+    
+
+
+
  .controller('TabsDemoCtrl', function ($scope, $window) {
         $scope.tabs = [
           { title: 'Dynamic Title 1', content: 'Dynamic content 1' },
