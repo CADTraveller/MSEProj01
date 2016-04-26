@@ -8,6 +8,6 @@ namespace StatusUpdatesModel
 {
     class AllowedApps
     {
-        public string AppId { get; set; };
+        public string AppId { get; set; }
     }
 }
