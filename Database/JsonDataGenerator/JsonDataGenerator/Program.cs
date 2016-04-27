@@ -91,7 +91,6 @@ namespace JsonDataGenerator
                         break;
                     case 5:
                         return;
-                        break;
                     default:
                         return;
                 }

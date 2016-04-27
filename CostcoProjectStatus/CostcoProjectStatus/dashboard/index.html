@@ -5,7 +5,7 @@
 <title>Costco Dashboard</title>
 <!-- Bootstrap -->
 <link href="../Content/bootstrap.min.css" rel="stylesheet" />
-<body onunload="logoutUser()">
+<body>
 
     <div ng-app="dashboardApp">
         <style type="text/css">
@@ -29,7 +29,6 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a img id="logo" src="../../../../Content/Images/logo.png" height="50" width="50" </a></li>
                         <li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
                         <li><a href="#/Updates">Updates</a></li>
                         <li class="dropdown">
@@ -43,6 +42,7 @@
                                 <li><a href="#">Manager</a></li>
                             </ul>
                         </li>
+                        <li><a href="#/OverviewChart" class="pull-right">Overview Chart</a></li>
                     </ul>
                    <!-- <form class="navbar-form navbar-left" role="search">
                         <div class="form-group">

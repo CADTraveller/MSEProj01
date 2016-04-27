@@ -104,7 +104,8 @@ namespace CostcoProjectStatus.Controllers
         //        public void Update(String jsonList)
         {
             // need to read this dynamically through csv after Hasnath checks in her code
-            if (jsonPacket.AppId == "excelCostco" || jsonPacket.AppId == "emailCostco")
+            DataService.AccessService dataService = new DataService.AccessService();
+            if (dataService.IsUserAuthorized(jsonPacket.AppId))
             {
                 List<StatusUpdate> listOfUpdates = new List<StatusUpdate>();
                 foreach (AppObject eo in jsonPacket.StatusUpdateList)

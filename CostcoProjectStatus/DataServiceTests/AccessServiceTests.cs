@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StatusUpdatesModel
+namespace DataServiceTests
 {
-    class AllowedApps
+    class AccessServiceTests
     {
-        public string AppId { get; set; }
     }
 }

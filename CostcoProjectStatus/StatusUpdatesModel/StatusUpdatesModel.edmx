@@ -5,6 +5,13 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="CostcoDevStatusModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AllowedApp">
+          <Key>
+            <PropertyRef Name="AppId" />
+          </Key>
+          <Property Name="AppId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="text" Nullable="false" />
+        </EntityType>
         <EntityType Name="AllowedUser">
           <Key>
             <PropertyRef Name="UserID" />
@@ -158,6 +165,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="CostcoDevStatusModelStoreContainer">
+          <EntitySet Name="AllowedApp" EntityType="Self.AllowedApp" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AllowedUser" EntityType="Self.AllowedUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Phase" EntityType="Self.Phase" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
@@ -263,6 +271,7 @@
             <End Role="Vertical" EntitySet="Verticals" />
             <End Role="StatusUpdate" EntitySet="StatusUpdates" />
           </AssociationSet>
+          <EntitySet Name="AllowedApps" EntityType="CostcoDevStatusModel.AllowedApp" />
         </EntityContainer>
         <EnumType Name="Phases">
           <Member Name="Start_Up" Value="0" />
@@ -420,6 +429,13 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="AllowedApp">
+          <Key>
+            <PropertyRef Name="AppId" />
+          </Key>
+          <Property Name="AppId" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -493,6 +509,14 @@
                 <ScalarProperty Name="StatusSequence" ColumnName="StatusSequence" />
                 <ScalarProperty Name="PhaseID" ColumnName="PhaseID" />
                 <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AllowedApps">
+            <EntityTypeMapping TypeName="CostcoDevStatusModel.AllowedApp">
+              <MappingFragment StoreEntitySet="AllowedApp">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="AppId" ColumnName="AppId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
