@@ -18,7 +18,7 @@ namespace DataService.Tests
         public void GetUserRoleTest()
         {//__this covers AddUser, GetUserRole, DeleteUser, UpdateUserRole
             string emailAddy = "Test@mail.com";
-            string emailAddy2 = "Test2@mail.com";
+           /// string emailAddy2 = "Test2@mail.com";
             int userRole = 1;
             AccessService dataAccess = new AccessService();
             try//__make sure we can back out in case of errors
