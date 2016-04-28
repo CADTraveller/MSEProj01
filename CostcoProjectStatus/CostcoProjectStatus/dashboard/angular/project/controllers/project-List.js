@@ -31,6 +31,11 @@
     })
     .config(function ($routeProvider) {
         $routeProvider
+
+            .when('/EditProject', {
+                templateUrl: 'angular/project/views/EditProject.html',
+                controller: 'EditProjectCtrl'
+            })
             .when('/DashboardCtrl', {
                 templateUrl: 'angular/project/views/AllVerticals.html',
                 controller: 'AllVerticalsCtrl'
@@ -75,6 +80,14 @@
           redirectTo: '/Welcome'
       });
     })
+
+    .controller('EditProjectCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
+
+        // Left blank and ready for new code!
+
+    }])
+
+
     .controller('welcomeCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
 
         // Left blank and ready for new code!
