@@ -227,14 +227,21 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\corporation.jpg" />
+    <Content Include="Content\Images\distribution.jpg" />
+    <Content Include="Content\Images\ebusiness.jpg" />
     <Content Include="Content\Images\green_circle.png" />
     <Content Include="Content\Images\grey_circle.gif" />
+    <Content Include="Content\Images\international.jpg" />
     <Content Include="Content\Images\logo.png" />
-    <Content Include="Content\Images\Warehouse.png" />
+    <Content Include="Content\Images\Merchandising.jpg" />
+    <Content Include="Content\Images\pic.jpg" />
+    <Content Include="Content\Images\Warehousee.jpg" />
     <Content Include="Content\Images\website.png" />
     <Content Include="Content\Images\website_rev1.png" />
     <Content Include="dashboard\angular\project\controllers\tabsController.js" />
     <Content Include="dashboard\angular\project\views\AllVerticals.html" />
+    <Content Include="dashboard\angular\project\views\EditProject.html" />
     <Content Include="dashboard\angular\project\views\OverviewChart.html" />
     <Content Include="dashboard\Login.html" />
     <Content Include="dashboard\angular\project\views\ProjectData.html" />

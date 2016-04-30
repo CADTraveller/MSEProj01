@@ -8,6 +8,19 @@
         border-color: #050505;
         icon: initial;
     }
+    table {
+    counter-reset: rowNumber;
+}
+
+table tr {
+    counter-increment: rowNumber;
+}
+table tr td:first-child::before {
+    content: counter(rowNumber);
+    min-width: 1em;
+    margin-right: 0.5em;
+}
+
 </style>
 
 <ol class="breadcrumb  breadcrumbColor">
@@ -65,6 +78,10 @@
             It appears you are logged out. Would you like to <a href="/Account/ExternalLogin">log in</a> again?
         </div>
     </div>
+
+
+
+
     <div ng-if="progressNow < 100" class="progress">
         <div class="progress-bar progress-bar-striped active" role="progressbar"
              aria-valuenow="{{ progressNow }}" aria-valuemin="0" aria-valuemax="100" style="width:{{ progressNow }}%">
