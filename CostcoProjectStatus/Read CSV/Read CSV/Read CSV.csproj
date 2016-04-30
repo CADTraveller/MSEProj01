@@ -62,7 +62,7 @@
     <None Include="Properties\webjob-publish-settings.json" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\Source\Repos\MSEProj01\CostcoProjectStatus\Data\DataService.csproj">
+    <ProjectReference Include="..\..\Data\DataService.csproj">
       <Project>{4a591ce3-7c78-4488-953a-df34d763ec72}</Project>
       <Name>DataService</Name>
     </ProjectReference>

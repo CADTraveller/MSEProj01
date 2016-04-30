@@ -13,6 +13,7 @@ namespace StatusUpdatesModel
     
     public enum Verticals : int
     {
+        Not_Assigned = -1,
         Warehouse_Solutions = 0,
         Merchandising_Solutions = 1,
         Membership_Solutions = 2,
