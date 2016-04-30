@@ -161,6 +161,7 @@
 
             }, $scope.inProgressPhases);
             console.log($scope.inProgressPhases);
+
         }).error(function (data, status, headers, config) {
             console.log(status);
             console.log(data);
