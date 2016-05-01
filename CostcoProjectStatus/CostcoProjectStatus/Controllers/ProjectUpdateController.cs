@@ -105,7 +105,7 @@ namespace CostcoProjectStatus.Controllers
         {
             // need to read this dynamically through csv after Hasnath checks in her code
             DataService.AccessService dataService = new DataService.AccessService();
-            if (dataService.IsUserAuthorized(jsonPacket.AppId))
+            if (dataService.IsAppAuthorized(jsonPacket.AppId))
             {
                 List<StatusUpdate> listOfUpdates = new List<StatusUpdate>();
                 foreach (AppObject eo in jsonPacket.StatusUpdateList)
