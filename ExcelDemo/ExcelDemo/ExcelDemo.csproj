@@ -222,11 +222,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>
-    </ManifestKeyFile>
+    <ManifestKeyFile>ExcelDemo_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>5E8AE163F8BD4D5FF9C982A8430DA4769A601D11</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>24CBD5B13B516BF4D0CA248B970F91FB5FD3BA20</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

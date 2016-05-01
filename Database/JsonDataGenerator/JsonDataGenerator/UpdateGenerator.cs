@@ -55,8 +55,9 @@ namespace JsonDataGenerator
                                 StatusUpdate update = new StatusUpdate();
                                 update.ProjectID = projectID;
                                 update.ProjectName = projectName;
-                                update.PhaseID = p;
-                                update.VerticalID = n;
+                                update.PhaseID = p-1;
+                                
+                                update.VerticalID = n-1;
                                 update.RecordDate = now;
                                 if (rnd.Next(10) > 2) //___adjust by some random number of days
                                 {

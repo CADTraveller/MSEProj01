@@ -1,2 +1,1 @@
-﻿insert into UserRole 
-
+﻿

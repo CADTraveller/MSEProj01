@@ -145,12 +145,7 @@ namespace DataService
             if (updates.Count == 0) return null;
             StatusUpdate refUpdate = updates[0];
 
-            //__generate an ID for this update and save the raw data
-            Guid ProjectUpdateID = Guid.NewGuid();
-            JsonSerializerSettings settings = new JsonSerializerSettings
-            {
-                PreserveReferencesHandling = PreserveReferencesHandling.Objects
-            };
+            
            
            
 
@@ -207,10 +202,25 @@ namespace DataService
             }
             try
             {
+                //__make sure all updates have proper ProjectID, PhaseID, and VerticalID as these might have 
+                //___changed or been generated here
+                foreach (StatusUpdate u in updates)
+                {
+                    u.ProjectID = projectID;
+                    u.PhaseID = phaseID;
+                    u.VerticalID = verticalID;
+                    u.ProjectName = projectName;
+                }
+
 
                 DateTime currentDT = DateTime.Now;
 
                 //__first record the raw update data as ProjectUpdate
+                //__generate an ID for this update and save the raw data
+                JsonSerializerSettings settings = new JsonSerializerSettings
+                {
+                    PreserveReferencesHandling = PreserveReferencesHandling.Objects
+                };
                 string updateJson = JsonConvert.SerializeObject(updates, settings);
                 StatusUpdatesModel.ProjectUpdate projectUpdate = new StatusUpdatesModel.ProjectUpdate();
                 Guid projectUpdateID = Guid.NewGuid();
