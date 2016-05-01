@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using StatusUpdatesModel;
+using Newtonsoft.Json;
+
 
 namespace DataService
 {
@@ -17,33 +19,7 @@ namespace DataService
 
         }
 
-        #region Async methods
-        public async Task<List<Project>> GetAllProjectsAsync()
-        {
-            return GetAllProjectNames();
-        }
-
-        public async Task<List<Project>> GetAllProjectsForVerticalAsync(int verticalID)
-        {
-            return GetAllProjectsForVertical(verticalID);
-        }
-
-        public async Task<List<StatusUpdate>> GetAllUpdatesForProjectAsync(string ProjectID)
-        {
-            return GetAllUpdatesForProject(ProjectID);
-        }
-
-        public async Task<List<StatusUpdate>> GetAllUpdatesForProjectPhaseAsynch(string projectID, int phaseID)
-        {
-            return GetAllUpdatesForProjectPhase(projectID, phaseID);
-        }
-
-
-        public async Task RecordStatusUpdateAsync(List<StatusUpdate> newUpdate)
-        {
-            RecordStatusUpdate(newUpdate);
-        }
-        #endregion
+     
 
 
         #region Authentication Methods
@@ -169,6 +145,15 @@ namespace DataService
             if (updates.Count == 0) return null;
             StatusUpdate refUpdate = updates[0];
 
+            //__generate an ID for this update and save the raw data
+            Guid ProjectUpdateID = Guid.NewGuid();
+            JsonSerializerSettings settings = new JsonSerializerSettings
+            {
+                PreserveReferencesHandling = PreserveReferencesHandling.Objects
+            };
+           
+           
+
             //__check for existence of this project by ID, Name
             Guid projectID = refUpdate.ProjectID;
             string projectName = refUpdate.ProjectName;
@@ -225,9 +210,18 @@ namespace DataService
 
                 DateTime currentDT = DateTime.Now;
 
+                //__first record the raw update data as ProjectUpdate
+                string updateJson = JsonConvert.SerializeObject(updates, settings);
+                StatusUpdatesModel.ProjectUpdate projectUpdate = new StatusUpdatesModel.ProjectUpdate();
+                Guid projectUpdateID = Guid.NewGuid();
+                projectUpdate.ProjectUpdateID = projectUpdateID;
+                projectUpdate.Body = updateJson;
+                projectUpdate.ProjectID = projectID;
+                context.ProjectUpdates.Add(projectUpdate);
+
                 foreach (StatusUpdate u in updates)
                 {
-                    int iNewSequenceNumber = 0;
+                    
 
                     // check for existing entries for this Project & Phase & UpdateKey
                     ProjectPhase projectPhaseEntry = context.ProjectPhases.FirstOrDefault(
@@ -239,7 +233,7 @@ namespace DataService
                     {
                         //__update existing update count and use this for sequence number
                         int iOldSequenceNumber = Convert.ToInt32(projectPhaseEntry.UpdateCount);
-                        iNewSequenceNumber = iOldSequenceNumber + 1;
+                       int  iNewSequenceNumber = iOldSequenceNumber + 1;
                         projectPhaseEntry.UpdateCount = iNewSequenceNumber;
                         projectPhaseEntry.LatestUpdate = currentDT;
                     }
@@ -248,7 +242,7 @@ namespace DataService
                         context.ProjectPhases.Add(new ProjectPhase()
                         {
                             ProjectID = u.ProjectID,
-                            PhaseID = u.PhaseID,
+                            PhaseID = Convert.ToInt16(u.PhaseID),
                             UpdateKey = u.UpdateKey,
                             UpdateCount = 0,
                             LatestUpdate = currentDT
@@ -256,11 +250,12 @@ namespace DataService
                         context.SaveChanges();
                     }
 
-                    u.StatusSequence = iNewSequenceNumber;
+                    
                     if (u.ProjectID == Guid.Empty) u.ProjectID = projectID;
                     if (string.IsNullOrEmpty(u.ProjectName)) u.ProjectName = projectName;
                     if (u.VerticalID == null || u.VerticalID < 0 || u.VerticalID > 7) u.VerticalID = verticalID;
                     u.RecordDate = DateTime.Now;
+                    u.ProjectUpdateID = projectUpdateID;
                     Console.WriteLine("\n--Added Update| updateKey=" + u.UpdateKey + ", updateValue=" + u.UpdateValue);
                     context.StatusUpdates.Add(u);
 
@@ -377,18 +372,22 @@ namespace DataService
             return projects;
         }
 
-        public List<StatusUpdate> GetAllUpdatesFromEmail(string projectID, int phaseID, int statusSequence)
+        public List<StatusUpdate> GetAllUpdatesFromEmail(string projectID, int phaseID, Guid projectUpdateID)
         {
             Guid projectGuid = new Guid(projectID);
-            var updates = context.StatusUpdates.Where(su =>
-            su.ProjectID == projectGuid &&
-            su.PhaseID == phaseID &&
-            su.StatusSequence == statusSequence).ToList();
+            string projectName = context.Projects.FirstOrDefault(p => p.ProjectID == projectGuid)?.ProjectName;
+            if (string.IsNullOrEmpty(projectName )) return new List<StatusUpdate>();//___return empty list when project name not found
+            ;
+            var updates = context.StatusUpdates.Where(su => su.ProjectUpdateID == projectUpdateID).ToList();
+            //var updates = context.StatusUpdates.Where(su =>
+            //su.ProjectID == projectGuid &&
+            //su.PhaseID == phaseID &&
+            //su.StatusSequence == statusSequence).ToList();
 
             //__now also write ProjectName to each update
             foreach (StatusUpdate update in updates)
             {
-                update.ProjectName = context.Projects.FirstOrDefault(p => p.ProjectID == update.ProjectID).ProjectName;
+                update.ProjectName = projectName;
             }
             return updates;
         }

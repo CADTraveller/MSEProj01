@@ -1133,7 +1133,7 @@
       <Name>DataService</Name>
     </ProjectReference>
     <ProjectReference Include="..\StatusUpdatesModel\StatusUpdatesModel.csproj">
-      <Project>{dabdeb48-b31b-435d-93cb-5680a27bf856}</Project>
+      <Project>{cdb64ac6-747c-4d62-b2de-b36a98bda80f}</Project>
       <Name>StatusUpdatesModel</Name>
     </ProjectReference>
   </ItemGroup>

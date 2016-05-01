@@ -4,15 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DABDEB48-B31B-435D-93CB-5680A27BF856}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{CDB64AC6-747C-4D62-B2DE-B36A98BDA80F}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>StatusUpdatesModel</RootNamespace>
     <AssemblyName>StatusUpdatesModel</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -39,7 +42,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -56,82 +59,80 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AllowedApp.cs">
-      <DependentUpon>StatusUpdatesModel.tt</DependentUpon>
+      <DependentUpon>ProjectStatus.tt</DependentUpon>
     </Compile>
     <Compile Include="AllowedUser.cs">
-      <DependentUpon>StatusUpdatesModel.tt</DependentUpon>
+      <DependentUpon>ProjectStatus.tt</DependentUpon>
     </Compile>
-    <Compile Include="Partial\CostcoDevStatusEntities.cs" />
-    <Compile Include="Partial\Project.cs" />
-    <Compile Include="Partial\StatusUpdate.cs" />
+    <Compile Include="Enums.cs" />
+    <Compile Include="Partials\CostcoDevStatusEntities.cs" />
+    <Compile Include="Partials\Project.cs" />
+    <Compile Include="Partials\StatusUpdate.cs" />
     <Compile Include="Phase.cs">
-      <DependentUpon>StatusUpdatesModel.tt</DependentUpon>
+      <DependentUpon>ProjectStatus.tt</DependentUpon>
     </Compile>
-    <Compile Include="Phases.cs">
-      <DependentUpon>StatusUpdatesModel.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Program.cs" />
     <Compile Include="Project.cs">
-      <DependentUpon>StatusUpdatesModel.tt</DependentUpon>
+      <DependentUpon>ProjectStatus.tt</DependentUpon>
     </Compile>
     <Compile Include="ProjectPhase.cs">
-      <DependentUpon>StatusUpdatesModel.tt</DependentUpon>
+      <DependentUpon>ProjectStatus.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectStatus.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProjectStatus.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectStatus.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProjectStatus.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectStatus.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProjectStatus.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectUpdate.cs">
+      <DependentUpon>ProjectStatus.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StatusUpdate.cs">
-      <DependentUpon>StatusUpdatesModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="StatusUpdatesModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>StatusUpdatesModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="StatusUpdatesModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>StatusUpdatesModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="StatusUpdatesModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>StatusUpdatesModel.edmx</DependentUpon>
+      <DependentUpon>ProjectStatus.tt</DependentUpon>
     </Compile>
     <Compile Include="UserRole.cs">
-      <DependentUpon>StatusUpdatesModel.tt</DependentUpon>
+      <DependentUpon>ProjectStatus.tt</DependentUpon>
     </Compile>
     <Compile Include="Vertical.cs">
-      <DependentUpon>StatusUpdatesModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Verticals.cs">
-      <DependentUpon>StatusUpdatesModel.tt</DependentUpon>
+      <DependentUpon>ProjectStatus.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="StatusUpdatesModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>StatusUpdatesModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.Config" />
+    <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="StatusUpdatesModel.edmx.diagram">
-      <DependentUpon>StatusUpdatesModel.edmx</DependentUpon>
+    <EntityDeploy Include="ProjectStatus.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ProjectStatus.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="ProjectStatus.edmx.diagram">
+      <DependentUpon>ProjectStatus.edmx</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="StatusUpdatesModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>StatusUpdatesModel.edmx</DependentUpon>
-      <LastGenOutput>StatusUpdatesModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="StatusUpdatesModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>StatusUpdatesModel.edmx</DependentUpon>
-      <LastGenOutput>StatusUpdatesModel.cs</LastGenOutput>
-    </Content>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <Content Include="ProjectStatus.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ProjectStatus.edmx</DependentUpon>
+      <LastGenOutput>ProjectStatus.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="ProjectStatus.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ProjectStatus.edmx</DependentUpon>
+      <LastGenOutput>ProjectStatus.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
