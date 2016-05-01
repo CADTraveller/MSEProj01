@@ -25,7 +25,6 @@ namespace StatusUpdatesModel
             entityBuilder.Provider = "System.Data.SqlClient";
 
             // Set the Metadata location.
-
             entityBuilder.Metadata = @"res://*/";
 
             return new CostcoDevStatusEntities(entityBuilder.ConnectionString);

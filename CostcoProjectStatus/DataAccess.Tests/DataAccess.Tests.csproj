@@ -69,6 +69,10 @@
       <Name>DataService</Name>
       <!--<HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>-->
     </ProjectReference>
+    <ProjectReference Include="..\StatusUpdatesModel\StatusUpdatesModel.csproj">
+      <Project>{cdb64ac6-747c-4d62-b2de-b36a98bda80f}</Project>
+      <Name>StatusUpdatesModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
