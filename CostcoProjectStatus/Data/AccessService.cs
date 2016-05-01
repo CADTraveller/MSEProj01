@@ -158,9 +158,9 @@ namespace DataService
             Guid projectID = refUpdate.ProjectID;
             string projectName = refUpdate.ProjectName;
             int? verticalID = refUpdate.VerticalID;
-            if (verticalID == null || verticalID < 0 || verticalID > 7) verticalID = 0;
+            if (verticalID == null ||  verticalID > 7) verticalID = -1;
             int? phaseID = refUpdate.PhaseID;
-            if (phaseID < 0 || phaseID > 6) return false;
+            if (phaseID == null || phaseID > 6) phaseID = -1;
             bool hasID = projectID != Guid.Empty;
             bool hasName = !string.IsNullOrEmpty(projectName);
             if (!hasID && !hasName) return null;//__cannot record anonymous updates
