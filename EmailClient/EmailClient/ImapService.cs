@@ -75,19 +75,19 @@ namespace EmailClient
                emailJson = JsonConvert.SerializeObject(packet);              
                string result = "";
 
-                using (var client = new WebClient())
-                {
-                    client.Headers[HttpRequestHeader.ContentType] = "application/json";
-                    result = client.UploadString("http://costcodevops.azurewebsites.net/ProjectUpdate/Update", "Post", emailJson);
-                    Console.WriteLine(result);
-                }
-
                 //using (var client = new WebClient())
                 //{
                 //    client.Headers[HttpRequestHeader.ContentType] = "application/json";
-                //    result = client.UploadString("https://localhost:44300/ProjectUpdate/Update", "Post", emailJson);
+                //    result = client.UploadString("http://costcodevops.azurewebsites.net/ProjectUpdate/Update", "Post", emailJson);
                 //    Console.WriteLine(result);
                 //}
+
+                using (var client = new WebClient())
+                {
+                    client.Headers[HttpRequestHeader.ContentType] = "application/json";
+                    result = client.UploadString("https://localhost:44300/ProjectUpdate/Update", "Post", emailJson);
+                    Console.WriteLine(result);
+                }
 
             };
            return emailJson;           

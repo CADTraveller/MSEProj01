@@ -46,10 +46,10 @@ namespace EmailClient
               appObject ao = new appObject();
               List<string> emailbodylist = new List<string>();
               emailbodylist=ParseBody(msg.Body);
-              ao.ProjectID = Guid.NewGuid();
+              //ao.ProjectID = Guid.NewGuid();
               ao.ProjectName = emailbodylist[0];
-              ao.PhaseID = " ";
-              ao.VerticalID = " ";
+              ao.PhaseID = "-1";
+              ao.VerticalID = "-1";
               ao.RecordedDate = DateTime.Now;
               ao.UpdateKey = "Execution Summary";
               ao.UpdateValue = emailbodylist[1];
