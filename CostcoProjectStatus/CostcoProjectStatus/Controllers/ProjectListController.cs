@@ -119,7 +119,7 @@ namespace CostcoProjectStatus.Controllers
                         tempStatusUpdate.ProjectID = passedStatusUpdate.ProjectID;
                         tempStatusUpdate.ProjectName = passedStatusUpdate.ProjectName;
                         tempStatusUpdate.RecordDate = passedStatusUpdate.RecordDate;
-                        tempStatusUpdate.StatusSequence = passedStatusUpdate.StatusSequence;
+                        tempStatusUpdate.ProjectUpdateID = passedStatusUpdate.ProjectUpdateID;
                         tempStatusUpdate.UpdateKey = passedStatusUpdate.UpdateKey;
                         tempStatusUpdate.UpdateValue = passedStatusUpdate.UpdateValue;
                         //tempStatusUpdate.Vertical = passedStatusUpdate.Vertical;
@@ -140,14 +140,15 @@ namespace CostcoProjectStatus.Controllers
 
         }
         
-        public string GetStatusData(String projectId, String phaseId, String statusSequence)
+        public string GetStatusData(String projectId, String phaseId, String ProjectUpdateId)
         {
 
             try
             {
                 if (this.Session["username"].ToString() != null && DataAccsess.IsUserAuthorized(this.Session["username"].ToString()))
                 {
-                    var statusData = DataAccsess.GetAllUpdatesFromEmail(projectId, Convert.ToInt32(phaseId), Convert.ToInt32(statusSequence));
+
+                    var statusData = DataAccsess.GetAllUpdatesFromEmail(projectId, Convert.ToInt32(phaseId), Guid.Parse(ProjectUpdateId));
                     var passedStatusUpdateList = new List<StatusUpdatesModel.StatusUpdate>();
                     foreach (StatusUpdatesModel.StatusUpdate passedStatusUpdate in statusData)
                     {
@@ -158,7 +159,7 @@ namespace CostcoProjectStatus.Controllers
                         tempStatusUpdate.ProjectID = passedStatusUpdate.ProjectID;
                         tempStatusUpdate.ProjectName = passedStatusUpdate.ProjectName;
                         tempStatusUpdate.RecordDate = passedStatusUpdate.RecordDate;
-                        tempStatusUpdate.StatusSequence = passedStatusUpdate.StatusSequence;
+                        tempStatusUpdate.ProjectUpdateID = passedStatusUpdate.ProjectUpdateID;
                         tempStatusUpdate.UpdateKey = passedStatusUpdate.UpdateKey;
                         tempStatusUpdate.UpdateValue = passedStatusUpdate.UpdateValue;
                         //tempStatusUpdate.Vertical = passedStatusUpdate.Vertical;
