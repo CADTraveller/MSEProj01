@@ -13,7 +13,6 @@ namespace StatusUpdatesModel
     
     public enum Phases : int
     {
-        Not_Assigned = -1,
         Start_Up = 0,
         Solution_Outline = 1,
         Macro_Design = 2,

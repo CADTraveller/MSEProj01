@@ -10,17 +10,17 @@
 namespace StatusUpdatesModel
 {
     using System;
+    using System.Collections.Generic;
     
-    public enum Verticals : int
+    public partial class ProjectPhase
     {
-        Not_Assigned = -1,
-        Warehouse_Solutions = 0,
-        Merchandising_Solutions = 1,
-        Membership_Solutions = 2,
-        Distribution_Solutions = 3,
-        International_Solutions = 4,
-        Ancillary_Solutions = 5,
-        eBusiness_Soluttions = 6,
-        Corporate_Solutions = 7
+        public int PhaseID { get; set; }
+        public System.Guid ProjectID { get; set; }
+        public string UpdateKey { get; set; }
+        public Nullable<int> UpdateCount { get; set; }
+        public Nullable<System.DateTime> LatestUpdate { get; set; }
+    
+        public virtual Phase Phase { get; set; }
+        public virtual Project Project { get; set; }
     }
 }

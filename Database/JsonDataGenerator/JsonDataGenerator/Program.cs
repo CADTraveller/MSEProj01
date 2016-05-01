@@ -201,9 +201,9 @@ namespace JsonDataGenerator
                 int totalRecords = 0;
                 DateTime start = DateTime.Now;
                 AccessService dataAccess = new AccessService();
-                List<ProjectUpdate> projects = UpdateGenerator.GenerateUpdates(numberOfProjectsToGenerate);
+                List<DataService.ProjectUpdate> projects = UpdateGenerator.GenerateUpdates(numberOfProjectsToGenerate);
                 int numberOfProjects = projects.Count;
-                foreach (ProjectUpdate project in projects)
+                foreach (DataService.ProjectUpdate project in projects)
                 {
                     List<StatusUpdate> updates = project.Updates;
                     totalRecords += updates.Count;

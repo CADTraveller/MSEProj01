@@ -15,8 +15,8 @@ namespace StatusUpdatesModel
     public partial class StatusUpdate
     {
         public System.Guid ProjectID { get; set; }
-        public int PhaseID { get; set; }
-        public int StatusSequence { get; set; }
+        public System.Guid ProjectUpdateID { get; set; }
+        public Nullable<int> PhaseID { get; set; }
         public Nullable<int> VerticalID { get; set; }
         public Nullable<System.DateTime> RecordDate { get; set; }
         public string UpdateKey { get; set; }
@@ -24,6 +24,7 @@ namespace StatusUpdatesModel
     
         public virtual Phase Phase { get; set; }
         public virtual Project Project { get; set; }
+        public virtual ProjectUpdate ProjectUpdate { get; set; }
         public virtual Vertical Vertical { get; set; }
     }
 }

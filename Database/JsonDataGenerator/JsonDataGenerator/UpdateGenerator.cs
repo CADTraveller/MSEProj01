@@ -11,9 +11,9 @@ namespace JsonDataGenerator
     public class UpdateGenerator
     {
 
-        public static List<ProjectUpdate> GenerateUpdates(int numberOfProjects)
+        public static List<DataService.ProjectUpdate> GenerateUpdates(int numberOfProjects)
         {
-            List<ProjectUpdate> projectUpdates = new List<ProjectUpdate>();
+            List<DataService.ProjectUpdate> projectUpdates = new List<DataService.ProjectUpdate>();
             List<String> usedNames = new List<string>() { "Start" };
             Random rnd = new Random();
             DateTime now = DateTime.Now;
@@ -46,7 +46,7 @@ namespace JsonDataGenerator
                             bool EnvironmentNotRecorded = true;
                             List<string> usedIdentifiers = new List<string>();
 
-                            ProjectUpdate newProjectUpdate = new ProjectUpdate();
+                            DataService.ProjectUpdate newProjectUpdate = new DataService.ProjectUpdate();
 
                             int numberOfDataPoints = rnd.Next(11) + 1;
                             for (int k = 0; k < numberOfDataPoints; k++)//__generate k data points for this email
