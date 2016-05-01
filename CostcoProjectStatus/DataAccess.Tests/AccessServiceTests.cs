@@ -163,7 +163,7 @@ namespace DataService.Tests
 
         }
         /// <summary>
-        /// Tests the adding of new users. Note that the new user function does not check for illegal user roles.
+        /// Tests the adding, deleting, and looking up of new users. Note that the new user function does not check for illegal user roles.
         /// </summary>
         /// <param name="illVertNum"> Fake vertical ID which the access layer should return null</param>
         [TestMethod()]
@@ -175,6 +175,9 @@ namespace DataService.Tests
             Assert.IsFalse(dataAccess.IsUserAuthorized("faketestuser1@fakedomain.com"));
             Assert.IsFalse(dataAccess.IsUserAuthorized("faketestuser2@fakedomain.com"));
 
+            Guid userId = dataAccess.GetUserID("faketestuser@fakedomain.com");
+            Assert.IsTrue(userId == Guid.Empty);
+
             // Make sure that you can add users
             Assert.IsTrue(dataAccess.AddUser("faketestuser@fakedomain.com", 0));
             Assert.IsTrue(dataAccess.AddUser("faketestuser1@fakedomain.com", 1));
@@ -185,6 +188,8 @@ namespace DataService.Tests
             Assert.IsTrue(dataAccess.IsUserAuthorized("faketestuser1@fakedomain.com"));
             Assert.IsTrue(dataAccess.IsUserAuthorized("faketestuser2@fakedomain.com"));
 
+            Guid userIdCheck2 = dataAccess.GetUserID("faketestuser@fakedomain.com");
+            Assert.IsFalse(userIdCheck2 == Guid.Empty);
 
             // Make sure that you canNOT add users already in the DB
             Assert.IsFalse(dataAccess.AddUser("faketestuser@fakedomain.com", 0));
@@ -200,6 +205,9 @@ namespace DataService.Tests
             Assert.IsFalse(dataAccess.IsUserAuthorized("faketestuser@fakedomain.com"));
             Assert.IsFalse(dataAccess.IsUserAuthorized("faketestuser1@fakedomain.com"));
             Assert.IsFalse(dataAccess.IsUserAuthorized("faketestuser2@fakedomain.com"));
+
+            Guid userIdCheck3 = dataAccess.GetUserID("faketestuser@fakedomain.com");
+            Assert.IsTrue(userIdCheck3 == Guid.Empty);
         }
 
         [TestMethod()]
@@ -213,42 +221,111 @@ namespace DataService.Tests
         [TestMethod()]
         public void GetProjectNameForIDTest()
         {
-            Assert.Fail();
+            var dataAccess = new AccessService();
+            // Grab a list of all the projects in the database
+            List<Project> allProjects = dataAccess.GetProjectIDs();
+
+            // In case the database has just been wiped out...
+            if (allProjects.Count != 0)
+            {
+                // Pick a random project and get the ID and the (correct) project name
+                Random random = new Random();
+                int randomNumber = random.Next(0, allProjects.Count);
+                Guid randomProjectID = allProjects[randomNumber].ProjectID;
+                string randomProjectName = allProjects[randomNumber].ProjectName;
+
+                // Using the ID, use the function that we are testing to retrieve the projectname
+                string checkThisName = dataAccess.GetProjectNameForID(randomProjectID);
+
+                // Check if it is correct. boom.
+                Assert.Equals(checkThisName, randomProjectName);
+            } else
+            {
+                Assert.Inconclusive("Database might be empty, try rerunning with data");
+            }
         }
 
+        /// <summary>
+        /// Do the reverse of the previous test - grab the project ID using 
+        /// the project name.
+        /// </summary>
         [TestMethod()]
         public void GetProjectIDbyNameTest()
         {
-            Assert.Fail();
+            var dataAccess = new AccessService();
+            // Grab a list of all the projects in the database
+            List<Project> allProjects = dataAccess.GetProjectIDs();
+            if (allProjects.Count != 0)
+            {
+                // Pick a random project and get the ID and the (correct) project name
+                Random random = new Random();
+            int randomNumber = random.Next(0, allProjects.Count);
+            Guid randomProjectID = allProjects[randomNumber].ProjectID;
+            string randomProjectName = allProjects[randomNumber].ProjectName;
+
+            // Using the ID, use the function that we are testing to retrieve the projectname
+            Guid checkThisID = dataAccess.GetProjectIDbyName(randomProjectName);
+
+            // Check if it is correct. boom.
+            Assert.Equals(checkThisID, randomProjectID);
+        } else
+            {
+                Assert.Inconclusive("Database might be empty, try rerunning with data");
+            }
         }
 
         [TestMethod()]
         public void GetProjectIDsTest()
         {
-            Assert.Fail();
+            var dataAccess = new AccessService();
         }
 
         [TestMethod()]
         public void GetAllUpdatesFromEmailTest()
         {
+            var dataAccess = new AccessService();
             Assert.Fail();
         }
 
         [TestMethod()]
         public void GetAllVerticalsTest()
         {
-            Assert.Fail();
+            var dataAccess = new AccessService();
+            List<KeyValuePair<int,string>> verticalsList = dataAccess.GetAllVerticals();
+            // We can hardcode this because the verticals should never change. If it does,
+            // it shouldn't be very frequent and is reasonable to change this relatively unimportant unit test.
+            Assert.IsTrue(verticalsList[1].Key == 0);
+            Assert.IsTrue(verticalsList[1].Value == "Warehouse Solutions");
+            Assert.IsTrue(verticalsList[2].Key == 1);
+            Assert.IsTrue(verticalsList[2].Value == "Merchandising Solutions");
+            Assert.IsTrue(verticalsList[3].Key == 2);
+            Assert.IsTrue(verticalsList[3].Value == "Membership Solutions");
+            Assert.IsTrue(verticalsList[4].Key == 3);
+            Assert.IsTrue(verticalsList[4].Value == "Distribution Solutions");
+            Assert.IsTrue(verticalsList[5].Key == 4);
+            Assert.IsTrue(verticalsList[5].Value == "International Solutions");
+            Assert.IsTrue(verticalsList[6].Key == 5);
+            Assert.IsTrue(verticalsList[6].Value == "Ancillary Solutions");
+            Assert.IsTrue(verticalsList[7].Key == 6);
+            Assert.IsTrue(verticalsList[7].Value == "eBusiness Solutions");
+            Assert.IsTrue(verticalsList[8].Key == 7);
+            Assert.IsTrue(verticalsList[8].Value == "Corporate Solutions");
+            Assert.IsTrue(verticalsList[0].Key == -1);
+            Assert.IsTrue(verticalsList[0].Value == "Not Assigned");
+
         }
 
         [TestMethod()]
         public void GetUpdatesForKeyTest()
         {
+            var dataAccess = new AccessService();
             Assert.Fail();
         }
 
         [TestMethod()]
         public void GetAllUpdatesForProjectTest()
         {
+            var dataAccess = new AccessService();
             Assert.Fail();
         }
 
@@ -297,20 +374,69 @@ namespace DataService.Tests
         [TestMethod()]
         public void RecordStatusUpdateTest()
         {
+            var dataAccess = new AccessService();
             Assert.Fail();
         }
 
         [TestMethod()]
         public void UpdateUserEmailTest()
         {
-            Assert.Fail();
+            var dataAccess = new AccessService();
+            // Make sure that these domains are not there
+            Assert.IsFalse(dataAccess.IsUserAuthorized("faketestuser@fakedomain.com"));
+            Assert.IsFalse(dataAccess.IsUserAuthorized("faketestuser1@fakedomain.com"));
+            Assert.IsFalse(dataAccess.IsUserAuthorized("faketestuser2@fakedomain.com"));
+
+            // Make sure these updated email addresses do not exist
+            Assert.IsFalse(dataAccess.IsUserAuthorized("faketestuserupdated@fakedomain.com"));
+            Assert.IsFalse(dataAccess.IsUserAuthorized("faketestuser1updated@fakedomain.com"));
+            Assert.IsFalse(dataAccess.IsUserAuthorized("faketestuser2updated@fakedomain.com"));
+
+            Guid userId = dataAccess.GetUserID("faketestuser@fakedomain.com");
+            Assert.IsTrue(userId == Guid.Empty);
+
+            // Make sure that you can add users
+            Assert.IsTrue(dataAccess.AddUser("faketestuser@fakedomain.com", 0));
+            Assert.IsTrue(dataAccess.AddUser("faketestuser1@fakedomain.com", 1));
+            Assert.IsTrue(dataAccess.AddUser("faketestuser2@fakedomain.com", 2));
+
+            // Check that the users are actually in the DB
+            Assert.IsTrue(dataAccess.IsUserAuthorized("faketestuser@fakedomain.com"));
+            Assert.IsTrue(dataAccess.IsUserAuthorized("faketestuser1@fakedomain.com"));
+            Assert.IsTrue(dataAccess.IsUserAuthorized("faketestuser2@fakedomain.com"));
+
+            Guid userIdCheck2 = dataAccess.GetUserID("faketestuser@fakedomain.com");
+            Assert.IsFalse(userIdCheck2 == Guid.Empty);
+
+            // Make sure these updated email addresses do not exist
+            Assert.IsFalse(dataAccess.IsUserAuthorized("faketestuserupdated@fakedomain.com"));
+            Assert.IsFalse(dataAccess.IsUserAuthorized("faketestuser1updated@fakedomain.com"));
+            Assert.IsFalse(dataAccess.IsUserAuthorized("faketestuser2updated@fakedomain.com"));
+
+            // Now we are going to update these users - this is the main part
+            Assert.IsTrue(dataAccess.UpdateUserEmail("faketestuser@fakedomain.com", "faketestuserupdated@fakedomain.com"));
+            Assert.IsTrue(dataAccess.UpdateUserEmail("faketestuser1@fakedomain.com", "faketestuser1updated@fakedomain.com"));
+            // Update it in the overloaded way
+            Guid userId3 = dataAccess.GetUserID("faketestuser2@fakedomain.com");
+            Assert.IsTrue(dataAccess.UpdateUserEmail(userId3, "faketestuser2updated@fakedomain.com"));
+
+            // Make sure that these domains are not there anymore
+            Assert.IsFalse(dataAccess.IsUserAuthorized("faketestuser@fakedomain.com"));
+            Assert.IsFalse(dataAccess.IsUserAuthorized("faketestuser1@fakedomain.com"));
+            Assert.IsFalse(dataAccess.IsUserAuthorized("faketestuser2@fakedomain.com"));
+
+            // Make sure these updated email addresses exist
+            Assert.IsTrue(dataAccess.IsUserAuthorized("faketestuserupdated@fakedomain.com"));
+            Assert.IsTrue(dataAccess.IsUserAuthorized("faketestuser1updated@fakedomain.com"));
+            Assert.IsTrue(dataAccess.IsUserAuthorized("faketestuser2updated@fakedomain.com"));
+
+            // Clean up users
+            Assert.IsTrue(dataAccess.DeleteUser("faketestuserupdated@fakedomain.com"));
+            Assert.IsTrue(dataAccess.DeleteUser("faketestuser1updated@fakedomain.com"));
+            Assert.IsTrue(dataAccess.DeleteUser("faketestuser2updated@fakedomain.com"));
+            
         }
 
-        [TestMethod()]
-        public void UpdateUserRoleTest()
-        {
-            Assert.Fail();
-        }
 
         [TestMethod()]
         public void IsAppAuthorizedTest()
