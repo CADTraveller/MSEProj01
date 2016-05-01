@@ -278,6 +278,42 @@ namespace DataService.Tests
         public void GetProjectIDsTest()
         {
             var dataAccess = new AccessService();
+            List<Project> allProjectsList = dataAccess.GetProjectIDs();
+
+            // Got to make sure that the data is the same
+            using (SqlConnection sqlConnection = new SqlConnection())
+            {
+                sqlConnection.ConnectionString = ConnectionString;
+
+                SqlCommand sqlCommand = new SqlCommand("select * from Project", sqlConnection);
+                sqlCommand.CommandTimeout = 30;
+
+
+                sqlConnection.Open();
+                SqlDataReader sqlReader = sqlCommand.ExecuteReader();
+                int sqlCount = 0;
+
+                while (sqlReader.Read())
+                {
+                    // could make this more efficient if i knew hot to cast a sql object into a type
+                    bool isProjectThere = false;
+                    Project currProject = new Project();
+                    currProject.ProjectID = new Guid(sqlReader["ProjectID"].ToString());
+                    currProject.ProjectName = sqlReader["ProjectName"].ToString();
+                    foreach (Project testProject in allProjectsList)
+                    {
+                        if (testProject.ProjectID.Equals(currProject.ProjectID))
+                        {
+                            isProjectThere = true;
+                        }
+                    }
+
+                    Assert.IsTrue(isProjectThere, "Project " + currProject.ProjectName + " does not exist in the list of projects");
+                    sqlCount++;
+                }
+                sqlConnection.Close();
+                Assert.AreEqual(sqlCount, allProjectsList.Count, "The number of projects are not equal. The database has " + sqlCount + " and the Access Service layer is returning " + allProjectsList.Count + " for this list of projects");
+            }
         }
 
         [TestMethod()]
@@ -294,24 +330,24 @@ namespace DataService.Tests
             List<KeyValuePair<int,string>> verticalsList = dataAccess.GetAllVerticals();
             // We can hardcode this because the verticals should never change. If it does,
             // it shouldn't be very frequent and is reasonable to change this relatively unimportant unit test.
-            Assert.IsTrue(verticalsList[1].Key == 0);
-            Assert.IsTrue(verticalsList[1].Value == "Warehouse Solutions");
-            Assert.IsTrue(verticalsList[2].Key == 1);
-            Assert.IsTrue(verticalsList[2].Value == "Merchandising Solutions");
-            Assert.IsTrue(verticalsList[3].Key == 2);
-            Assert.IsTrue(verticalsList[3].Value == "Membership Solutions");
-            Assert.IsTrue(verticalsList[4].Key == 3);
-            Assert.IsTrue(verticalsList[4].Value == "Distribution Solutions");
-            Assert.IsTrue(verticalsList[5].Key == 4);
-            Assert.IsTrue(verticalsList[5].Value == "International Solutions");
-            Assert.IsTrue(verticalsList[6].Key == 5);
-            Assert.IsTrue(verticalsList[6].Value == "Ancillary Solutions");
-            Assert.IsTrue(verticalsList[7].Key == 6);
-            Assert.IsTrue(verticalsList[7].Value == "eBusiness Solutions");
-            Assert.IsTrue(verticalsList[8].Key == 7);
-            Assert.IsTrue(verticalsList[8].Value == "Corporate Solutions");
-            Assert.IsTrue(verticalsList[0].Key == -1);
-            Assert.IsTrue(verticalsList[0].Value == "Not Assigned");
+            Assert.IsTrue(verticalsList[0].Key == 0);
+            Assert.IsTrue(verticalsList[0].Value == "Warehouse_Solutions");
+            Assert.IsTrue(verticalsList[1].Key == 1);
+            Assert.IsTrue(verticalsList[1].Value == "Merchandising_Solutions");
+            Assert.IsTrue(verticalsList[2].Key == 2);
+            Assert.IsTrue(verticalsList[2].Value == "Membership_Solutions");
+            Assert.IsTrue(verticalsList[3].Key == 3);
+            Assert.IsTrue(verticalsList[3].Value == "Distribution_Solutions");
+            Assert.IsTrue(verticalsList[4].Key == 4);
+            Assert.IsTrue(verticalsList[4].Value == "International_Solutions");
+            Assert.IsTrue(verticalsList[5].Key == 5);
+            Assert.IsTrue(verticalsList[5].Value == "Ancillary_Solutions");
+            Assert.IsTrue(verticalsList[6].Key == 6);
+            Assert.IsTrue(verticalsList[6].Value == "eBusiness_Solutions");
+            Assert.IsTrue(verticalsList[7].Key == 7);
+            Assert.IsTrue(verticalsList[7].Value == "Corporate_Solutions");
+            Assert.IsTrue(verticalsList[8].Key == -1);
+            Assert.IsTrue(verticalsList[8].Value == "Not_Assigned");
 
         }
 
