@@ -217,6 +217,9 @@ namespace JsonDataGenerator
             catch (Exception e)
             {
                 errorMessage = e.Message;
+                Console.Write("*******Error: " + errorMessage + "\n");
+                Console.Write("*******InnerException: " + e.InnerException + "\n");
+                Console.WriteLine("*********Detail: " + e.InnerException.Message + "\n");
                 return false;
             }
             return true;

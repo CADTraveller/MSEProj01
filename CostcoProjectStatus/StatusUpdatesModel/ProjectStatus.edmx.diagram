@@ -10,8 +10,8 @@
         <EntityTypeShape EntityType="CostcoDevStatusModel.Phase" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CostcoDevStatusModel.Project" Width="1.5" PointX="3" PointY="3.5" IsExpanded="true" />
         <EntityTypeShape EntityType="CostcoDevStatusModel.ProjectPhase" Width="1.5" PointX="5.25" PointY="3.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="CostcoDevStatusModel.ProjectUpdate" Width="1.5" PointX="5.25" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CostcoDevStatusModel.StatusUpdate" Width="1.5" PointX="7.5" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CostcoDevStatusModel.ProjectUpdate" Width="1.875" PointX="4.875" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CostcoDevStatusModel.StatusUpdate" Width="2" PointX="7.5" PointY="4.625" IsExpanded="true" />
         <EntityTypeShape EntityType="CostcoDevStatusModel.UserRole" Width="1.5" PointX="7.75" PointY="1.375" IsExpanded="true" FillColor="Green" />
         <EntityTypeShape EntityType="CostcoDevStatusModel.Vertical" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
         <AssociationConnector Association="CostcoDevStatusModel.FK__AllowedUs__RoleI__09A971A2" ManuallyRouted="false" />

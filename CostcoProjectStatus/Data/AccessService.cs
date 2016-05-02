@@ -217,10 +217,9 @@ namespace DataService
 
                 //__first record the raw update data as ProjectUpdate
                 //__generate an ID for this update and save the raw data
-                JsonSerializerSettings settings = new JsonSerializerSettings
-                {
-                    PreserveReferencesHandling = PreserveReferencesHandling.Objects
-                };
+                JsonSerializerSettings settings = new JsonSerializerSettings();
+                settings.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
+                
                 string updateJson = JsonConvert.SerializeObject(updates, settings);
                 StatusUpdatesModel.ProjectUpdate projectUpdate = new StatusUpdatesModel.ProjectUpdate();
                 Guid projectUpdateID = Guid.NewGuid();
