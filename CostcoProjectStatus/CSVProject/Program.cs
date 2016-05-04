@@ -4,14 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-namespace Read_CSV
+
+namespace CSVProject
 {
     class Program
     {
         static void Main(string[] args)
         {
             DataService.AccessService dataService = new DataService.AccessService();
-            var file = new StreamReader(File.OpenRead(@"C:\test.csv"));
+            var file = new StreamReader(File.OpenRead("Test.csv"));
             while (!file.EndOfStream)
             {
                 var EachLine = file.ReadLine();
@@ -19,7 +20,7 @@ namespace Read_CSV
                 string userEmail = valuesOfLine[0];
                 int role = int.Parse(valuesOfLine[1]);
                 string Action = valuesOfLine[2];
-                if(Action == "add")
+                if (Action == "add")
                 {
                     dataService.AddUser(userEmail, role);
                 }
@@ -33,10 +34,9 @@ namespace Read_CSV
                 {
                     dataService.UpdateUserRole(userEmail, role);
                 }
-                    // give old and new email
-                    //dataService.UpdateUserEmail(userEmail, user);        
+                // give old and new email
+                //dataService.UpdateUserEmail(userEmail, user);        
             }
         }
     }
 }
-
