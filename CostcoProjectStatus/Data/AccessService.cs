@@ -400,7 +400,49 @@ namespace DataService
             }
             return updates;
         }
-        
+
+        public bool UpdateProjectUpdatePhase(StatusUpdate update, int newPhase)
+        {
+            if (update == null || newPhase < 0 || newPhase > Enum.GetNames(typeof(Phases)).Length) return false;
+
+            int oldPhase = update.PhaseID.Value;
+            Guid projectID = update.ProjectID;
+            string updateKey = update.UpdateKey;
+            Guid projectUpdateID = update.ProjectUpdateID;
+            var updates = context.StatusUpdates.Where(u => u.ProjectUpdateID == projectUpdateID);
+            foreach (StatusUpdate statusUpdate in updates)
+            {
+                statusUpdate.PhaseID = newPhase;
+
+                //__also update any related entries in ProjectPhase table
+                ProjectPhase pp = context.ProjectPhases.FirstOrDefault(p => p.PhaseID == oldPhase
+                                                                            && p.ProjectID == projectID
+                                                                            && p.UpdateKey == updateKey);
+                if (pp != null) pp.PhaseID = newPhase;
+            }
+            return true;
+        }
+
+        public bool UpdateProjectVertical(int newVerticalID, Guid? projectID = null, string projectName = "")
+        {
+            //__validate arguments
+            if (newVerticalID < -1 || newVerticalID > 7) return false;
+            bool haveNoId = projectID == null || projectID == Guid.Empty;
+            bool haveNoName = string.IsNullOrEmpty(projectName);
+            if ( haveNoId && haveNoName) return false;
+
+            projectName = projectName.Trim();
+
+            Project recordedProject;
+            if (!haveNoId) recordedProject = context.Projects.FirstOrDefault(p => p.ProjectID == projectID);
+            else recordedProject = context.Projects.FirstOrDefault(p => p.ProjectName == projectName);
+
+            //__exit if no project found
+            if (recordedProject == null) return false;
+
+            recordedProject.VerticalID = newVerticalID;
+            return true;
+        }
         
 
         public List<Project> GetProjectIDs(string projectName = "", int verticalID = -1)
