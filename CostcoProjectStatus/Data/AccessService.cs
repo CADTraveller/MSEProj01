@@ -324,6 +324,28 @@ namespace DataService
         {
             Guid projectGuid = Guid.Parse(projectID);
             List < ProjectUpdate > projectUpdates = context.ProjectUpdates.Where(pu => pu.ProjectID == projectGuid).ToList();
+            
+            //_now need to populate required column headings for more efficient client-side processing
+            foreach (ProjectUpdate projectUpdate in projectUpdates)
+            {
+                //__some Properties should be available on all StatusUpdates
+                List<StatusUpdate> statusUpdates = projectUpdate.StatusUpdates.ToList();
+                StatusUpdate referenceUpdate = statusUpdates.FirstOrDefault();
+                if (referenceUpdate == null) continue;//__should not happen
+                projectUpdate.Date = referenceUpdate.RecordDate.ToString();
+                int phaseIndex = referenceUpdate.PhaseID.Value;
+                //__correct for "Not Assigned" value which is -1
+                phaseIndex = phaseIndex < 0 ? 7 : phaseIndex;
+                projectUpdate.Phase = Enum.GetNames(typeof(Phases))[phaseIndex]; 
+
+                //__will need to look for Environment and Description
+                StatusUpdate environmentUpdate = statusUpdates.FirstOrDefault(su => su.UpdateKey == "Environment");
+                projectUpdate.Environment = environmentUpdate == null ? "--" : environmentUpdate.UpdateValue;
+
+                StatusUpdate descriptionUpdate = statusUpdates.FirstOrDefault(su => su.UpdateKey == "Description");
+                projectUpdate.Description = descriptionUpdate == null ? "--" : descriptionUpdate.UpdateValue;
+
+            }
             return projectUpdates;
         } 
 

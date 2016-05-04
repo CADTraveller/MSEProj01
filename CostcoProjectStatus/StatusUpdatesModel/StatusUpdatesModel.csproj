@@ -67,6 +67,7 @@
     <Compile Include="Enums.cs" />
     <Compile Include="Partials\CostcoDevStatusEntities.cs" />
     <Compile Include="Partials\Project.cs" />
+    <Compile Include="Partials\ProjectUpdate.cs" />
     <Compile Include="Partials\StatusUpdate.cs" />
     <Compile Include="Phase.cs">
       <DependentUpon>ProjectStatus.tt</DependentUpon>

@@ -16,11 +16,17 @@ namespace JsonDataGenerator
         private static int numberOfProjectsToGenerate = 12;
         private static string errorMessage = "";
 
+        private static bool inDebug = true;
+
         static void Main(string[] args)
         {
 
-            AccessService dbService = new AccessService();
-            var projectUpdates = dbService.GetProjectUpdates("6a8a7e56-e9ac-4385-a8be-5be702c1f2e6");
+            if (inDebug)
+            {
+                AccessService dbService = new AccessService();
+                var projectUpdates = dbService.GetProjectUpdates("6a8a7e56-e9ac-4385-a8be-5be702c1f2e6");
+
+            }
 
             //AccessService dataAccess = new AccessService();
             int actionOption = 1;
