@@ -12,14 +12,6 @@
     counter-reset: rowNumber;
 }
 
-table tr {
-    counter-increment: rowNumber;
-}
-table tr td:first-child::before {
-    content: counter(rowNumber);
-    min-width: 1em;
-    margin-right: 0.5em;
-}
 
 </style>
 
@@ -61,7 +53,9 @@ table tr td:first-child::before {
         </thead>
         <tbody>
             <tr ng-repeat="project in projectList | orderBy:sortType:sortReverse">
+                
                 <td>
+                    {{projectList.index}}
                     <a href="#ProjectUpdates/{{project.ProjectID}}/{{project.ProjectName}}">
                         {{project.ProjectName}}
                     </a>
