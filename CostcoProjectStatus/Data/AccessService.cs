@@ -320,6 +320,13 @@ namespace DataService
             return updates;
         }
 
+        public List<ProjectUpdate> GetProjectUpdates(string projectID)
+        {
+            Guid projectGuid = Guid.Parse(projectID);
+            List < ProjectUpdate > projectUpdates = context.ProjectUpdates.Where(pu => pu.ProjectID == projectGuid).ToList();
+            return projectUpdates;
+        } 
+
         public List<StatusUpdate> GetUpdatesForKey(string updateKey, Guid? projectID = null, int phaseID = -1,
             bool getOnlyLatest = false)
         {

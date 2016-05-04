@@ -19,6 +19,9 @@ namespace JsonDataGenerator
         static void Main(string[] args)
         {
 
+            AccessService dbService = new AccessService();
+            var projectUpdates = dbService.GetProjectUpdates("6a8a7e56-e9ac-4385-a8be-5be702c1f2e6");
+
             //AccessService dataAccess = new AccessService();
             int actionOption = 1;
            
@@ -202,14 +205,14 @@ namespace JsonDataGenerator
                 int totalRecords = 0;
                 DateTime start = DateTime.Now;
                 AccessService dataAccess = new AccessService();
-                List<DataService.ProjectUpdate> projects = UpdateGenerator.GenerateUpdates(numberOfProjectsToGenerate);
+                List<ProjectUpdate> projects = UpdateGenerator.GenerateUpdates(numberOfProjectsToGenerate);
                 int numberOfProjects = projects.Count;
-                foreach (DataService.ProjectUpdate project in projects)
+                foreach (ProjectUpdate project in projects)
                 {
-                    List<StatusUpdate> updates = project.Updates;
+                    List<StatusUpdate> updates = project.StatusUpdates.ToList();
                     totalRecords += updates.Count;
                     dataAccess.RecordStatusUpdate(updates);
-                    Console.WriteLine("Recorded " + updates.Count + " updates for Project " + project.ProjectName);
+                    Console.WriteLine("Recorded " + updates.Count + " updates for Project ");
                 }
                 int durationInMinutes = (DateTime.Now - start).Minutes;
                 Console.WriteLine("Recorded " + totalRecords + " for " + numberOfProjects + " projects in " + durationInMinutes + "m");
