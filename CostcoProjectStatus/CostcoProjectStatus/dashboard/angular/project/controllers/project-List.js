@@ -125,8 +125,11 @@
             $scope.projectList = [];
             var projData, len;
             var projListIter = 0;
+            var iteration;
             for (projData = 0; projData < data.length; ++projData) {
-                    $scope.projectList[++projListIter] = data[projData];
+                $scope.projectList[++projListIter] = data[projData];
+                
+                
             }
 
             $scope.phaseEnum = PhaseEnum;
