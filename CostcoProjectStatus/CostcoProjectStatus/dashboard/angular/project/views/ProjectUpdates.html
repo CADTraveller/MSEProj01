@@ -63,7 +63,7 @@ table tr td:first-child::before {
         </tr>
         <tr ng-repeat="statusUpdate in statusUpdateList | orderBy:sortType:sortReverse">
             <td> {{ phaseEnums[statusUpdate.PhaseID] }}</td>
-            <td> <a href="#ProjectData/{{ statusUpdate.ProjectID}}/{{ pName }}/{{statusUpdate.PhaseID}}/{{statusUpdate.StatusSequence}}">{{ statusUpdate.UpdateKey }}</a></td>
+            <td> <a href="#ProjectData/{{ statusUpdate.ProjectID}}/{{ pName }}/{{statusUpdate.PhaseID}}/{{statusUpdate.ProjectUpdateID}}">{{ statusUpdate.UpdateKey }}</a></td>
             <td> {{ statusUpdate.UpdateValue }}</td>
             <td>{{ statusUpdate.RecordDate | date:'short'}}</td>
         </tr>
