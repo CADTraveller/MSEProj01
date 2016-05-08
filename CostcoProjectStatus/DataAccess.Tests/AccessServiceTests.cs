@@ -73,7 +73,7 @@ namespace DataService.Tests
             try
             {
                 var dataAccess = new AccessService();
-                for (int verticalIter = 0; verticalIter < VERTICALENUM; verticalIter++)
+                for (int verticalIter = -1; verticalIter < VERTICALENUM; verticalIter++)
                 {
                     List<Project> allProjectsList = dataAccess.GetAllProjectsForVertical(verticalIter);
 

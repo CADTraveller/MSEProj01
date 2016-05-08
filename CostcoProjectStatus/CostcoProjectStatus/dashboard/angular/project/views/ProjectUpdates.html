@@ -56,10 +56,10 @@
             <th>Desctiption</th>
             
         </tr>
-        <tr ng-repeat="statusUpdate in statusUpdateList | orderBy:sortType:sortReverse">
+        <tr ng-repeat="projectUpdate in ProjectUpdateList | orderBy:sortType:sortReverse">
             <td>{{$index+1}}</td>
-            <td>{{pDate}}</td>
-            <td>{{subject}}</td>
+            <td>{{projectUpdate.Date}}</td>
+            <td>{{projectUpdate.Subject}}</td>
 
             <td> {{ phaseEnums[statusUpdate.PhaseID] }}</td>
             <td> <a href="#ProjectData/{{ statusUpdate.ProjectID}}/{{ pName }}/{{statusUpdate.PhaseID}}/{{statusUpdate.ProjectUpdateID}}">{{ statusUpdate.UpdateKey }}</a></td>
