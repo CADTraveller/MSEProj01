@@ -435,7 +435,7 @@ namespace DataService
             return projects;
         }
 
-        public List<StatusUpdate> GetAllUpdatesFromEmail(string projectID, int phaseID, Guid projectUpdateID)
+        public List<StatusUpdate> GetAllUpdatesFromEmail(string projectID,  Guid projectUpdateID)
         {
             Guid projectGuid = new Guid(projectID);
             string projectName = context.Projects.FirstOrDefault(p => p.ProjectID == projectGuid)?.ProjectName;

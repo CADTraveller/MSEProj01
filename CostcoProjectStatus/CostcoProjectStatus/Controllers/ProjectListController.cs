@@ -141,7 +141,7 @@ namespace CostcoProjectStatus.Controllers
 
         }
         
-        public string GetStatusData(String projectId, String phaseId, String ProjectUpdateId)
+        public string GetStatusData(String projectId, String ProjectUpdateId)
         {
 
             try
@@ -149,13 +149,13 @@ namespace CostcoProjectStatus.Controllers
                 if (this.Session["username"].ToString() != null && DataAccsess.IsUserAuthorized(this.Session["username"].ToString()))
                 {
 
-                    var statusData = DataAccsess.GetAllUpdatesFromEmail(projectId, Convert.ToInt32(phaseId), Guid.Parse(ProjectUpdateId));
+                    var statusData = DataAccsess.GetAllUpdatesFromEmail(projectId, Guid.Parse(ProjectUpdateId));
                     var passedStatusUpdateList = new List<StatusUpdatesModel.StatusUpdate>();
                     foreach (StatusUpdatesModel.StatusUpdate passedStatusUpdate in statusData)
                     {
                         StatusUpdatesModel.StatusUpdate tempStatusUpdate = new StatusUpdatesModel.StatusUpdate();
                         //tempStatusUpdate.Phase = passedStatusUpdate.Phase;
-                        tempStatusUpdate.PhaseID = passedStatusUpdate.PhaseID;
+                        //tempStatusUpdate.PhaseID = passedStatusUpdate.PhaseID;
                         //tempStatusUpdate.Project = passedStatusUpdate.Project;
                         tempStatusUpdate.ProjectID = passedStatusUpdate.ProjectID;
                         tempStatusUpdate.ProjectName = passedStatusUpdate.ProjectName;

@@ -69,7 +69,7 @@
              //    templateUrl: 'angular/project/views/ProjectUpdates.html',
              //    controller: 'DevelopmentstatusUpdatesCtrl'
              //})
-            .when('/ProjectData/:projectId/:projectName/:phaseId/:projectUpdateId', {
+            .when('/ProjectData/:projectId/:projectUpdateId', {
                 templateUrl: 'angular/project/views/ProjectData.html',
                 controller: 'statusDataCtrl'
             })
@@ -203,7 +203,7 @@
             console.log($routeParams.projectId);
             console.log($routeParams.phaseId);
             console.log($routeParams.statusSequence);
-            $http({ method: 'GET', url: '../ProjectList/GetStatusData/'+$routeParams.projectId+"/"+$routeParams.phaseId+"/"+$routeParams.projectUpdateId }).success(function (data)
+            $http({ method: 'GET', url: '../ProjectList/GetStatusData/'+$routeParams.projectId+"/"+$routeParams.projectUpdateId }).success(function (data)
             {
                 console.log(data);
                 console.log($routeParams.projectId);
@@ -214,7 +214,7 @@
                 $scope.vId = $scope.statusUpdateList[0].VerticalID;
                 $scope.vName = VerticalEnum[$scope.vId];
                 $scope.phase = PhaseEnum[$scope.statusUpdateList[0].PhaseID];
-                $scope.pId = $routeParams.projectId;
+              //  $scope.pId = $routeParams.projectId;
             }).error(function(data, status, headers, config) {
                 console.log(status);
                 console.log(data);
