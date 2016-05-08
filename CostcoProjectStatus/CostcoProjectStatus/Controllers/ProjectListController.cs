@@ -181,13 +181,50 @@ namespace CostcoProjectStatus.Controllers
 
            
         }
-        //public string GetprojectUpdates( Guid projectID )
-        //{
-        //    var ProjectUpdateKeys = DataAccsess.GetUpdatesForKey(projectID);
-        //    string result = JsonConvert.SerializeObject(ProjectUpdateKeys);
-        //    return result;
+        public string GetprojectUpdates(string projectID)
+        {
+            //var ProjectUpdateKeys = DataAccsess.GetUpdatesForKey(projectID);
+            //string result = JsonConvert.SerializeObject(ProjectUpdateKeys);
+            //return result;
+            var passedStatusUpdateList = new List<StatusUpdatesModel.ProjectUpdate>();
+            try
+            {
+                if (this.Session["username"].ToString() != null && DataAccsess.IsUserAuthorized(this.Session["username"].ToString()))
+                {
+                    var statusData = DataAccsess.GetProjectUpdates(projectID);
+                    
 
-        //}
+                    foreach (StatusUpdatesModel.ProjectUpdate passedStatusUpdate in statusData)
+                    {
+                        StatusUpdatesModel.ProjectUpdate tempStatusUpdate = new StatusUpdatesModel.ProjectUpdate();
+                        //tempStatusUpdate.Phase = passedStatusUpdate.Phase;
+                        tempStatusUpdate.ProjectID = passedStatusUpdate.ProjectID;
+                        tempStatusUpdate.Date = passedStatusUpdate.Date;
+                        //tempStatusUpdate.Project = passedStatusUpdate.Project;
+                        tempStatusUpdate.Subject = passedStatusUpdate.Subject;
+                        tempStatusUpdate.Phase = passedStatusUpdate.Phase;
+                        tempStatusUpdate.Environment = passedStatusUpdate.Environment;
+                        tempStatusUpdate.Description = passedStatusUpdate.Description;
+                        tempStatusUpdate.Body = passedStatusUpdate.Body;
+                        tempStatusUpdate.Project = passedStatusUpdate.Project;
+                        //tempStatusUpdate.Vertical = passedStatusUpdate.Vertical;
+                        
+                        tempStatusUpdate.ProjectUpdateID = passedStatusUpdate.ProjectUpdateID;
+                        passedStatusUpdateList.Add(tempStatusUpdate);
+
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                string emptyException = JsonConvert.SerializeObject("");
+                return emptyException;
+            }
+            string result = JsonConvert.SerializeObject(passedStatusUpdateList);
+            return result;
+
+
+        }
         //
         // POST: /Account/ExternalLogin
         //[HttpPost]

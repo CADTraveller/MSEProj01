@@ -1058,7 +1058,7 @@
     <Content Include="Scripts\smart-table.min.js" />
     <Content Include="Scripts\ui-bootstrap-tpls-1.1.2.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="dashboard\angular\project\views\Verticals.html" />
+    <Content Include="dashboard\Verticals.html" />
     <Content Include="dashboard\index.html" />
     <Content Include="dashboard\angular\project\views\ProjectList.html" />
     <Content Include="Views\Home\TreeView.html" />

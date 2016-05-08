@@ -144,23 +144,55 @@
             console.log(config);
         })
     }])
+    //.controller('statusUpdatesCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum','PhaseEnum',function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
+    //    console.log($routeParams.projectId);
+    //    $http({ method: 'GET', url: '../ProjectList/GetProjectUpdates/' + $routeParams.projectId }).success(function (data) {
+    //        console.log("data from Get Project Updates:" + data);
+    //        console.log("Project Update " + $routeParams.projectId);
+    //        $scope.statusUpdateList = data;
+    //        console.log("StatusUpdateList")
+    //        $scope.vId = $scope.statusUpdateList[0].VerticalID;
+    //        $scope.vName = VerticalEnum[$scope.vId];
+    //        $scope.phaseEnums = PhaseEnum;
+    //        $scope.pId = $routeParams.projectId;
+    //        $scope.pName = $routeParams.projectName;
+    //        $scope.inProgressPhases = [];
+    //        $scope.sortType = 'keyName';
+    //        $scope.sortReverse = false;
+    //        angular.forEach($scope.statusUpdateList, function (value, key) {
+    //            console.log("Phase ID: " + $scope.statusUpdateList[key].PhaseID);
+    //            this.push($scope.statusUpdateList[key].PhaseID);
+
+    //        }, $scope.inProgressPhases);
+    //        console.log($scope.inProgressPhases);
+
+    //    }).error(function (data, status, headers, config) {
+    //        console.log(status);
+    //        console.log(data);
+    //        console.log(headers);
+    //        console.log(config);
+    //    })
+    //}])
     .controller('statusUpdatesCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum','PhaseEnum',function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
         console.log($routeParams.projectId);
-        $http({ method: 'GET', url: '../ProjectList/GetProjectUpdates/' + $routeParams.projectId }).success(function (data) {
+        $http({ method: 'GET', url: '../ProjectList/GetprojectUpdates/' + $routeParams.projectId }).success(function (data) {
             console.log("data from Get Project Updates:" + data);
             console.log("Project Update " + $routeParams.projectId);
-            $scope.statusUpdateList = data;
+            $scope.ProjectUpdateList = data;
             console.log("StatusUpdateList")
             $scope.vId = $scope.statusUpdateList[0].VerticalID;
+            $scope.desc = $routeParams.description;
+            $scope.subjet = $routeParams.Subject;
             $scope.vName = VerticalEnum[$scope.vId];
             $scope.phaseEnums = PhaseEnum;
             $scope.pId = $routeParams.projectId;
+            $scope.pDate = data;
             $scope.pName = $routeParams.projectName;
             $scope.inProgressPhases = [];
             $scope.sortType = 'keyName';
             $scope.sortReverse = false;
             angular.forEach($scope.statusUpdateList, function (value, key) {
-                console.log("Phase ID: " + $scope.statusUpdateList[key].PhaseID);
+                console.log("Phase ID: " + $scope.ProjectUpdateList[key].PhaseID);
                 this.push($scope.statusUpdateList[key].PhaseID);
 
             }, $scope.inProgressPhases);
@@ -173,7 +205,7 @@
             console.log(config);
         })
     }])
-        .controller('statusDataCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum','PhaseEnum',function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
+       .controller('statusDataCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum','PhaseEnum',function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
             console.log($routeParams.projectId);
             console.log($routeParams.phaseId);
             console.log($routeParams.statusSequence);
@@ -232,37 +264,7 @@
         })
     }])
 
-    .controller('DevelopmentstatusUpdatesCtrl', ['$scope', '$http', '$routeParams', 'VerticalEnum', 'PhaseEnum', function ($scope, $http, $routeParams, VerticalEnum, PhaseEnum) {
-        console.log($routeParams.projectId);
-        $http({ method: 'GET', url: '../ProjectList/GetProjectUpdates/' + $routeParams.projectId }).success(function (data) {
-            console.log("data from Get Project Updates:" + data);
-            console.log($routeParams.projectId);
-            $scope.statusUpdateList = data;
-            $scope.vId = $scope.statusUpdateList[0].VerticalID;
-            $scope.vName = VerticalEnum[$scope.vId];
-            $scope.phaseEnums = PhaseEnum;
-            $scope.pId = $routeParams.projectId;
-            $scope.pName = $routeParams.projectName;
-            $scope.inProgressPhases = [];
-            $scope.sortType = 'keyName';
-            $scope.sortReverse = false;
-            angular.forEach($scope.statusUpdateList, function (value, key) {
-                console.log($scope.statusUpdateList[key].PhaseID);
-
-                this.push($scope.statusUpdateList[key].PhaseID);
-
-            }, $scope.inProgressPhases);
-            console.log($scope.inProgressPhases);
-        }).error(function (data, status, headers, config) {
-            console.log(status);
-            console.log(data);
-            console.log(headers);
-            console.log(config);
-        })
-    }])
     
-
-
 
  .controller('TabsDemoCtrl', function ($scope, $window) {
         $scope.tabs = [

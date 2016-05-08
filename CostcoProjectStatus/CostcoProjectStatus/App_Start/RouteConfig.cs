@@ -14,8 +14,8 @@ namespace CostcoProjectStatus
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.MapRoute(
                 "StatusUpdateList",
-                "ProjectList/GetProjectUpdates/{id}",
-                new { Controller = "ProjectList", action = "GetStatusUpdates", id = "id" }
+                "ProjectList/GetprojectUpdates/{projectID}",
+                new { Controller = "ProjectList", action = "GetprojectUpdates", projectID = "projectID" }
                 );
             routes.MapRoute(
                 "StatusDataList",
