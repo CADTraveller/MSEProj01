@@ -19,17 +19,17 @@ namespace DataService
 
         }
 
-     
+
 
 
         #region Authentication Methods
         public bool AddUser(string email, int userRole)
         {
-           
+
             if (context.AllowedUsers.Any(a => a.Email == email)) return false;
             try
             {
-         
+
                 AllowedUser newUser = new AllowedUser()
                 {
                     Email = email,
@@ -173,13 +173,13 @@ namespace DataService
         {
             //__safety check, cannot record an empty list
             if (updates.Count == 0) return null;
-            StatusUpdate refUpdate = updates[0];           
+            StatusUpdate refUpdate = updates[0];
 
             //__check for existence of this project by ID, Name
             Guid projectID = refUpdate.ProjectID;
             string projectName = refUpdate.ProjectName;
             int? verticalID = refUpdate.VerticalID;
-            if (verticalID == null ||  verticalID > 7) verticalID = -1;
+            if (verticalID == null || verticalID > 7) verticalID = -1;
             int? phaseID = refUpdate.PhaseID;
             if (phaseID == null || phaseID > 6) phaseID = -1;
             bool hasID = projectID != Guid.Empty;
@@ -241,22 +241,10 @@ namespace DataService
 
                 DateTime currentDT = DateTime.Now;
 
-                ////__first record the raw update data as ProjectUpdate
-                ////__generate an ID for this update and save the raw data
-                //JsonSerializerSettings settings = new JsonSerializerSettings();
-                //settings.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
-                
-                //string updateJson = JsonConvert.SerializeObject(updates, settings);
-                //StatusUpdatesModel.ProjectUpdate projectUpdate = new StatusUpdatesModel.ProjectUpdate();
-                //Guid projectUpdateID = Guid.NewGuid();
-                //projectUpdate.ProjectUpdateID = projectUpdateID;
-                //projectUpdate.Body = updateJson;
-                //projectUpdate.ProjectID = projectID;
-                //context.ProjectUpdates.Add(projectUpdate);
 
                 foreach (StatusUpdate u in updates)
                 {
-                    
+
 
                     // check for existing entries for this Project & Phase & UpdateKey
                     ProjectPhase projectPhaseEntry = context.ProjectPhases.FirstOrDefault(
@@ -268,7 +256,7 @@ namespace DataService
                     {
                         //__update existing update count and use this for sequence number
                         int iOldCount = Convert.ToInt32(projectPhaseEntry.UpdateCount);
-                       int  iNewCount = iOldCount + 1;
+                        int iNewCount = iOldCount + 1;
                         projectPhaseEntry.UpdateCount = iNewCount;
                         projectPhaseEntry.LatestUpdate = currentDT;
                     }
@@ -285,7 +273,7 @@ namespace DataService
                         context.SaveChanges();
                     }
 
-                    
+
                     if (u.ProjectID == Guid.Empty) u.ProjectID = projectID;
                     if (string.IsNullOrEmpty(u.ProjectName)) u.ProjectName = projectName;
                     if (u.VerticalID == null || u.VerticalID < 0 || u.VerticalID > 7) u.VerticalID = verticalID;
@@ -323,11 +311,11 @@ namespace DataService
             List<Project> projects = context.Projects.AsEnumerable().ToList();
             DateTime now = DateTime.Now;
             foreach (var project in projects)
-            {                
+            {
                 List<ProjectUpdate> recordedProjectUpdates = context.ProjectUpdates.Where(pu => pu.ProjectID == project.ProjectID).ToList();
                 if (recordedProjectUpdates.Count == 0) continue;
 
-                IEnumerable <DateTime> dates = recordedProjectUpdates.Select(pu => Convert.ToDateTime(pu.Date));
+                IEnumerable<DateTime> dates = recordedProjectUpdates.Select(pu => Convert.ToDateTime(pu.Date));
                 DateTime lastUpdateDate = dates.Max();
                 project.LatestUpdate = lastUpdateDate;
             }
@@ -341,15 +329,15 @@ namespace DataService
             if (string.IsNullOrEmpty(projectName)) return new List<StatusUpdate>();//__return empty list when project not found
             var updates = context.StatusUpdates.Where(s => s.ProjectID == projectGuid).ToList();
             foreach (var update in updates) update.ProjectName = projectName;
-            
+
             return updates;
         }
 
         public List<ProjectUpdate> GetProjectUpdates(string projectID)
         {
             Guid projectGuid = Guid.Parse(projectID);
-            List < ProjectUpdate > projectUpdates = context.ProjectUpdates.Where(pu => pu.ProjectID == projectGuid).ToList();
-            
+            List<ProjectUpdate> projectUpdates = context.ProjectUpdates.Where(pu => pu.ProjectID == projectGuid).ToList();
+
             //_now need to populate required column headings for more efficient client-side processing
             foreach (ProjectUpdate projectUpdate in projectUpdates)
             {
@@ -361,7 +349,7 @@ namespace DataService
                 int phaseIndex = referenceUpdate.PhaseID.Value;
                 //__correct for "Not Assigned" value which is -1
                 phaseIndex = phaseIndex < 0 ? 7 : phaseIndex;
-                projectUpdate.Phase = Enum.GetNames(typeof(Phases))[phaseIndex]; 
+                projectUpdate.Phase = Enum.GetNames(typeof(Phases))[phaseIndex];
 
                 //__will need to look for Environment and Description
                 StatusUpdate environmentUpdate = statusUpdates.FirstOrDefault(su => su.UpdateKey == "Environment");
@@ -372,7 +360,7 @@ namespace DataService
 
             }
             return projectUpdates;
-        } 
+        }
 
         public List<StatusUpdate> GetUpdatesForKey(string updateKey, Guid? projectID = null, int phaseID = -2,
             bool getOnlyLatest = false)
@@ -384,7 +372,7 @@ namespace DataService
             //__first get just the updates with the key of interest
             List<StatusUpdate> updates = context.StatusUpdates.Where(su => su.UpdateKey == updateKey).ToList();
 
-                
+
             if (updates.Count == 0) return updates;//__nothing found, return empty list
 
             if (getUpdatesForSpecificProject)
@@ -412,15 +400,15 @@ namespace DataService
 
         public List<KeyValuePair<int, string>> GetAllVerticals()
         {
-            string[] names = Enum.GetNames(typeof (Verticals));
-            int[] values = (int[])Enum.GetValues(typeof (Verticals));
+            string[] names = Enum.GetNames(typeof(Verticals));
+            int[] values = (int[])Enum.GetValues(typeof(Verticals));
             List<KeyValuePair<int, string>> verticals = new List<KeyValuePair<int, string>>();
             for (int i = 0; i < names.Length; i++)
             {
                 verticals.Add(new KeyValuePair<int, string>(values[i], names[i]));
             }
             return verticals;
-        }  
+        }
 
         public List<Project> GetAllProjectsForVertical(int verticalID)
         {
@@ -435,22 +423,20 @@ namespace DataService
             return projects;
         }
 
-        public List<StatusUpdate> GetAllUpdatesFromEmail(string projectID, int phaseID, Guid projectUpdateID)
+        public List<StatusUpdate> GetAllUpdatesFromEmail(Guid projectUpdateID)
         {
-            Guid projectGuid = new Guid(projectID);
-            string projectName = context.Projects.FirstOrDefault(p => p.ProjectID == projectGuid)?.ProjectName;
-            if (string.IsNullOrEmpty(projectName )) return new List<StatusUpdate>();//___return empty list when project name not found
-            ;
-            var updates = context.StatusUpdates.Where(su => su.ProjectUpdateID == projectUpdateID).ToList();
-            //var updates = context.StatusUpdates.Where(su =>
-            //su.ProjectID == projectGuid &&
-            //su.PhaseID == phaseID &&
-            //su.StatusSequence == statusSequence).ToList();
+            var updates = new List<StatusUpdate>();
 
-            //__now also write ProjectName to each update
-            foreach (StatusUpdate update in updates)
+            updates = context.StatusUpdates.Where(su => su.ProjectUpdateID == projectUpdateID).ToList();
+
+            if (updates.Count > 0)
             {
-                update.ProjectName = projectName;
+                Guid projectID = updates.First().ProjectID;
+                string projectName = context.Projects.FirstOrDefault(p => p.ProjectID == projectID).ProjectName;
+                foreach (StatusUpdate update in updates)
+                {
+                    update.ProjectName = projectName;//__now also write ProjectName to each update
+                }
             }
             return updates;
         }
@@ -483,7 +469,7 @@ namespace DataService
             if (newVerticalID < -1 || newVerticalID > 7) return false;
             bool haveNoId = projectID == null || projectID == Guid.Empty;
             bool haveNoName = string.IsNullOrEmpty(projectName);
-            if ( haveNoId && haveNoName) return false;
+            if (haveNoId && haveNoName) return false;
 
             projectName = projectName.Trim();
 
@@ -497,7 +483,7 @@ namespace DataService
             recordedProject.VerticalID = newVerticalID;
             return true;
         }
-        
+
 
         public List<Project> GetProjectIDs(string projectName = "", int verticalID = -1)
         {
@@ -524,7 +510,7 @@ namespace DataService
         public Guid GetProjectIDbyName(string projectName)
         {
             Project project = context.Projects.FirstOrDefault(p => p.ProjectName == projectName);
-            Guid? projectID = project?.ProjectID ;
+            Guid? projectID = project?.ProjectID;
             if (projectID == null) projectID = Guid.Empty;
             return (Guid)projectID;
         }

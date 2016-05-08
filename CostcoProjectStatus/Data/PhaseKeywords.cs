@@ -43,16 +43,64 @@ namespace Data
             }
         }
 
-        public static Phases GuessPhase(List<StatusUpdate> updates)
+        public static Phases GuessPhase(string inputString)
         {
+            inputString = inputString.ToLower();
             //__if there is a match for an exact key, then simply use that value
             foreach (var entry in ExactKeywords)
             {
-
+                foreach (string searchTerm in entry.Value)
+                {
+                    if (inputString.Contains(searchTerm)) return entry.Key;
+                }
             }
+
             Dictionary<Phases, int> phaseVotes = new Dictionary<Phases, int>();
+            foreach (var fuzzyKeyword in FuzzyKeywords)
+            {
+                Phases currentPhase = fuzzyKeyword.Key;
+                foreach (string searchTerm in fuzzyKeyword.Value)
+                {
+                    if (inputString.Contains(searchTerm))
+                    {
+                        if (phaseVotes.ContainsKey(currentPhase)) phaseVotes[currentPhase] = phaseVotes[currentPhase]+1;
+                        else phaseVotes.Add(currentPhase, 1);
+                    }
+                }
+            }
+
+            if (phaseVotes.Count > 0)
+            {
+
+                var voteList = phaseVotes.ToList();
+                voteList.Sort((p1, p2) => p1.Value.CompareTo(p2));
+            }
+
+
 
             return Phases.Not_Assigned;
         }
+
+        public static void GuessPhase(ref ProjectUpdate projectUpdate)
+        {
+            string stringToSearch = "";
+            stringToSearch += projectUpdate.Subject + " ";
+            stringToSearch += projectUpdate.Body;
+            projectUpdate.Phase = GuessPhase(stringToSearch).ToString();
+
+        }
+
+        public static Phases GuessPhase(List<StatusUpdate> updates)
+        {
+            string stringToSearch = "";
+            foreach (StatusUpdate update in updates)
+            {
+                stringToSearch += update.UpdateKey + " ";
+                stringToSearch += update.UpdateValue;
+            }
+
+            return GuessPhase(stringToSearch);
+        }
+
     }
 }
