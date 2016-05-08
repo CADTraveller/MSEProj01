@@ -349,12 +349,12 @@ namespace DataService
             return projectUpdates;
         } 
 
-        public List<StatusUpdate> GetUpdatesForKey(string updateKey, Guid? projectID = null, int phaseID = -1,
+        public List<StatusUpdate> GetUpdatesForKey(string updateKey, Guid? projectID = null, int phaseID = -2,
             bool getOnlyLatest = false)
         {
 
             bool getUpdatesForSpecificProject = projectID != null;
-            bool getUpdatesForSpecificPhase = phaseID >= 0;
+            bool getUpdatesForSpecificPhase = phaseID >= -1;
 
             //__first get just the updates with the key of interest
             List<StatusUpdate> updates = context.StatusUpdates.Where(su => su.UpdateKey == updateKey).ToList();
@@ -507,6 +507,38 @@ namespace DataService
         public string GetProjectNameForID(Guid projectID)
         {
             return context.Projects.FirstOrDefault(p => p.ProjectID == projectID).ProjectName;
+        }
+
+        public bool DeleteProject(Guid projectID)//__this must be done in a specific order so as to not violate SQL integrity
+        {
+            try
+            {
+                //__first remove all related StatusUpdates
+                var statusUpdatesToRemove = context.StatusUpdates.Where(su => su.ProjectID == projectID);
+                context.StatusUpdates.RemoveRange(statusUpdatesToRemove);
+                context.SaveChanges();
+
+                //__Remove projectupdates
+                var projectUpdatesToRemove = context.ProjectUpdates.Where(pu => pu.ProjectID == projectID);
+                context.ProjectUpdates.RemoveRange(projectUpdatesToRemove);
+                context.SaveChanges();
+
+                //__Remove all projectPhase entries
+                var projectPhaseToRemove = context.ProjectPhases.Where(pp => pp.ProjectID == projectID);
+                context.ProjectPhases.RemoveRange(projectPhaseToRemove);
+                context.SaveChanges();
+
+                //__Finally remove the Project entry itself
+                Project projectToRemove = context.Projects.FirstOrDefault(p => p.ProjectID == projectID);
+                context.Projects.Remove(projectToRemove);
+                context.SaveChanges();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
         }
         #endregion
     }

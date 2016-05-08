@@ -16,9 +16,9 @@ namespace CostcoProjectStatus.Controllers
             AccessService DataAccess = new AccessService();
             var verticals = DataAccess.GetAllVerticals();
             string result = JsonConvert.SerializeObject(verticals);
-            return result;
-            
+            return result;            
         }
+
         // GET: GetVerticalProjects
         public string GetVerticalProjects(int VerticalId)
         {
@@ -40,7 +40,8 @@ namespace CostcoProjectStatus.Controllers
 
                     }
                 }
-            } catch (Exception e)
+            }
+            catch (Exception)
             {
                 // Probably not the best way to handle this
                 string empty = JsonConvert.SerializeObject(passProjectList);
@@ -48,7 +49,6 @@ namespace CostcoProjectStatus.Controllers
             }
             string result = JsonConvert.SerializeObject(passProjectList);
             return result;
-
         }
         public ActionResult Index()
         {
