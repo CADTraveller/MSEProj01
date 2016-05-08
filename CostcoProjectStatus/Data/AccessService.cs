@@ -139,15 +139,17 @@ namespace DataService
 
         #region StatusUpdate and Project Methods
 
+        public bool RecordProjectUpdate(ProjectUpdate projectUpdate)
+        {
+
+            return true;
+        }
+
         public bool? RecordStatusUpdate(List<StatusUpdate> updates)
         {
             //__safety check, cannot record an empty list
             if (updates.Count == 0) return null;
-            StatusUpdate refUpdate = updates[0];
-
-            
-           
-           
+            StatusUpdate refUpdate = updates[0];           
 
             //__check for existence of this project by ID, Name
             Guid projectID = refUpdate.ProjectID;
