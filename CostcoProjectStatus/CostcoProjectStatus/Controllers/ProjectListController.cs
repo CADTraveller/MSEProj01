@@ -109,28 +109,29 @@ namespace CostcoProjectStatus.Controllers
                 if (this.Session["username"].ToString() != null && DataAccsess.IsUserAuthorized(this.Session["username"].ToString()))
                 {
                     var ProjectUpdates = DataAccsess.GetAllUpdatesForProject(id);
-                    var passedStatusUpdateList = new List<StatusUpdatesModel.StatusUpdate>();
-                    foreach (StatusUpdatesModel.StatusUpdate passedStatusUpdate in ProjectUpdates)
-                    {
-                        StatusUpdatesModel.StatusUpdate tempStatusUpdate = new StatusUpdatesModel.StatusUpdate();
-                        //tempStatusUpdate.Phase = passedStatusUpdate.Phase;
-                        tempStatusUpdate.PhaseID = passedStatusUpdate.PhaseID;
-                        //tempStatusUpdate.Project = passedStatusUpdate.Project;
-                        tempStatusUpdate.ProjectID = passedStatusUpdate.ProjectID;
-                        tempStatusUpdate.ProjectName = passedStatusUpdate.ProjectName;
-                        tempStatusUpdate.RecordDate = passedStatusUpdate.RecordDate;
-                        tempStatusUpdate.ProjectUpdateID = passedStatusUpdate.ProjectUpdateID;
-                        tempStatusUpdate.UpdateKey = passedStatusUpdate.UpdateKey;
-                        tempStatusUpdate.UpdateValue = passedStatusUpdate.UpdateValue;
-                        //tempStatusUpdate.Vertical = passedStatusUpdate.Vertical;
-                        tempStatusUpdate.VerticalID = passedStatusUpdate.VerticalID;
-                        passedStatusUpdateList.Add(tempStatusUpdate);
+                    //var passedStatusUpdateList = new List<StatusUpdatesModel.StatusUpdate>();
+                    //foreach (StatusUpdatesModel.StatusUpdate passedStatusUpdate in ProjectUpdates)
+                    //{
+                    //    StatusUpdatesModel.StatusUpdate tempStatusUpdate = new StatusUpdatesModel.StatusUpdate();
+                    //    //tempStatusUpdate.Phase = passedStatusUpdate.Phase;
+                    //    tempStatusUpdate.PhaseID = passedStatusUpdate.PhaseID;
+                    //    //tempStatusUpdate.Project = passedStatusUpdate.Project;
+                    //    tempStatusUpdate.ProjectID = passedStatusUpdate.ProjectID;
+                    //    tempStatusUpdate.ProjectName = passedStatusUpdate.ProjectName;
+                    //    tempStatusUpdate.RecordDate = passedStatusUpdate.RecordDate;
+                    //    tempStatusUpdate.ProjectUpdateID = passedStatusUpdate.ProjectUpdateID;
+                    //    tempStatusUpdate.UpdateKey = passedStatusUpdate.UpdateKey;
+                    //    tempStatusUpdate.UpdateValue = passedStatusUpdate.UpdateValue;
+                    //    //tempStatusUpdate.Vertical = passedStatusUpdate.Vertical;
+                    //    tempStatusUpdate.VerticalID = passedStatusUpdate.VerticalID;
+                    //    passedStatusUpdateList.Add(tempStatusUpdate);
 
-                    }
-                    string result = JsonConvert.SerializeObject(passedStatusUpdateList);
+                    //}
+                    //string result = JsonConvert.SerializeObject(passedStatusUpdateList);
+                    string result = JsonConvert.SerializeObject(ProjectUpdates);
                     return result;
                 }
-            } catch (Exception e)
+            } catch (Exception)
             {
                 string emptyException = JsonConvert.SerializeObject("");
                 return emptyException;
@@ -171,7 +172,7 @@ namespace CostcoProjectStatus.Controllers
                     return result;
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 string emptyException = JsonConvert.SerializeObject("");
                 return emptyException;

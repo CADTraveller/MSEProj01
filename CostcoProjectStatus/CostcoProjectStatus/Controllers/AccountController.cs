@@ -284,7 +284,7 @@ namespace CostcoProjectStatus.Controllers
                     return JsonConvert.SerializeObject("NOT AUTHORIZED");
                 }
                 
-               } catch (Exception e)
+               } catch (Exception)
                {
                    return JsonConvert.SerializeObject(null);
                }

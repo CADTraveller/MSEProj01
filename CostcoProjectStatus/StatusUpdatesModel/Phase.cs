@@ -11,6 +11,7 @@ namespace StatusUpdatesModel
 {
     using System;
     using System.Collections.Generic;
+    using Newtonsoft.Json;
     
     public partial class Phase
     {
@@ -25,8 +26,11 @@ namespace StatusUpdatesModel
         public string Name { get; set; }
         public string Description { get; set; }
     
+        [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProjectPhase> ProjectPhases { get; set; }
+
+        [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StatusUpdate> StatusUpdates { get; set; }
     }
