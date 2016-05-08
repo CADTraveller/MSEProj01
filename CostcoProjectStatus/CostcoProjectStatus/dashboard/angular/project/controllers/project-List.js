@@ -27,8 +27,7 @@
         3: 'Micro Design',
         4: 'Build and Test',
         5: 'Deploy',
-        6: 'Transition & Close',
-        7: 'Unassigned'
+        6: 'Transition & Close'
     })
     .config(function ($routeProvider) {
         $routeProvider
@@ -69,7 +68,7 @@
              //    templateUrl: 'angular/project/views/ProjectUpdates.html',
              //    controller: 'DevelopmentstatusUpdatesCtrl'
              //})
-            .when('/ProjectData/:projectId/:projectName/:phaseId/:projectUpdateId', {
+            .when('/ProjectData/:projectId/:projectUpdateId', {
                 templateUrl: 'angular/project/views/ProjectData.html',
                 controller: 'statusDataCtrl'
             })
@@ -179,23 +178,14 @@
             console.log("data from Get Project Updates:" + data);
             console.log("Project Update " + $routeParams.projectId);
             $scope.ProjectUpdateList = data;
-            console.log("StatusUpdateList")
-            $scope.vId = $scope.statusUpdateList[0].VerticalID;
-            $scope.desc = $routeParams.description;
-            $scope.subjet = $routeParams.Subject;
-            $scope.vName = VerticalEnum[$scope.vId];
             $scope.phaseEnums = PhaseEnum;
-            $scope.pId = $routeParams.projectId;
-            $scope.pDate = data;
-            $scope.pName = $routeParams.projectName;
-            $scope.inProgressPhases = [];
-            $scope.sortType = 'keyName';
-            $scope.sortReverse = false;
-            angular.forEach($scope.statusUpdateList, function (value, key) {
-                console.log("Phase ID: " + $scope.ProjectUpdateList[key].PhaseID);
-                this.push($scope.statusUpdateList[key].PhaseID);
-
-            }, $scope.inProgressPhases);
+            var tempArr = [];
+            console.log("Project Update date: " + $scope.ProjectUpdateList[0].Date);
+            angular.forEach($scope.ProjectUpdateList, function (value, key) {
+                projectUpdateBody = angular.fromJson(value.Body);
+                tempArr.push(projectUpdateBody[0].PhaseID);
+            });
+            $scope.inProgressPhases = tempArr;
             console.log($scope.inProgressPhases);
 
         }).error(function (data, status, headers, config) {
@@ -209,7 +199,7 @@
             console.log($routeParams.projectId);
             console.log($routeParams.phaseId);
             console.log($routeParams.statusSequence);
-            $http({ method: 'GET', url: '../ProjectList/GetStatusData/'+$routeParams.projectId+"/"+$routeParams.phaseId+"/"+$routeParams.projectUpdateId }).success(function (data)
+            $http({ method: 'GET', url: '../ProjectList/GetStatusData/'+$routeParams.projectId+"/"+$routeParams.projectUpdateId }).success(function (data)
             {
                 console.log(data);
                 console.log($routeParams.projectId);
@@ -220,7 +210,7 @@
                 $scope.vId = $scope.statusUpdateList[0].VerticalID;
                 $scope.vName = VerticalEnum[$scope.vId];
                 $scope.phase = PhaseEnum[$scope.statusUpdateList[0].PhaseID];
-                $scope.pId = $routeParams.projectId;
+              //  $scope.pId = $routeParams.projectId;
             }).error(function(data, status, headers, config) {
                 console.log(status);
                 console.log(data);
