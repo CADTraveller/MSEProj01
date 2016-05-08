@@ -27,8 +27,7 @@
         3: 'Micro Design',
         4: 'Build and Test',
         5: 'Deploy',
-        6: 'Transition & Close',
-        7: 'Unassigned'
+        6: 'Transition & Close'
     })
     .config(function ($routeProvider) {
         $routeProvider
@@ -179,14 +178,11 @@
             console.log("data from Get Project Updates:" + data);
             console.log("Project Update " + $routeParams.projectId);
             $scope.ProjectUpdateList = data;
+            $scope.phaseEnums = PhaseEnum;
             var tempArr = [];
             console.log("Project Update date: " + $scope.ProjectUpdateList[0].Date);
             angular.forEach($scope.ProjectUpdateList, function (value, key) {
-                console.log("Key: " + key + "Value: " + value)
-                console.log("PhaseID: " + value.Body.PhaseID);
-                console.log("PhaseID test2: " + value.Body["PhaseID"]);
                 projectUpdateBody = angular.fromJson(value.Body);
-                console.log("PhaseID test3: " + projectUpdateBody[0].PhaseID);
                 tempArr.push(projectUpdateBody[0].PhaseID);
             });
             $scope.inProgressPhases = tempArr;
