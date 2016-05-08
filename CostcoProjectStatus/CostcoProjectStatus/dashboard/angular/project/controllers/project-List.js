@@ -199,12 +199,14 @@
             console.log($routeParams.projectId);
             console.log($routeParams.phaseId);
             console.log($routeParams.statusSequence);
+            console.log($routeParams.projectUpdateId);
             $http({ method: 'GET', url: '../ProjectList/GetStatusData/'+$routeParams.projectId+"/"+$routeParams.projectUpdateId }).success(function (data)
             {
                 console.log(data);
                 console.log($routeParams.projectId);
+                
                 $scope.statusUpdateList = data;
-                $scope.pName = $routeParams.projectName;
+               // $scope.pName = $routeParams.projectName;
                 $scope.date = $scope.statusUpdateList[0].RecordDate;
                 $scope.dataExtractionId = $scope.statusUpdateList[0].ProjectUpdateId;
                 $scope.vId = $scope.statusUpdateList[0].VerticalID;

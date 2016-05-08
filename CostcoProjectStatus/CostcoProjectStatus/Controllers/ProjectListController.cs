@@ -143,6 +143,7 @@ namespace CostcoProjectStatus.Controllers
         
         public string GetStatusData(String projectId, String ProjectUpdateId)
         {
+            var passedStatusUpdateList = new List<StatusUpdatesModel.StatusUpdate>();
 
             try
             {
@@ -150,7 +151,7 @@ namespace CostcoProjectStatus.Controllers
                 {
 
                     var statusData = DataAccsess.GetAllUpdatesFromEmail(projectId, Guid.Parse(ProjectUpdateId));
-                    var passedStatusUpdateList = new List<StatusUpdatesModel.StatusUpdate>();
+                  
                     foreach (StatusUpdatesModel.StatusUpdate passedStatusUpdate in statusData)
                     {
                         StatusUpdatesModel.StatusUpdate tempStatusUpdate = new StatusUpdatesModel.StatusUpdate();
@@ -168,8 +169,7 @@ namespace CostcoProjectStatus.Controllers
                         passedStatusUpdateList.Add(tempStatusUpdate);
 
                     }
-                    string result = JsonConvert.SerializeObject(passedStatusUpdateList);
-                    return result;
+                   
                 }
             }
             catch (Exception)
@@ -177,10 +177,10 @@ namespace CostcoProjectStatus.Controllers
                 string emptyException = JsonConvert.SerializeObject("");
                 return emptyException;
             }
-            string empty = JsonConvert.SerializeObject("");
-            return empty;
+            string result = JsonConvert.SerializeObject(passedStatusUpdateList);
+            return result;
 
-           
+
         }
         public string GetprojectUpdates(string projectID)
         {
