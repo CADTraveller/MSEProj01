@@ -179,8 +179,8 @@
             console.log("data from Get Project Updates:" + data);
             console.log("Project Update " + $routeParams.projectId);
             $scope.ProjectUpdateList = data;
-            console.log("StatusUpdateList")
-            $scope.vId = $scope.statusUpdateList[0].VerticalID;
+            console.log("ProjectUpdateList")
+            $scope.vId = $scope.ProjectUpdateList[0].VerticalID;
             $scope.desc = $routeParams.description;
             $scope.subjet = $routeParams.Subject;
             $scope.vName = VerticalEnum[$scope.vId];
@@ -193,7 +193,7 @@
             $scope.sortReverse = false;
             angular.forEach($scope.statusUpdateList, function (value, key) {
                 console.log("Phase ID: " + $scope.ProjectUpdateList[key].PhaseID);
-                this.push($scope.statusUpdateList[key].PhaseID);
+                this.push($scope.ProjectUpdateList[key].PhaseID);
 
             }, $scope.inProgressPhases);
             console.log($scope.inProgressPhases);
@@ -214,6 +214,7 @@
                 console.log(data);
                 console.log($routeParams.projectId);
                 $scope.statusUpdateList = data;
+                $scope.pDate = data.valueOf(Date);
                 $scope.pName = $routeParams.projectName;
                 $scope.date = $scope.statusUpdateList[0].RecordDate;
                 $scope.dataExtractionId = $scope.statusUpdateList[0].ProjectUpdateId;
