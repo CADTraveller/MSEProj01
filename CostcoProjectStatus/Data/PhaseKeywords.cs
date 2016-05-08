@@ -45,7 +45,12 @@ namespace Data
 
         public static Phases GuessPhase(List<StatusUpdate> updates)
         {
+            //__if there is a match for an exact key, then simply use that value
+            foreach (var entry in ExactKeywords)
+            {
 
+            }
+            Dictionary<Phases, int> phaseVotes = new Dictionary<Phases, int>();
 
             return Phases.Not_Assigned;
         }
