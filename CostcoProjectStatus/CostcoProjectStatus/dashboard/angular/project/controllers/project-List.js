@@ -179,10 +179,17 @@
             console.log("data from Get Project Updates:" + data);
             console.log("Project Update " + $routeParams.projectId);
             $scope.ProjectUpdateList = data;
+            var tempArr = [];
             console.log("Project Update date: " + $scope.ProjectUpdateList[0].Date);
             angular.forEach($scope.ProjectUpdateList, function (value, key) {
-                this.push($scope.ProjectUpdateList[key].PhaseID);
-            }, $scope.inProgressPhases);
+                console.log("Key: " + key + "Value: " + value)
+                console.log("PhaseID: " + value.Body.PhaseID);
+                console.log("PhaseID test2: " + value.Body["PhaseID"]);
+                projectUpdateBody = angular.fromJson(value.Body);
+                console.log("PhaseID test3: " + projectUpdateBody[0].PhaseID);
+                tempArr.push(projectUpdateBody[0].PhaseID);
+            });
+            $scope.inProgressPhases = tempArr;
             console.log($scope.inProgressPhases);
 
         }).error(function (data, status, headers, config) {
