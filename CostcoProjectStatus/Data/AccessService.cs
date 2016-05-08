@@ -142,6 +142,30 @@ namespace DataService
         public bool RecordProjectUpdate(ProjectUpdate projectUpdate)
         {
 
+            try
+            {
+                List<StatusUpdate> updates = projectUpdate.StatusUpdates.ToList();
+
+                //__first make sure each StatusUpdate has necessary info'
+                Guid projectUpdateId = Guid.NewGuid();
+                foreach (StatusUpdate statusUpdate in updates)
+                {
+                    statusUpdate.ProjectUpdateID = projectUpdateId;
+                }
+
+                //__create new entry in ProjectUpdate table
+                projectUpdate.ProjectUpdateID = projectUpdateId;
+                context.ProjectUpdates.Add(projectUpdate);
+                context.SaveChanges();
+
+                //__use existing method to record StatusUpdates
+                RecordStatusUpdate(updates);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
             return true;
         }
 
@@ -217,18 +241,18 @@ namespace DataService
 
                 DateTime currentDT = DateTime.Now;
 
-                //__first record the raw update data as ProjectUpdate
-                //__generate an ID for this update and save the raw data
-                JsonSerializerSettings settings = new JsonSerializerSettings();
-                settings.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
+                ////__first record the raw update data as ProjectUpdate
+                ////__generate an ID for this update and save the raw data
+                //JsonSerializerSettings settings = new JsonSerializerSettings();
+                //settings.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
                 
-                string updateJson = JsonConvert.SerializeObject(updates, settings);
-                StatusUpdatesModel.ProjectUpdate projectUpdate = new StatusUpdatesModel.ProjectUpdate();
-                Guid projectUpdateID = Guid.NewGuid();
-                projectUpdate.ProjectUpdateID = projectUpdateID;
-                projectUpdate.Body = updateJson;
-                projectUpdate.ProjectID = projectID;
-                context.ProjectUpdates.Add(projectUpdate);
+                //string updateJson = JsonConvert.SerializeObject(updates, settings);
+                //StatusUpdatesModel.ProjectUpdate projectUpdate = new StatusUpdatesModel.ProjectUpdate();
+                //Guid projectUpdateID = Guid.NewGuid();
+                //projectUpdate.ProjectUpdateID = projectUpdateID;
+                //projectUpdate.Body = updateJson;
+                //projectUpdate.ProjectID = projectID;
+                //context.ProjectUpdates.Add(projectUpdate);
 
                 foreach (StatusUpdate u in updates)
                 {
@@ -243,9 +267,9 @@ namespace DataService
                     if (projectPhaseEntry != null)//__an entry exists
                     {
                         //__update existing update count and use this for sequence number
-                        int iOldSequenceNumber = Convert.ToInt32(projectPhaseEntry.UpdateCount);
-                       int  iNewSequenceNumber = iOldSequenceNumber + 1;
-                        projectPhaseEntry.UpdateCount = iNewSequenceNumber;
+                        int iOldCount = Convert.ToInt32(projectPhaseEntry.UpdateCount);
+                       int  iNewCount = iOldCount + 1;
+                        projectPhaseEntry.UpdateCount = iNewCount;
                         projectPhaseEntry.LatestUpdate = currentDT;
                     }
                     else //__since none was found we need a new entry
@@ -266,7 +290,7 @@ namespace DataService
                     if (string.IsNullOrEmpty(u.ProjectName)) u.ProjectName = projectName;
                     if (u.VerticalID == null || u.VerticalID < 0 || u.VerticalID > 7) u.VerticalID = verticalID;
                     u.RecordDate = DateTime.Now;
-                    u.ProjectUpdateID = projectUpdateID;
+                    //u.ProjectUpdateID = projectUpdateID; This needs to be recorded in RecordProjectUpdateMethod
                     Console.WriteLine("\n--Added Update| updateKey=" + u.UpdateKey + ", updateValue=" + u.UpdateValue);
                     context.StatusUpdates.Add(u);
 
@@ -300,12 +324,11 @@ namespace DataService
             DateTime now = DateTime.Now;
             foreach (var project in projects)
             {                
-                List<Project> recordedProjects = GetProjectIDs(project.ProjectName);
-                if (recordedProjects.Count == 0) continue;
-                Guid projectID = recordedProjects.First().ProjectID;
-                List<ProjectPhase> records = context.ProjectPhases.Where(p => p.ProjectID == projectID).ToList();
-                records = records.OrderBy(r => r.LatestUpdate).ToList();
-                DateTime lastUpdateDate = (DateTime)records.Last().LatestUpdate;
+                List<ProjectUpdate> recordedProjectUpdates = context.ProjectUpdates.Where(pu => pu.ProjectID == project.ProjectID).ToList();
+                if (recordedProjectUpdates.Count == 0) continue;
+
+                IEnumerable <DateTime> dates = recordedProjectUpdates.Select(pu => Convert.ToDateTime(pu.Date));
+                DateTime lastUpdateDate = dates.Max();
                 project.LatestUpdate = lastUpdateDate;
             }
             return projects;

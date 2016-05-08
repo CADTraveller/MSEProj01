@@ -116,9 +116,6 @@ namespace DataService.Tests
                     Assert.AreNotEqual(allProjectsList, null);
                 }
 
-                // Boundary test #1: Vertical ID -1
-                checkForGetAllProjectsForVerticalFailure(-1);
-
                 // Boundary test #2: Vertical ID -2
                 checkForGetAllProjectsForVerticalFailure(-2);
 
@@ -223,7 +220,7 @@ namespace DataService.Tests
         {
             var dataAccess = new AccessService();
             // Grab a list of all the projects in the database
-            List<Project> allProjects = dataAccess.GetProjectIDs();
+            List<Project> allProjects = dataAccess.GetAllProjectNames();
 
             // In case the database has just been wiped out...
             if (allProjects.Count != 0)
@@ -238,7 +235,7 @@ namespace DataService.Tests
                 string checkThisName = dataAccess.GetProjectNameForID(randomProjectID);
 
                 // Check if it is correct. boom.
-                Assert.Equals(checkThisName, randomProjectName);
+                Assert.AreEqual(checkThisName, randomProjectName);
             } else
             {
                 Assert.Inconclusive("Database might be empty, try rerunning with data");
@@ -254,7 +251,7 @@ namespace DataService.Tests
         {
             var dataAccess = new AccessService();
             // Grab a list of all the projects in the database
-            List<Project> allProjects = dataAccess.GetProjectIDs();
+            List<Project> allProjects = dataAccess.GetAllProjectNames();
             if (allProjects.Count != 0)
             {
                 // Pick a random project and get the ID and the (correct) project name
@@ -267,7 +264,7 @@ namespace DataService.Tests
             Guid checkThisID = dataAccess.GetProjectIDbyName(randomProjectName);
 
             // Check if it is correct. boom.
-            Assert.Equals(checkThisID, randomProjectID);
+            Assert.AreEqual(checkThisID, randomProjectID);
         } else
             {
                 Assert.Inconclusive("Database might be empty, try rerunning with data");
@@ -278,7 +275,7 @@ namespace DataService.Tests
         public void GetProjectIDsTest()
         {
             var dataAccess = new AccessService();
-            List<Project> allProjectsList = dataAccess.GetProjectIDs();
+            List<Project> allProjectsList = dataAccess.GetAllProjectNames();
 
             // Got to make sure that the data is the same
             using (SqlConnection sqlConnection = new SqlConnection())
@@ -320,7 +317,56 @@ namespace DataService.Tests
         public void GetAllUpdatesFromEmailTest()
         {
             var dataAccess = new AccessService();
-            Assert.Fail();
+            // First, let's create a StatusUpdate
+            Random random = new Random();
+            int randomNumber = random.Next(0, int.MaxValue);
+            string projectName = "Access Service Unit Test Project" + randomNumber;
+            StatusUpdate newProject = new StatusUpdate();
+            newProject.PhaseID = 0;
+            newProject.ProjectName = projectName;
+            newProject.VerticalID = 3;
+            List<StatusUpdate> newProjectsList = new List<StatusUpdate>();
+            newProjectsList.Add(newProject);
+
+            dataAccess.RecordStatusUpdate(newProjectsList);
+
+            // Now, let's make sure that the project got added
+            Guid projectGuid = dataAccess.GetProjectIDbyName(projectName);
+
+            // Test the updating part of the project. The function only updates one project at a time
+            Assert.IsTrue(projectGuid != Guid.Empty);
+            StatusUpdate updateProject = newProject;
+            updateProject.PhaseID = 1;
+            updateProject.UpdateKey = "Environment";
+            updateProject.UpdateValue = "QA1";
+            StatusUpdate updateProject2 = newProject;
+            updateProject2.PhaseID = 2;
+            updateProject.UpdateKey = "Random Key";
+            updateProject.UpdateValue = "BT1";
+            StatusUpdate updateProject3 = newProject;
+            updateProject2.PhaseID = 3;
+            updateProject.UpdateKey = "Environment";
+            updateProject.UpdateValue = "BT3";
+            List<StatusUpdate> updateProjectsList = new List<StatusUpdate>();
+            updateProjectsList.Add(updateProject);
+            updateProjectsList.Add(updateProject2);
+            updateProjectsList.Add(updateProject3);
+            dataAccess.RecordStatusUpdate(updateProjectsList);
+
+            // Test that the updates got in
+            List<StatusUpdate> retrievedProjectUpdates = dataAccess.GetUpdatesForKey("Environment", projectGuid);
+            Guid projectUpdateID = Guid.Empty;
+           // Look for the Project Update ID
+           for (int i = 0; i < retrievedProjectUpdates.Count; i++)
+            {
+                if (retrievedProjectUpdates[i].PhaseID == 1)
+                {
+                    projectUpdateID = retrievedProjectUpdates[i].ProjectUpdateID;
+                }
+            }
+
+            Assert.AreEqual(dataAccess.GetAllUpdatesFromEmail(projectGuid.ToString(), 1, projectUpdateID).Count, 1);
+            dataAccess.DeleteProject(projectGuid);
         }
 
         [TestMethod()]
@@ -355,14 +401,95 @@ namespace DataService.Tests
         public void GetUpdatesForKeyTest()
         {
             var dataAccess = new AccessService();
-            Assert.Fail();
+            // This function records a status update as a new project if one does not already exist.
+            // We want to test two things - does it record a new project, and if a new project already
+            // exists, does it store it properly
+
+            // First, let's create a StatusUpdate
+            Random random = new Random();
+            int randomNumber = random.Next(0, int.MaxValue);
+            string projectName = "Access Service Unit Test Project" + randomNumber;
+            StatusUpdate newProject = new StatusUpdate();
+            newProject.PhaseID = 0;
+            newProject.ProjectName = projectName;
+            newProject.VerticalID = 3;
+            List<StatusUpdate> newProjectsList = new List<StatusUpdate>();
+            newProjectsList.Add(newProject);
+
+            dataAccess.RecordStatusUpdate(newProjectsList);
+
+            // Now, let's make sure that the project got added
+            Guid projectGuid = dataAccess.GetProjectIDbyName(projectName);
+
+            // Test the updating part of the project. The function only updates one project at a time
+            Assert.IsTrue(projectGuid != Guid.Empty);
+            StatusUpdate updateProject = newProject;
+            updateProject.PhaseID = 1;
+            updateProject.UpdateKey = "Environment";
+            updateProject.UpdateValue = "QA1";
+            StatusUpdate updateProject2 = newProject;
+            updateProject2.PhaseID = 2;
+            updateProject.UpdateKey = "Random Key";
+            updateProject.UpdateValue = "BT1";
+            StatusUpdate updateProject3 = newProject;
+            updateProject2.PhaseID = 3;
+            updateProject.UpdateKey = "Environment";
+            updateProject.UpdateValue = "BT3";
+            List<StatusUpdate> updateProjectsList = new List<StatusUpdate>();
+            updateProjectsList.Add(updateProject);
+            updateProjectsList.Add(updateProject2);
+            updateProjectsList.Add(updateProject3);
+            dataAccess.RecordStatusUpdate(updateProjectsList);
+
+            // Test that the updates got in
+            List<StatusUpdate> retrievedProjectUpdates = dataAccess.GetUpdatesForKey("Environment", projectGuid);
+            
+            Assert.AreEqual(retrievedProjectUpdates.Count, 2);
+            dataAccess.DeleteProject(projectGuid);
+
         }
 
         [TestMethod()]
         public void GetAllUpdatesForProjectTest()
         {
             var dataAccess = new AccessService();
-            Assert.Fail();
+            // This function records a status update as a new project if one does not already exist.
+            // We want to test two things - does it record a new project, and if a new project already
+            // exists, does it store it properly
+
+            // First, let's create a StatusUpdate
+            Random random = new Random();
+            int randomNumber = random.Next(0, int.MaxValue);
+            string projectName = "Access Service Unit Test Project" + randomNumber;
+            StatusUpdate newProject = new StatusUpdate();
+            newProject.PhaseID = 0;
+            newProject.ProjectName = projectName;
+            newProject.VerticalID = 3;
+            List<StatusUpdate> newProjectsList = new List<StatusUpdate>();
+            newProjectsList.Add(newProject);
+
+            dataAccess.RecordStatusUpdate(newProjectsList);
+
+            // Now, let's make sure that the project got added
+            Guid projectGuid = dataAccess.GetProjectIDbyName(projectName);
+
+            // Test the updating part of the project. The function only updates one project at a time
+            StatusUpdate updateProject = newProject;
+            updateProject.PhaseID = 1;
+            StatusUpdate updateProject2 = newProject;
+            updateProject2.PhaseID = 2;
+            StatusUpdate updateProject3 = newProject;
+            updateProject2.PhaseID = 3;
+            List<StatusUpdate> updateProjectsList = new List<StatusUpdate>();
+            updateProjectsList.Add(updateProject);
+            updateProjectsList.Add(updateProject2);
+            updateProjectsList.Add(updateProject3);
+            dataAccess.RecordStatusUpdate(updateProjectsList);
+
+            // Test that the updates got in
+            List<StatusUpdate> retrievedProjectUpdates = dataAccess.GetAllUpdatesForProject(projectGuid.ToString());
+            Assert.AreEqual(retrievedProjectUpdates.Count, 4);
+            dataAccess.DeleteProject(projectGuid);
         }
 
         [TestMethod()]
@@ -411,7 +538,44 @@ namespace DataService.Tests
         public void RecordStatusUpdateTest()
         {
             var dataAccess = new AccessService();
-            Assert.Fail();
+            // This function records a status update as a new project if one does not already exist.
+            // We want to test two things - does it record a new project, and if a new project already
+            // exists, does it store it properly
+
+            // First, let's create a StatusUpdate
+            Random random = new Random();
+            int randomNumber = random.Next(0, int.MaxValue);
+            string projectName = "Access Service Unit Test Project" + randomNumber;
+            StatusUpdate newProject = new StatusUpdate();
+            newProject.PhaseID = 0;
+            newProject.ProjectName = projectName;
+            newProject.VerticalID = 3;
+            List<StatusUpdate> newProjectsList = new List<StatusUpdate>();
+            newProjectsList.Add(newProject);
+
+            dataAccess.RecordStatusUpdate(newProjectsList);
+
+            // Now, let's make sure that the project got added
+            Guid projectGuid = dataAccess.GetProjectIDbyName(projectName);
+
+            // Test the updating part of the project. The function only updates one project at a time
+            Assert.IsTrue(projectGuid != Guid.Empty);
+            StatusUpdate updateProject = newProject;
+            updateProject.PhaseID = 1;
+            StatusUpdate updateProject2 = newProject;
+            updateProject2.PhaseID = 2;
+            StatusUpdate updateProject3 = newProject;
+            updateProject2.PhaseID = 3;
+            List<StatusUpdate> updateProjectsList = new List<StatusUpdate>();
+            updateProjectsList.Add(updateProject);
+            updateProjectsList.Add(updateProject2);
+            updateProjectsList.Add(updateProject3);
+            dataAccess.RecordStatusUpdate(updateProjectsList);
+
+            // Test that the updates got in
+            List<StatusUpdate> retrievedProjectUpdates = dataAccess.GetAllUpdatesForProject(projectGuid.ToString());
+            Assert.AreEqual(retrievedProjectUpdates.Count, 4);
+            
         }
 
         [TestMethod()]
