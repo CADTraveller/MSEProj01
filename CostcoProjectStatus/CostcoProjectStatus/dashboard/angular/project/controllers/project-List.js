@@ -186,7 +186,7 @@
             $scope.vName = VerticalEnum[$scope.vId];
             $scope.phaseEnums = PhaseEnum;
             $scope.pId = $routeParams.projectId;
-            $scope.pDate = data;
+            $scope.pDate = data.valueOf(Date);
             $scope.pName = $routeParams.projectName;
             $scope.inProgressPhases = [];
             $scope.sortType = 'keyName';
@@ -214,7 +214,6 @@
                 console.log(data);
                 console.log($routeParams.projectId);
                 $scope.statusUpdateList = data;
-                $scope.pDate = data.valueOf(Date);
                 $scope.pName = $routeParams.projectName;
                 $scope.date = $scope.statusUpdateList[0].RecordDate;
                 $scope.dataExtractionId = $scope.statusUpdateList[0].ProjectUpdateId;
