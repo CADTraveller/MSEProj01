@@ -141,21 +141,22 @@ namespace CostcoProjectStatus.Controllers
 
         }
         
-        public string GetStatusData(String projectId, String phaseId, String ProjectUpdateId)
+        public string GetStatusData(String projectId, String ProjectUpdateId)
         {
+            var passedStatusUpdateList = new List<StatusUpdatesModel.StatusUpdate>();
 
             try
             {
                 if (this.Session["username"].ToString() != null && DataAccsess.IsUserAuthorized(this.Session["username"].ToString()))
                 {
 
-                    var statusData = DataAccsess.GetAllUpdatesFromEmail(projectId, Convert.ToInt32(phaseId), Guid.Parse(ProjectUpdateId));
-                    var passedStatusUpdateList = new List<StatusUpdatesModel.StatusUpdate>();
+                    var statusData = DataAccsess.GetAllUpdatesFromEmail(Guid.Parse(ProjectUpdateId));
+                  
                     foreach (StatusUpdatesModel.StatusUpdate passedStatusUpdate in statusData)
                     {
                         StatusUpdatesModel.StatusUpdate tempStatusUpdate = new StatusUpdatesModel.StatusUpdate();
                         //tempStatusUpdate.Phase = passedStatusUpdate.Phase;
-                        tempStatusUpdate.PhaseID = passedStatusUpdate.PhaseID;
+                        //tempStatusUpdate.PhaseID = passedStatusUpdate.PhaseID;
                         //tempStatusUpdate.Project = passedStatusUpdate.Project;
                         tempStatusUpdate.ProjectID = passedStatusUpdate.ProjectID;
                         tempStatusUpdate.ProjectName = passedStatusUpdate.ProjectName;
@@ -168,8 +169,7 @@ namespace CostcoProjectStatus.Controllers
                         passedStatusUpdateList.Add(tempStatusUpdate);
 
                     }
-                    string result = JsonConvert.SerializeObject(passedStatusUpdateList);
-                    return result;
+                   
                 }
             }
             catch (Exception)
@@ -177,10 +177,10 @@ namespace CostcoProjectStatus.Controllers
                 string emptyException = JsonConvert.SerializeObject("");
                 return emptyException;
             }
-            string empty = JsonConvert.SerializeObject("");
-            return empty;
+            string result = JsonConvert.SerializeObject(passedStatusUpdateList);
+            return result;
 
-           
+
         }
         public string GetprojectUpdates(string projectID)
         {
