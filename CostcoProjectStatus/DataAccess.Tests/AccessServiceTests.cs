@@ -365,7 +365,7 @@ namespace DataService.Tests
                 }
             }
 
-            Assert.AreEqual(dataAccess.GetAllUpdatesFromEmail(projectGuid.ToString(), 1, projectUpdateID).Count, 1);
+            Assert.AreEqual(dataAccess.GetAllUpdatesFromEmail(projectUpdateID).Count, 1);
             dataAccess.DeleteProject(projectGuid);
         }
 
