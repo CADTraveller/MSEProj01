@@ -12,7 +12,7 @@ namespace CSVProject
         static void Main(string[] args)
         {
             DataService.AccessService dataService = new DataService.AccessService();
-            var file = new StreamReader(File.OpenRead("Test.csv"));
+            var file = new StreamReader(File.OpenRead(@"c:\Test.csv"));
             while (!file.EndOfStream)
             {
                 var EachLine = file.ReadLine();
@@ -20,6 +20,7 @@ namespace CSVProject
                 string userEmail = valuesOfLine[0];
                 int role = int.Parse(valuesOfLine[1]);
                 string Action = valuesOfLine[2];
+                string NewEmail = valuesOfLine[3];
                 if (Action == "add")
                 {
                     dataService.AddUser(userEmail, role);
@@ -34,8 +35,11 @@ namespace CSVProject
                 {
                     dataService.UpdateUserRole(userEmail, role);
                 }
-                // give old and new email
-                //dataService.UpdateUserEmail(userEmail, user);        
+                else 
+                if(Action == "updateEmail")
+                {
+                    dataService.UpdateUserEmail(userEmail , NewEmail);
+                }
             }
         }
     }
