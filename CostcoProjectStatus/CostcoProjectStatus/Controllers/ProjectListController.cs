@@ -150,7 +150,7 @@ namespace CostcoProjectStatus.Controllers
                 if (this.Session["username"].ToString() != null && DataAccsess.IsUserAuthorized(this.Session["username"].ToString()))
                 {
 
-                    var statusData = DataAccsess.GetAllUpdatesFromEmail(projectId, Guid.Parse(ProjectUpdateId));
+                    var statusData = DataAccsess.GetAllUpdatesFromEmail(Guid.Parse(ProjectUpdateId));
                   
                     foreach (StatusUpdatesModel.StatusUpdate passedStatusUpdate in statusData)
                     {
