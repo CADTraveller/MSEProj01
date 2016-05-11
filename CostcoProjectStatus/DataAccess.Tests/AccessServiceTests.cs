@@ -654,5 +654,35 @@ namespace DataService.Tests
             Assert.IsFalse(dataAccess.IsAppAuthorized("1"));
             Assert.IsFalse(dataAccess.IsAppAuthorized("password"));
         }
+
+        [TestMethod]
+        public void RecordPackageUpdateTest()
+        {
+            AccessService dbService = new AccessService();
+            //var projectUpdates = dbService.GetProjectUpdates("6a8a7e56-e9ac-4385-a8be-5be702c1f2e6");
+            UpdatePackage package = new UpdatePackage();
+            package.ProjectName = "Test Project";
+            package.Subject = "Deployment";
+            package.Body = "Environment:br549|Jimmy, toloose";
+         
+            package.Updates.Add(new KeyValuePair<string, string>("verticalID", "3" ));
+            package.Updates.Add(new KeyValuePair<string, string>("Environment", "br549" ));
+            package.Updates.Add(new KeyValuePair<string, string>("Author", "Samantha" ));
+            package.Updates.Add(new KeyValuePair<string, string>("Manager", "Bocephus" ));
+
+            //__Adding this package should create a new Project and return the ProjectID as string
+            string stId = dbService.RecordUpdatePackage(package);
+            Assert.IsFalse(string.IsNullOrEmpty(stId));
+
+            Guid projectID = Guid.Parse(stId);
+            Assert.IsFalse(projectID == Guid.Empty);
+
+            Guid recordedId = dbService.GetProjectIDbyName(package.ProjectName);
+            Assert.AreEqual(projectID, recordedId);
+
+            
+
+            dbService.DeleteProject(projectID);
+        }
     }
 }

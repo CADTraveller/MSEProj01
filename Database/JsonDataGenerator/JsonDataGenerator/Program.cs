@@ -23,8 +23,14 @@ namespace JsonDataGenerator
 
             if (inDebug)
             {
-                AccessService dbService = new AccessService();
-                var projectUpdates = dbService.GetProjectUpdates("6a8a7e56-e9ac-4385-a8be-5be702c1f2e6");
+                //AccessService dbService = new AccessService();
+                ////var projectUpdates = dbService.GetProjectUpdates("6a8a7e56-e9ac-4385-a8be-5be702c1f2e6");
+                //UpdatePackage package = new UpdatePackage();
+                //package.ProjectName = "Test Project";
+                //package.Subject = "Deployment";
+                //package.Body = "Environment:br549|Jimmy, toloose";
+                //KeyValuePair<string, string > phasePair = new KeyValuePair<string, string>() {Key="VerticalID", Value="3"};
+                //package.Updates.Add();
 
             }
 

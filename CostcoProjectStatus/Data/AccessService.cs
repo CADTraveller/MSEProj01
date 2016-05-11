@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Data;
 using StatusUpdatesModel;
 using Newtonsoft.Json;
 
@@ -139,13 +140,13 @@ namespace DataService
 
         #region StatusUpdate and Project Methods
 
-        public bool RecordUpdatePackage(UpdatePackage package)
+        public string RecordUpdatePackage(UpdatePackage package)
         {
             //__get the information from input
             string projectName = package.ProjectName;
             string subject = package.Subject;
             string body = package.Body;
-            if (string.IsNullOrEmpty(projectName)) return false;
+            if (string.IsNullOrEmpty(projectName)) return null;
 
             List<KeyValuePair<string, string>> updatePairs = package.Updates;
 
@@ -155,6 +156,7 @@ namespace DataService
             bool madeNewProject = false;
             if (project == null)
             {
+                project = new Project();
                 project.ProjectID = Guid.NewGuid();
                 madeNewProject = true;
             }
@@ -184,12 +186,19 @@ namespace DataService
             try
             {
                 KeyValuePair<string, string> phasePair = updatePairs.FirstOrDefault(u => u.Key.ToLower() == "phaseid");
-                phaseID = Convert.ToInt16(phasePair.Value);
-                if (phaseID < -1 || phaseID > 7) phaseID = -1;
+                if(phasePair.Value != null) phaseID = Convert.ToInt16(phasePair.Value);
+               
             }
             catch (Exception)
             {
                 //_simply use default already set
+            }
+
+            //__do fuzzy word matches if no phase found yet
+            if (phaseID < 0)
+            {
+                string searchString = subject + body;
+                phaseID = Convert.ToInt16(PhaseKeywords.GuessPhase(searchString));
             }
 
             //__if this is new Project write it to DB
@@ -230,8 +239,16 @@ namespace DataService
 
                 updateProjectPhase(projectID, phaseID, key);
             }
-            return true;
+            return projectID.ToString();
         }
+
+        public void DeleteProject(string projectName)
+        {
+            Guid projectID = context.Projects.FirstOrDefault(p => p.ProjectName == projectName).ProjectID;
+            DeleteProject(projectID);
+        }
+
+
 
         private void updateProjectPhase(Guid projectId, int phaseId, string key)
         {
