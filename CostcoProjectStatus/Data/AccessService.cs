@@ -144,14 +144,118 @@ namespace DataService
             //__get the information from input
             string projectName = package.ProjectName;
             string subject = package.Subject;
+            string body = package.Body;
+            if (string.IsNullOrEmpty(projectName)) return false;
 
-            
-            //__get the Project ID
+            List<KeyValuePair<string, string>> updatePairs = package.Updates;
+
+            Project project = context.Projects.FirstOrDefault(p => p.ProjectName == projectName);
+
+            //__if no existing project, create new one
+            bool madeNewProject = false;
+            if (project == null)
+            {
+                project.ProjectID = Guid.NewGuid();
+                madeNewProject = true;
+            }
+
+            //__get the Project ID to use locally
+            Guid projectID = project.ProjectID;
+
+            //__Look for VerticalID
+            int verticalID = -1;//__default is not assigned.
+            try
+            {
+                KeyValuePair<string, string> verticalPair = updatePairs.FirstOrDefault(u => u.Key.ToLower() == "verticalid");
+                verticalID = Convert.ToInt16(verticalPair.Value);
+                if (verticalID < -1 || verticalID > 8) verticalID = -1;
+            }
+            catch (Exception)
+            {
+                //__just use default value already set
+            }
+
+            //__these might be new or changed
+            project.VerticalID = verticalID;
+            project.ProjectName = projectName;
+
+            //__Look for a PhaseID
+            int phaseID = -1;
+            try
+            {
+                KeyValuePair<string, string> phasePair = updatePairs.FirstOrDefault(u => u.Key.ToLower() == "phaseid");
+                phaseID = Convert.ToInt16(phasePair.Value);
+                if (phaseID < -1 || phaseID > 7) phaseID = -1;
+            }
+            catch (Exception)
+            {
+                //_simply use default already set
+            }
+
+            //__if this is new Project write it to DB
+            if (madeNewProject)
+            {
+                context.Projects.Add(project);
+                context.SaveChanges();
+            }
+
+            //__create and record new ProjectUpdate
             ProjectUpdate projectUpdate = new ProjectUpdate();
-            //__if no existing ID, create new one
-            //__record new ProjectUpdate
+            projectUpdate.ProjectUpdateID = Guid.NewGuid();
+            projectUpdate.ProjectID = projectID;
+            projectUpdate.Subject = subject;
+            projectUpdate.Body = body;
+            context.ProjectUpdates.Add(projectUpdate);
+            context.SaveChanges();
+
             //__build and record StatusUpdates from list of Key:Value pairs
+            //__also make sure to update ProjectPhase table for efficient queries later
+            StatusUpdate statusUpdateTemplate = new StatusUpdate();
+            statusUpdateTemplate.ProjectID = projectID;
+            statusUpdateTemplate.ProjectUpdateID = projectUpdate.ProjectUpdateID;
+            statusUpdateTemplate.PhaseID = phaseID;
+            statusUpdateTemplate.VerticalID = verticalID;
+          
+            foreach (KeyValuePair<string, string> pair in updatePairs)
+            {
+                string key = pair.Key;
+                string value = pair.Value;
+
+                StatusUpdate statusUpdate = statusUpdateTemplate.Clone();
+                statusUpdate.UpdateKey = key;
+                statusUpdate.UpdateValue = value;
+                statusUpdate.RecordDate = DateTime.Now;
+                context.StatusUpdates.Add(statusUpdate);
+                context.SaveChanges();
+
+                updateProjectPhase(projectID, phaseID, key);
+            }
             return true;
+        }
+
+        private void updateProjectPhase(Guid projectId, int phaseId, string key)
+        {
+            ProjectPhase projectPhase = context.ProjectPhases.FirstOrDefault(pp =>
+                pp.PhaseID == phaseId &&
+                pp.ProjectID == projectId &&
+                pp.UpdateKey == key);
+            //__increment or create entry
+            if (projectPhase != null)
+            {
+                int? newCount = projectPhase.UpdateCount + 1;
+                projectPhase.UpdateCount = newCount;
+            }
+            else
+            {
+                ProjectPhase newProjectPhase = new ProjectPhase();
+                newProjectPhase.PhaseID = phaseId;
+                newProjectPhase.ProjectID = projectId;
+                newProjectPhase.UpdateKey = key;
+                newProjectPhase.LatestUpdate = DateTime.Now;
+                newProjectPhase.UpdateCount = 1;
+                context.ProjectPhases.Add(newProjectPhase);
+            }
+            context.SaveChanges();
         }
 
         public bool RecordProjectUpdate(ProjectUpdate projectUpdate)

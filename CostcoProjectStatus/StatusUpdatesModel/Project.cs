@@ -11,7 +11,6 @@ namespace StatusUpdatesModel
 {
     using System;
     using System.Collections.Generic;
-    using Newtonsoft.Json;
     
     public partial class Project
     {
@@ -28,18 +27,11 @@ namespace StatusUpdatesModel
         public string Description { get; set; }
         public Nullable<int> VerticalID { get; set; }
     
-        [JsonIgnore]
         public virtual Vertical Vertical { get; set; }
-
-        [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProjectPhase> ProjectPhases { get; set; }
-
-        [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProjectUpdate> ProjectUpdates { get; set; }
-
-        [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StatusUpdate> StatusUpdates { get; set; }
     }
