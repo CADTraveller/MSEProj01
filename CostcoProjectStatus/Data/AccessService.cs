@@ -139,6 +139,21 @@ namespace DataService
 
         #region StatusUpdate and Project Methods
 
+        public bool RecordUpdatePackage(UpdatePackage package)
+        {
+            //__get the information from input
+            string projectName = package.ProjectName;
+            string subject = package.Subject;
+
+            
+            //__get the Project ID
+            ProjectUpdate projectUpdate = new ProjectUpdate();
+            //__if no existing ID, create new one
+            //__record new ProjectUpdate
+            //__build and record StatusUpdates from list of Key:Value pairs
+            return true;
+        }
+
         public bool RecordProjectUpdate(ProjectUpdate projectUpdate)
         {
 
