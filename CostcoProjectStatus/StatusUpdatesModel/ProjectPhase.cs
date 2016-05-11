@@ -11,7 +11,6 @@ namespace StatusUpdatesModel
 {
     using System;
     using System.Collections.Generic;
-    using Newtonsoft.Json;
     
     public partial class ProjectPhase
     {
@@ -20,12 +19,8 @@ namespace StatusUpdatesModel
         public string UpdateKey { get; set; }
         public Nullable<int> UpdateCount { get; set; }
         public Nullable<System.DateTime> LatestUpdate { get; set; }
-
-
-        [JsonIgnore]
+    
         public virtual Phase Phase { get; set; }
-
-        [JsonIgnore]
         public virtual Project Project { get; set; }
     }
 }

@@ -98,8 +98,12 @@ namespace CostcoProjectStatus.Controllers
             string result = "<script>window.location.replace(\"/dashboard/index.html\");</script>";
             return result;
         }
+        //public string RecordUpdatePackeage(UpdatePackage)
+        //{
+
+        //}
         //[AuthAttribute]
-    //    [BasicAuthentication]
+        //    [BasicAuthentication]
         public string GetStatusUpdates(String id)
         {
 

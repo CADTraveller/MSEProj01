@@ -15,5 +15,7 @@ namespace StatusUpdatesModel
         public string Description { get; set; }
 
         public string  Phase { get; set; }
+
+        public int PhaseID { get; set; }
     }
 }

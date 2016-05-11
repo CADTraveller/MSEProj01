@@ -133,7 +133,7 @@ namespace DataService.Tests
             }
             catch (Exception e)
             {
-                Assert.Fail("GetAppProjectsForVerticalAsync failed with this exception: " + e.Message);
+                Assert.Fail("GetAllProjectsForVerticalTest failed with this exception: " + e.Message);
             }
         }
 
@@ -465,6 +465,8 @@ namespace DataService.Tests
             newProject.PhaseID = 0;
             newProject.ProjectName = projectName;
             newProject.VerticalID = 3;
+            newProject.UpdateKey = "Unit Test Key";
+            newProject.UpdateValue = "Unit Test Value";
             List<StatusUpdate> newProjectsList = new List<StatusUpdate>();
             newProjectsList.Add(newProject);
 
