@@ -224,8 +224,12 @@ namespace DataService
             statusUpdateTemplate.ProjectUpdateID = projectUpdate.ProjectUpdateID;
             statusUpdateTemplate.PhaseID = phaseID;
             statusUpdateTemplate.VerticalID = verticalID;
+
+            //__safety, incase of duplicate keys, combine the values so there is only one entry
+            //___trying to record duplicate keys in the same PackageUpdate will cause primary key error in DB
+            Dictionary<string, string> cleanedPairs = combineEqualKeys(updatePairs);
           
-            foreach (KeyValuePair<string, string> pair in updatePairs)
+            foreach (var pair in cleanedPairs)
             {
                 string key = pair.Key;
                 string value = pair.Value;
@@ -240,6 +244,26 @@ namespace DataService
                 updateProjectPhase(projectID, phaseID, key);
             }
             return projectID.ToString();
+        }
+
+        private Dictionary<string, string> combineEqualKeys(List<KeyValuePair<string, string>> updatePairs)
+        {
+            Dictionary<string, string> combinedKeys = new Dictionary<string, string>();
+            foreach (KeyValuePair<string, string> pair in updatePairs)
+            {
+                string key = pair.Key;
+                string value = pair.Value;
+
+                if (combinedKeys.ContainsKey(key))
+                {
+                    combinedKeys[key] = combinedKeys[key] + "|" + value;
+                }
+                else
+                {
+                    combinedKeys.Add(key, value);
+                }
+            }
+            return combinedKeys;
         }
 
         public void DeleteProject(string projectName)
