@@ -1,4 +1,5 @@
-﻿var dashboardModule = angular.module('dashboardApp', [
+﻿/* Last push by Laura on 5/10/2016 at 5:44PM */
+var dashboardModule = angular.module('dashboardApp', [
     'ngAnimate',
     'ngAria',
     'ngCookies',
