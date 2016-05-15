@@ -119,11 +119,12 @@ namespace CostcoProjectStatus.Controllers
         //}
 
         [System.Web.Mvc.HttpPost]
-        public HttpResponseMessage Update(UpdatePackage jsonPacket)
+        public HttpResponseMessage Update(string jsonPacket)
         {
             try
             {
-                DataAccess.RecordUpdatePackage(jsonPacket);
+                UpdatePackage update = JsonConvert.DeserializeObject<UpdatePackage>(jsonPacket);
+                DataAccess.RecordUpdatePackage(update);
             }
             catch (Exception)
             {
