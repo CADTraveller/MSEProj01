@@ -222,9 +222,10 @@ namespace CostcoProjectStatus.Controllers
                 string emptyException = JsonConvert.SerializeObject("");
                 return emptyException;
             }
-            string result = JsonConvert.SerializeObject(passedStatusUpdateList);
+            JsonSerializerSettings settings = new JsonSerializerSettings();
+            settings.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
+            string result = JsonConvert.SerializeObject(passedStatusUpdateList, settings);
             return result;
-
 
         }
         //
