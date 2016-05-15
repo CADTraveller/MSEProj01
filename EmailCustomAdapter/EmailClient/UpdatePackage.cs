@@ -4,14 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataService
+namespace EmailClient
 {
     public class UpdatePackage
     {
         public string ProjectName;
         public string Subject;
         public string Body;
-
-        public List<KeyValuePair<string, string>> Updates = new List<KeyValuePair<string, string>>();
+        public List<KeyValuePair<string, string>> Updates;
     }
 }

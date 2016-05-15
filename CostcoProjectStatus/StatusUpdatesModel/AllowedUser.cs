@@ -11,7 +11,6 @@ namespace StatusUpdatesModel
 {
     using System;
     using System.Collections.Generic;
-    using Newtonsoft.Json;
     
     public partial class AllowedUser
     {
@@ -19,7 +18,6 @@ namespace StatusUpdatesModel
         public string Email { get; set; }
         public int RoleID { get; set; }
     
-        [JsonIgnore]
         public virtual UserRole UserRole { get; set; }
     }
 }
