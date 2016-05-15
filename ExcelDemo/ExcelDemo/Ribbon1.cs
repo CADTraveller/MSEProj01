@@ -53,58 +53,59 @@ namespace ExcelDemo
             //__validate PhaseID
             //__validate VerticalID
 
-            List<StatusUpdate> updates = new List<StatusUpdate>();
+            //__get keys from header row. first column is Project Name
+            Dictionary<int, string> keys = new Dictionary<int, string>();
+            List<UpdatePackage> updates = new List<UpdatePackage>();
+            for (int i = 2; i <= iNumColumns; i++)
+            {
+                ExcelIO.Range cell = usedRange.Cells[1, i];
+                keys.Add(i, cell.Value.ToString());
+            }
 
             //__skip header row, get values
             for (int i = 2; i <= iNumRows; i++)
             {
+                UpdatePackage package = new UpdatePackage();
                 ExcelIO.Range cell = usedRange.Cells[i, 1];
-                Guid projectID = new Guid(cell.Value.ToString());
+                package.ProjectName = cell.Value.ToString();
+                package.Subject = "Excel Update";
 
-                cell = usedRange.Cells[i, 2];
-                string projectName = cell.Value.ToString();
-
-                cell = usedRange.Cells[i, 3];
-                int phaseID = Convert.ToInt32(cell.Value);
-
-                cell = usedRange.Cells[i, 4];
-                int verticalID = Convert.ToInt32(cell.Value);
-
-                for (int k = 5; k <= iNumColumns; k+=2)
+                //__remainder of columns should be key/value pairs
+                for (int k = 2; k <= iNumColumns; k += 2)
                 {
-                    StatusUpdate update = new StatusUpdate();
-                    update.ProjectID = projectID;
-                    update.PhaseID = phaseID;
-                    update.VerticalID = verticalID;
-                    update.ProjectName = projectName;
+
                     cell = usedRange.Cells[i, k];
-                    update.UpdateKey = cell.Value.ToString();
-                    cell = usedRange.Cells[i, k+1];
-                    update.UpdateValue = cell.Value.ToString();
-                    updates.Add(update);                    
+                    package.Updates.Add(new KeyValuePair<string, string>(keys[k], cell.Value.ToString()));
+                    package.Body += keys[k] + ":" + cell.Value.ToString();
+                    if (k != iNumColumns) package.Body += "|";
                 }
-
+                updates.Add(package);
             }
 
-            StatusUpdatePacket packet = new StatusUpdatePacket();
-            packet.StatusUpdateList = updates;
-            packet.AppId = "excelCostco";
-            string json = Newtonsoft.Json.JsonConvert.SerializeObject(packet);
             int updateCount = updates.Count;
-            try
+            for (int i = 0; i < updateCount; i++)
             {
 
-                using (var client = new WebClient())
+                string json = Newtonsoft.Json.JsonConvert.SerializeObject(updates[i]);
+                try
                 {
-                    client.Headers[HttpRequestHeader.ContentType] = "application/json";
-                    var result = client.UploadString("http://costcodevops.azurewebsites.net/ProjectUpdate/Update", "Post", json);
-                    Console.WriteLine(result);
-                }
-            }
-            catch (Exception ex)
-            {
 
-                throw ex;
+                    using (var client = new WebClient())
+                    {
+                        client.Headers[HttpRequestHeader.ContentType] = "application/json";
+                        string url = "http://costcodevops.azurewebsites.net/ProjectUpdate/Update";
+#if DEBUG
+                        url = "https://localhost:44300/ProjectUpdate/Update";
+#endif
+                        var result = client.UploadString(url, "Post", json);
+                        Console.WriteLine(result);
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    throw ex;
+                }
             }
             MessageBox.Show("Successfully posted " + updateCount + " updates to CostcoDevOps Azure");
         }

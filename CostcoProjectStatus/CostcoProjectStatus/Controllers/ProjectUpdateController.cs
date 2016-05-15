@@ -99,35 +99,51 @@ namespace CostcoProjectStatus.Controllers
         }
 
         // [System.Web.Mvc.HttpPostAttribute]
+        //[System.Web.Mvc.HttpPost]
+        //public void Update(UpdatePackage jsonPacket)        
+        //{
+        //   // Insert into database
+        //    List<KeyValuePair<string, string>> temp = new List<KeyValuePair<string, string>>();
+        //    DataService.AccessService dataService = new DataService.AccessService();
+        //    DataService.UpdatePackage updatePackage = new DataService.UpdatePackage();
+        //    updatePackage.ProjectName = jsonPacket.ProjectName;
+        //    updatePackage.Subject = jsonPacket.Subject;
+        //    updatePackage.Body = jsonPacket.Body;
+        //    foreach (KVPPairs kvp in jsonPacket.Updates)
+        //    {
+        //        temp.Add(new KeyValuePair<string, string>(kvp.Key, kvp.Value));
+        //    }
+        //    updatePackage.Updates = temp;
+        //    dataService.RecordUpdatePackage(updatePackage);
+
+        //}
+
         [System.Web.Mvc.HttpPost]
-        public void Update(UpdateObject jsonPacket)        
+        public HttpResponseMessage Update(UpdatePackage jsonPacket)
         {
-           //Insert into database
-            List<KeyValuePair<string, string>> temp = new List<KeyValuePair<string, string>>();            
-            DataService.AccessService dataService = new DataService.AccessService();
-            DataService.UpdatePackage updatePackage = new DataService.UpdatePackage();           
-            updatePackage.ProjectName = jsonPacket.ProjectName;
-            updatePackage.Subject = jsonPacket.Subject;
-            updatePackage.Body = jsonPacket.Body;
-            foreach (KVPPairs kvp in jsonPacket.Updates)
+            try
             {
-                temp.Add(new KeyValuePair<string, string>(kvp.Key, kvp.Value));
+                DataAccess.RecordUpdatePackage(jsonPacket);
             }
-            updatePackage.Updates = temp;
-            dataService.RecordUpdatePackage(updatePackage);       
+            catch (Exception)
+            {
+
+                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            }
+            return new HttpResponseMessage(HttpStatusCode.Accepted);
         }
-          
-       
-        [Serializable]
-        public class UpdateObject
-        {
-            public string ProjectName{get;set;}
-            public string Subject{get;set;}
-            public string Body{get;set;}
-            public List<KVPPairs> Updates { get; set; }
-            
-           
-        }
+
+
+        //[Serializable]
+        //public class UpdateObject
+        //{
+        //    public string ProjectName{get;set;}
+        //    public string Subject{get;set;}
+        //    public string Body{get;set;}
+        //    public List<KVPPairs> Updates { get; set; }
+
+
+        //}
 
         public class KVPPairs
         {
@@ -141,7 +157,7 @@ namespace CostcoProjectStatus.Controllers
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
 
-       // List<EmailObject> EmailObjectList = new List<EmailObject>();
+        // List<EmailObject> EmailObjectList = new List<EmailObject>();
     }
 
 }
