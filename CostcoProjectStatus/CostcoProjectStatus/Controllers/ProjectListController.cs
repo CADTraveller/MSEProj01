@@ -92,57 +92,57 @@ namespace CostcoProjectStatus.Controllers
         //        return View();
         //    }
         //}
-        ////public string Display()
-        //{
-        //    var ProjectNames = DataAccsess.GetAllProjectNames();
-        //    string result = "<script>window.location.replace(\"/dashboard/index.html\");</script>";
-        //    return result;
-        //}
+        public string Display()
+        {
+            var ProjectNames = DataAccsess.GetAllProjectNames();
+        string result = "<script>window.location.replace(\"/dashboard/index.html\");</script>";
+            return result;
+        }
 
-        //[AuthAttribute]
-        //    [BasicAuthentication]
-        //public string GetStatusUpdates(String id)
-        //{
+    //[AuthAttribute]
+    //    [BasicAuthentication]
+    //public string GetStatusUpdates(String id)
+    //{
 
-        //    try
-        //    {
+    //    try
+    //    {
 
-        //        if (this.Session["username"].ToString() != null && DataAccsess.IsUserAuthorized(this.Session["username"].ToString()))
-        //        {
-        //            var ProjectUpdates = DataAccsess.GetAllUpdatesForProject(id);
-        //            //var passedStatusUpdateList = new List<StatusUpdatesModel.StatusUpdate>();
-        //            //foreach (StatusUpdatesModel.StatusUpdate passedStatusUpdate in ProjectUpdates)
-        //            //{
-        //            //    StatusUpdatesModel.StatusUpdate tempStatusUpdate = new StatusUpdatesModel.StatusUpdate();
-        //            //    //tempStatusUpdate.Phase = passedStatusUpdate.Phase;
-        //            //    tempStatusUpdate.PhaseID = passedStatusUpdate.PhaseID;
-        //            //    //tempStatusUpdate.Project = passedStatusUpdate.Project;
-        //            //    tempStatusUpdate.ProjectID = passedStatusUpdate.ProjectID;
-        //            //    tempStatusUpdate.ProjectName = passedStatusUpdate.ProjectName;
-        //            //    tempStatusUpdate.RecordDate = passedStatusUpdate.RecordDate;
-        //            //    tempStatusUpdate.ProjectUpdateID = passedStatusUpdate.ProjectUpdateID;
-        //            //    tempStatusUpdate.UpdateKey = passedStatusUpdate.UpdateKey;
-        //            //    tempStatusUpdate.UpdateValue = passedStatusUpdate.UpdateValue;
-        //            //    //tempStatusUpdate.Vertical = passedStatusUpdate.Vertical;
-        //            //    tempStatusUpdate.VerticalID = passedStatusUpdate.VerticalID;
-        //            //    passedStatusUpdateList.Add(tempStatusUpdate);
+    //        if (this.Session["username"].ToString() != null && DataAccsess.IsUserAuthorized(this.Session["username"].ToString()))
+    //        {
+    //            var ProjectUpdates = DataAccsess.GetAllUpdatesForProject(id);
+    //            //var passedStatusUpdateList = new List<StatusUpdatesModel.StatusUpdate>();
+    //            //foreach (StatusUpdatesModel.StatusUpdate passedStatusUpdate in ProjectUpdates)
+    //            //{
+    //            //    StatusUpdatesModel.StatusUpdate tempStatusUpdate = new StatusUpdatesModel.StatusUpdate();
+    //            //    //tempStatusUpdate.Phase = passedStatusUpdate.Phase;
+    //            //    tempStatusUpdate.PhaseID = passedStatusUpdate.PhaseID;
+    //            //    //tempStatusUpdate.Project = passedStatusUpdate.Project;
+    //            //    tempStatusUpdate.ProjectID = passedStatusUpdate.ProjectID;
+    //            //    tempStatusUpdate.ProjectName = passedStatusUpdate.ProjectName;
+    //            //    tempStatusUpdate.RecordDate = passedStatusUpdate.RecordDate;
+    //            //    tempStatusUpdate.ProjectUpdateID = passedStatusUpdate.ProjectUpdateID;
+    //            //    tempStatusUpdate.UpdateKey = passedStatusUpdate.UpdateKey;
+    //            //    tempStatusUpdate.UpdateValue = passedStatusUpdate.UpdateValue;
+    //            //    //tempStatusUpdate.Vertical = passedStatusUpdate.Vertical;
+    //            //    tempStatusUpdate.VerticalID = passedStatusUpdate.VerticalID;
+    //            //    passedStatusUpdateList.Add(tempStatusUpdate);
 
-        //            //}
-        //            //string result = JsonConvert.SerializeObject(passedStatusUpdateList);
-        //            string result = JsonConvert.SerializeObject(ProjectUpdates);
-        //            return result;
-        //        }
-        //    } catch (Exception)
-        //    {
-        //        string emptyException = JsonConvert.SerializeObject("");
-        //        return emptyException;
-        //    }
-        //    string empty = JsonConvert.SerializeObject("");
-        //    return empty;
+    //            //}
+    //            //string result = JsonConvert.SerializeObject(passedStatusUpdateList);
+    //            string result = JsonConvert.SerializeObject(ProjectUpdates);
+    //            return result;
+    //        }
+    //    } catch (Exception)
+    //    {
+    //        string emptyException = JsonConvert.SerializeObject("");
+    //        return emptyException;
+    //    }
+    //    string empty = JsonConvert.SerializeObject("");
+    //    return empty;
 
-        //}
+    //}
 
-        public string GetStatusData(String projectId, String ProjectUpdateId)
+    public string GetStatusData(String projectId, String ProjectUpdateId)
         {
             var passedStatusUpdateList = new List<StatusUpdatesModel.StatusUpdate>();
 

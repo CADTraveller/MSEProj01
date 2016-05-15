@@ -1,5 +1,6 @@
 ﻿<!--change breadcrumb features -->
 <style>
+    
     .breadcrumbColor {
         background-color: #F0F0F0;
         border-radius: 12px;
@@ -61,7 +62,19 @@
             <td>{{$index+1}}</td>
             <td>{{projectUpdate.Date | date:'short'}}</td>
             <td>{{projectUpdate.Subject}}</td>
-            <td>{{projectUpdate.Phase}}</td>
+            <td>
+                <select>
+                    <option>{{projectUpdate.Phase}}</option>
+                    <option>Start Up</option>
+                    <option>Solution Outline</option>
+                    <option>Macro Design</option>
+                    <option>Micro Design</option>
+                    <option>Build and Test</option>
+                    <option>Deploy</option>
+                    <option>Transition & Close</option>
+                    </select>
+             
+            </td>
             <td>{{projectUpdate.Environment}}</td>
             <td>{{projectUpdate.Description}}</td>
             <td> <a href="#ProjectData/{{ projectUpdate.ProjectID}}/{{projectUpdate.ProjectUpdateID}}">Email</a></td>
