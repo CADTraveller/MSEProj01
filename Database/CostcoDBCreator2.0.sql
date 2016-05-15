@@ -114,4 +114,5 @@ create table ProjectUpdate
   -- Use these lines to delete all data
   delete from StatusUpdate;
   delete from ProjectPhase;
+  delete from ProjectUpdate;
   delete from Project;
