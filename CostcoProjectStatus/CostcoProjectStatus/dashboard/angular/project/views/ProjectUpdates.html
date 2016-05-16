@@ -56,6 +56,7 @@
             <th>Environment</th>
             <th>Desctiption</th>
             <th>More</th>
+            <th>Edit</th>
             
         </tr>
         <tr ng-repeat="projectUpdate in ProjectUpdateList | orderBy:sortType:sortReverse">
@@ -63,21 +64,21 @@
             <td>{{projectUpdate.Date | date:'short'}}</td>
             <td>{{projectUpdate.Subject}}</td>
             <td>
-                <select>
-                    <option>{{projectUpdate.Phase}}</option>
-                    <option>Start Up</option>
-                    <option>Solution Outline</option>
-                    <option>Macro Design</option>
-                    <option>Micro Design</option>
-                    <option>Build and Test</option>
-                    <option>Deploy</option>
-                    <option>Transition & Close</option>
-                    </select>
+                <input list="Phases" placeholder="{{projectUpdate.Phase}}" onchange="ShowCommand({{$index}})"/>
+                <datalist id="Phases">
+                    <option value="Start Up">
+                    <option value="Solution Outline">
+                    <option value="Macro_Design">
+                    <option value="Micro_Design">
+                    <option value="Build and Test"></option>
+                    <option value="Deploy">
+                    <option value="Transition & Close">
+                </datalist> 
              
             </td>
             <td>{{projectUpdate.Environment}}</td>
             <td>{{projectUpdate.Description}}</td>
             <td> <a href="#ProjectData/{{ projectUpdate.ProjectID}}/{{projectUpdate.ProjectUpdateID}}">Email</a></td>
-           
+           <td><div ng-if="command[{{$index}}]" onclick="SaveEmail({{$index}})"></div></td>
         </tr>
     </table>
