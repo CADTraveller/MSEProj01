@@ -169,12 +169,13 @@ namespace DataService
             try
             {
                 KeyValuePair<string, string> verticalPair = updatePairs.FirstOrDefault(u => u.Key.ToLower() == "verticalid");
-                verticalID = Convert.ToInt16(verticalPair.Value);
+                if (verticalPair.Value != null) verticalID = Convert.ToInt16(verticalPair.Value);
                 if (verticalID < -1 || verticalID > 8) verticalID = -1;
             }
             catch (Exception)
             {
-                //__just use default value already set
+                //__just use default value 
+                verticalID = -1;
             }
 
             //__these might be new or changed
@@ -187,11 +188,14 @@ namespace DataService
             {
                 KeyValuePair<string, string> phasePair = updatePairs.FirstOrDefault(u => u.Key.ToLower() == "phaseid");
                 if(phasePair.Value != null) phaseID = Convert.ToInt16(phasePair.Value);
-               
+
+                if (phaseID < -1 || phaseID > 7) phaseID = -1;
+
             }
             catch (Exception)
             {
-                //_simply use default already set
+                //_simply use default
+                phaseID = -1;
             }
 
             //__do fuzzy word matches if no phase found yet
