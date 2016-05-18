@@ -181,18 +181,33 @@ var dashboardModule = angular.module('dashboardApp', [
             $scope.ProjectUpdateList = data;
             $scope.phaseEnums = PhaseEnum;
             var tempArr = [];
+            var ProjectUpdateLine = [];
+           // var phaseId;
+            function GetPhase(s)
+            {
+                var phaseId=console.log(s[s.selectedIndex].id);
+            }
+
+
+            $scope.SaveEmail = function (i) {
+            
+                $scope.ProjectUpdateList[i].PhaseID = $scope.phaseId;
+
+                }
+
             console.log("Project Update date: " + $scope.ProjectUpdateList[0].Date);
             angular.forEach($scope.ProjectUpdateList, function (value, key) {
                 projectUpdateBody = angular.fromJson(value.Body);
                 tempArr.push(projectUpdateBody[0].PhaseID);
-                $scope.command=[];
-                $scope.ShowCommand = function (i)
-                {
-                    command[i] = true;
-                }
+                $scope.command = [];
+                //$scope.ShowCommand = function (i)
+                //{
+                //    command[i] = true;
+                //}
                 
             });
-
+            
+            console.log($scope.SaveEmail);
            
             $scope.inProgressPhases = tempArr;
             console.log($scope.inProgressPhases);

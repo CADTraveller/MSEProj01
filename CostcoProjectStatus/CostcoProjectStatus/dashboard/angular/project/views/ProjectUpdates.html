@@ -1,6 +1,8 @@
 ﻿<!--change breadcrumb features -->
 <style>
-    
+    .test{
+        background-color:#ff0000
+    }
     .breadcrumbColor {
         background-color: #F0F0F0;
         border-radius: 12px;
@@ -55,7 +57,7 @@
             <th>Phase</th>
             <th>Environment</th>
             <th>Desctiption</th>
-            <th>More</th>
+            <th>Details</th>
             <th>Edit</th>
             
         </tr>
@@ -64,21 +66,40 @@
             <td>{{projectUpdate.Date | date:'short'}}</td>
             <td>{{projectUpdate.Subject}}</td>
             <td>
-                <input list="Phases" placeholder="{{projectUpdate.Phase}}" onchange="ShowCommand({{$index}})"/>
+                <!--<select onchange="GetPhase(this)" >
+                    <option value="Start Up" id="0">Start Up</option>
+                    <option value="Solution Outline" id="1">Solution Outline</option>
+                    <option value="Macro_Design" id="2">Macro_Design</option>
+                    <option value="Micro_Design" id="3">Micro_Design</option>
+                    <option value="Build and Test" id="4">Build and Test</option>
+                    <option value="Deploy" id="5">Deploy</option>
+                    <option value="Transition & Close" id="6">Transition & Close</option>
+            </select>-->
+
+
+                <input  list="Phases" placeholder="{{projectUpdate.Phase}}" onchange="GetLine({{id}})" />
                 <datalist id="Phases">
-                    <option value="Start Up">
-                    <option value="Solution Outline">
-                    <option value="Macro_Design">
-                    <option value="Micro_Design">
-                    <option value="Build and Test"></option>
-                    <option value="Deploy">
-                    <option value="Transition & Close">
+                    <option value="Start Up" id="0">
+                    <option value="Solution Outline" id="1">
+                    <option value="Macro_Design" id="2">
+                    <option value="Micro_Design" id="3">
+                    <option value="Build and Test" id="4"></option>
+                    <option value="Deploy" id="5">
+                    <option value="Transition & Close" id="6">
                 </datalist> 
              
             </td>
             <td>{{projectUpdate.Environment}}</td>
             <td>{{projectUpdate.Description}}</td>
             <td> <a href="#ProjectData/{{ projectUpdate.ProjectID}}/{{projectUpdate.ProjectUpdateID}}">Email</a></td>
-           <td><div ng-if="command[{{$index}}]" onclick="SaveEmail({{$index}})"></div></td>
+           <td> <input type="checkbox" ng-model="checked" ng-init="checked=false"/>
+                   <div ng-if="checked"  onclick="SaveEmail({{$index}})">  </div></td>
         </tr>
     </table>
+<!--<script type="text/javascript">
+    function GetPhase(s)
+    {
+        var phaseId = console.log(s[s.selectedIndex].id);
+
+    }
+</script>-->
