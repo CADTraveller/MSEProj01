@@ -188,11 +188,9 @@ namespace DataService
             {
                 KeyValuePair<string, string> phasePair = updatePairs.FirstOrDefault(u => u.Key.ToLower() == "phaseid");
                 if(phasePair.Value != null) phaseID = Convert.ToInt16(phasePair.Value);
-<<<<<<< HEAD
+
                 if (phaseID < -1 || phaseID > 7) phaseID = -1;
-=======
-               
->>>>>>> master
+
             }
             catch (Exception)
             {
