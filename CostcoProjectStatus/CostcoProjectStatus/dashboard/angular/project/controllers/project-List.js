@@ -21,15 +21,15 @@ var dashboardModule = angular.module('dashboardApp', [
         6: 'eBusiness Solutions',
         7: 'Corporate Solutions'
     })
-    .constant('PhaseEnum', {
-        0: 'Start Up',
-        1: 'Solution Outline',
-        2: 'Macro Design',
-        3: 'Micro Design',
-        4: 'Build and Test',
-        5: 'Deploy',
-        6: 'Transition & Close'
-    })
+      .constant('PhaseEnum', {
+          0: 'Start Up',
+          1: 'Solution Outline',
+          2: 'Macro Design',
+          3: 'Micro Design',
+          4: 'Build and Test',
+          5: 'Deploy',
+          6: 'Transition & Close'
+      })
     .config(function ($routeProvider) {
         $routeProvider
 
@@ -179,27 +179,42 @@ var dashboardModule = angular.module('dashboardApp', [
             console.log("data from Get Project Updates:" + data);
             console.log("Project Update " + $routeParams.projectId);
             $scope.ProjectUpdateList = data;
-            $scope.phaseEnums = PhaseEnum;
+            //$scope.phaseEnums = PhaseEnum;
+
+            var phases = [];
+            phases[0] = 'Start Up';
+            phases[1] = 'Solution Outline';
+            phases[2] = 'Macro Design';
+            phases[3] = 'Micro Design';
+            phases[4] = 'Build and Test';
+            phases[5] = 'Deploy';
+            phases[6] = 'Transition & Close';
+            $scope.phases = phases;
+            var selectedPhase = [];
+
+            for (var i = 0; i < data.length; i++){
+                selectedPhase[i] = data[i].Phase;
+            }
+    
+            $scope.selectedPhase = selectedPhase;
+
             var tempArr = [];
             var ProjectUpdateLine = [];
-           // var phaseId;
-            function GetPhase(s)
-            {
-                var phaseId=console.log(s[s.selectedIndex].id);
-            }
-
 
             $scope.SaveEmail = function (i) {
             
-                $scope.ProjectUpdateList[i].PhaseID = $scope.phaseId;
+                $scope.ProjectUpdateList[i].PhaseID = $scope.selectedPhase[i];
+                $http.post('/ProjectUpdates/Update', $scope.ProjectUpdateList[i])
+                    .then(function () {
+                        console.log('succeeded updating project');
+                    });
+            }
 
-                }
-
-            console.log("Project Update date: " + $scope.ProjectUpdateList[0].Date);
             angular.forEach($scope.ProjectUpdateList, function (value, key) {
-                projectUpdateBody = angular.fromJson(value.Body);
-                tempArr.push(projectUpdateBody[0].PhaseID);
-                $scope.command = [];
+                //projectUpdateBody = angular.fromJson(value.Body);
+                //tempArr.push(projectUpdateBody[0].PhaseID);
+                //$scope.command = [];
+
                 //$scope.ShowCommand = function (i)
                 //{
                 //    command[i] = true;
