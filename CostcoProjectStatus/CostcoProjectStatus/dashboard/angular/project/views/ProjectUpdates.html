@@ -1,5 +1,6 @@
 ﻿<!--change breadcrumb features -->
 <style>
+    
     .breadcrumbColor {
         background-color: #F0F0F0;
         border-radius: 12px;
@@ -55,16 +56,29 @@
             <th>Environment</th>
             <th>Desctiption</th>
             <th>More</th>
+            <th>Edit</th>
             
         </tr>
         <tr ng-repeat="projectUpdate in ProjectUpdateList | orderBy:sortType:sortReverse">
             <td>{{$index+1}}</td>
             <td>{{projectUpdate.Date | date:'short'}}</td>
             <td>{{projectUpdate.Subject}}</td>
-            <td>{{projectUpdate.Phase}}</td>
+            <td>
+                <input list="Phases" placeholder="{{projectUpdate.Phase}}" onchange="ShowCommand({{$index}})"/>
+                <datalist id="Phases">
+                    <option value="Start Up">
+                    <option value="Solution Outline">
+                    <option value="Macro_Design">
+                    <option value="Micro_Design">
+                    <option value="Build and Test"></option>
+                    <option value="Deploy">
+                    <option value="Transition & Close">
+                </datalist> 
+             
+            </td>
             <td>{{projectUpdate.Environment}}</td>
             <td>{{projectUpdate.Description}}</td>
             <td> <a href="#ProjectData/{{ projectUpdate.ProjectID}}/{{projectUpdate.ProjectUpdateID}}">Email</a></td>
-           
+           <td><div ng-if="command[{{$index}}]" onclick="SaveEmail({{$index}})"></div></td>
         </tr>
     </table>

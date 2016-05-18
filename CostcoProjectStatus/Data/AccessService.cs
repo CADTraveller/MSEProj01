@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Data;
 using StatusUpdatesModel;
 using Newtonsoft.Json;
 
@@ -139,13 +140,13 @@ namespace DataService
 
         #region StatusUpdate and Project Methods
 
-        public bool RecordUpdatePackage(UpdatePackage package)
+        public string RecordUpdatePackage(UpdatePackage package)
         {
             //__get the information from input
             string projectName = package.ProjectName;
             string subject = package.Subject;
             string body = package.Body;
-            if (string.IsNullOrEmpty(projectName)) return false;
+            if (string.IsNullOrEmpty(projectName)) return null;
 
             List<KeyValuePair<string, string>> updatePairs = package.Updates;
 
@@ -155,6 +156,7 @@ namespace DataService
             bool madeNewProject = false;
             if (project == null)
             {
+                project = new Project();
                 project.ProjectID = Guid.NewGuid();
                 madeNewProject = true;
             }
@@ -186,12 +188,23 @@ namespace DataService
             {
                 KeyValuePair<string, string> phasePair = updatePairs.FirstOrDefault(u => u.Key.ToLower() == "phaseid");
                 if(phasePair.Value != null) phaseID = Convert.ToInt16(phasePair.Value);
+<<<<<<< HEAD
                 if (phaseID < -1 || phaseID > 7) phaseID = -1;
+=======
+               
+>>>>>>> master
             }
             catch (Exception)
             {
                 //_simply use default
                 phaseID = -1;
+            }
+
+            //__do fuzzy word matches if no phase found yet
+            if (phaseID < 0)
+            {
+                string searchString = subject + body;
+                phaseID = Convert.ToInt16(PhaseKeywords.GuessPhase(searchString));
             }
 
             //__if this is new Project write it to DB
@@ -217,8 +230,12 @@ namespace DataService
             statusUpdateTemplate.ProjectUpdateID = projectUpdate.ProjectUpdateID;
             statusUpdateTemplate.PhaseID = phaseID;
             statusUpdateTemplate.VerticalID = verticalID;
+
+            //__safety, incase of duplicate keys, combine the values so there is only one entry
+            //___trying to record duplicate keys in the same PackageUpdate will cause primary key error in DB
+            Dictionary<string, string> cleanedPairs = combineEqualKeys(updatePairs);
           
-            foreach (KeyValuePair<string, string> pair in updatePairs)
+            foreach (var pair in cleanedPairs)
             {
                 string key = pair.Key;
                 string value = pair.Value;
@@ -232,8 +249,36 @@ namespace DataService
 
                 updateProjectPhase(projectID, phaseID, key);
             }
-            return true;
+            return projectID.ToString();
         }
+
+        private Dictionary<string, string> combineEqualKeys(List<KeyValuePair<string, string>> updatePairs)
+        {
+            Dictionary<string, string> combinedKeys = new Dictionary<string, string>();
+            foreach (KeyValuePair<string, string> pair in updatePairs)
+            {
+                string key = pair.Key;
+                string value = pair.Value;
+
+                if (combinedKeys.ContainsKey(key))
+                {
+                    combinedKeys[key] = combinedKeys[key] + "|" + value;
+                }
+                else
+                {
+                    combinedKeys.Add(key, value);
+                }
+            }
+            return combinedKeys;
+        }
+
+        public void DeleteProject(string projectName)
+        {
+            Guid projectID = context.Projects.FirstOrDefault(p => p.ProjectName == projectName).ProjectID;
+            DeleteProject(projectID);
+        }
+
+
 
         private void updateProjectPhase(Guid projectId, int phaseId, string key)
         {

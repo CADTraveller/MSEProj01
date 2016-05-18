@@ -15,11 +15,14 @@ using System.Collections.Specialized;
 
 namespace EmailClient
 {
+   
     class ImapService
     {
+
         private string _imapServer;
         private string _userId;
         private string _password;
+        public string ApplicationName = "";
         public ImapService()
         {
             _imapServer = ConfigurationManager.AppSettings["ImapServer"];
@@ -36,27 +39,48 @@ namespace EmailClient
             // Select a mailbox. Case-insensitive
             imapClient.SelectMailbox("INBOX");
             string emailJson="";
-                  
-           // Console.WriteLine(imapClient.GetMessageCount());
+
+            // Console.WriteLine(imapClient.GetMessageCount());
+
+            //Person p = new Person();
+            //p.FirstName = "Jaya";
+            //p.LastName = "Sree";
+            //string json = JsonConvert.SerializeObject(p);
+
+            //using (var client = new WebClient())
+            //{
+            //    client.Headers[HttpRequestHeader.ContentType] = "application/Json";
+            //    string result = client.UploadString("https://localhost:44300/ProjectUpdate/Update", "Post", json);
+            //    Console.WriteLine(result);
+            //}
 
             imapClient.NewMessage += (sender, e) =>
             {
                 var msg = imapClient.GetMessage(e.MessageCount - 1);
-              appPacket ap = new appPacket();
-              appObject ao = new appObject();
-              List<string> emailbodylist = new List<string>();
-              emailbodylist=ParseBody(msg.Body);
-              //ao.ProjectID = Guid.NewGuid();
-              ao.ProjectName = emailbodylist[0];
-              ao.PhaseID = "-1";
-              ao.VerticalID = "-1";
-              ao.RecordedDate = DateTime.Now;
-              ao.UpdateKey = "Execution Summary";
-              ao.UpdateValue = emailbodylist[1];
-              ap.AppId = "emailCostco";           
-              ap.StatusUpdateList.Add(ao);
-              emailJson = JsonConvert.SerializeObject(ap);
-              Console.WriteLine(emailJson);
+                UpdatePackage up = new UpdatePackage();
+                up.Updates = ParseBody(msg.Body);
+                up.Subject = msg.Subject;
+                up.Body = msg.Body;
+                up.ProjectName = ApplicationName;              
+               
+                emailJson = JsonConvert.SerializeObject(up);
+              //  Console.WriteLine(emailJson);
+
+              //appPacket ap = new appPacket();
+              //appObject ao = new appObject();
+              //List<string> emailbodylist = new List<string>();
+              ////emailbodylist=ParseBody(msg.Body);
+              ////ao.ProjectID = Guid.NewGuid();
+              //ao.ProjectName = emailbodylist[0];
+              //ao.PhaseID = "-1";
+              //ao.VerticalID = "-1";
+              //ao.RecordedDate = DateTime.Now;
+              //ao.UpdateKey = "Execution Summary";
+              //ao.UpdateValue = emailbodylist[1];
+              //ap.AppId = "emailCostco";           
+              //ap.StatusUpdateList.Add(ao);
+              //emailJson = JsonConvert.SerializeObject(ap);
+              //Console.WriteLine(emailJson);
               string result = "";
               using (var client = new WebClient())
               {
@@ -88,38 +112,39 @@ namespace EmailClient
         }*/
 
 
-        public List<string> ParseBody(string Body)
+        public List<KeyValuePair<string, string>> ParseBody(string Body)
         {
             int counter = 1;
             string line;
-            string summary = "";
-            List<string> li = new List<string>();
-                      
+            string summary = "";         
+            var list = new List<KeyValuePair<string, string>>();
             System.IO.File.WriteAllText("Test.txt",Body);
             System.IO.StreamReader file =
             new System.IO.StreamReader("Test.txt");
             while ((line = file.ReadLine()) != null)
             {
-              /*  if (line.Equals("Application:") || line.Equals("Process:") || line.Equals("Environment:") || line.Equals("Requested By:") || line.Equals("Requested On:")||line.Equals("Description:"))
-                {
-                // Console.WriteLine(getNextLine(counter)); 
-                    dict.Add(line, getNextLine(counter));
-                 
-                }*/
                 if (line.Equals("Application:"))
                 {
-                   li.Add(getNextLine(counter));
-                 
+                    ApplicationName = getNextLine(counter);
                 }
+                
+                if (line.Equals("Application:") || line.Equals("Process:") || line.Equals("Environment:") || line.Equals("Requested By:") || line.Equals("Requested On:")||line.Equals("Description:"))
+                {
+                    // Console.WriteLine(getNextLine(counter)); 
+                    //  dict.Add(line, getNextLine(counter));
+                    list.Add(new KeyValuePair<string, string>(line, getNextLine(counter)));        
+                              
+                }
+               
                 else
                 {
                     summary += line;
                 }
                 counter++;
             }
-            li.Add(summary);       
+                   
             file.Close();
-            return li;         
+            return list;         
      
         }
 
@@ -142,9 +167,10 @@ namespace EmailClient
         }
 
 
-       
+ 
 
-        
+
+
 
 
     }

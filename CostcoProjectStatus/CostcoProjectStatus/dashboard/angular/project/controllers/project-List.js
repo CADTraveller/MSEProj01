@@ -1,4 +1,5 @@
-﻿var dashboardModule = angular.module('dashboardApp', [
+﻿/* Last push by Laura on 5/10/2016 at 5:44PM */
+var dashboardModule = angular.module('dashboardApp', [
     'ngAnimate',
     'ngAria',
     'ngCookies',
@@ -184,7 +185,15 @@
             angular.forEach($scope.ProjectUpdateList, function (value, key) {
                 projectUpdateBody = angular.fromJson(value.Body);
                 tempArr.push(projectUpdateBody[0].PhaseID);
+                $scope.command=[];
+                $scope.ShowCommand = function (i)
+                {
+                    command[i] = true;
+                }
+                
             });
+
+           
             $scope.inProgressPhases = tempArr;
             console.log($scope.inProgressPhases);
 

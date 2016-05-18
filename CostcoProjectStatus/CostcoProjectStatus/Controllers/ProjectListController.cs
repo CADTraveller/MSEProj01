@@ -21,18 +21,18 @@ namespace CostcoProjectStatus.Controllers
         }
 
         // GET: ProjectList/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+        //public ActionResult Details(int id)
+        //{
+        //    return View();
+        //}
 
-        // GET: ProjectList/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+        //// GET: ProjectList/Create
+        //public ActionResult Create()
+        //{
+        //    return View();
+        //}
 
-        // POST: ProjectList/Create
+        //// POST: ProjectList/Create
         [HttpPost]
         public ActionResult Create(FormCollection collection)
         {
@@ -49,103 +49,100 @@ namespace CostcoProjectStatus.Controllers
             }
         }
 
-        // GET: ProjectList/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
+        //// GET: ProjectList/Edit/5
+        //public ActionResult Edit(int id)
+        //{
+        //    return View();
+        //}
 
-        // POST: ProjectList/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
+        //// POST: ProjectList/Edit/5
+        //[HttpPost]
+        //public ActionResult Edit(int id, FormCollection collection)
+        //{
+        //    try
+        //    {
+        //        // TODO: Add update logic here
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        //        return RedirectToAction("Index");
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
 
-        // GET: ProjectList/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
+        //// GET: ProjectList/Delete/5
+        //public ActionResult Delete(int id)
+        //{
+        //    return View();
+        //}
 
-        // POST: ProjectList/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
+        //// POST: ProjectList/Delete/5
+        //[HttpPost]
+        //public ActionResult Delete(int id, FormCollection collection)
+        //{
+        //    try
+        //    {
+        //        // TODO: Add delete logic here
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        //        return RedirectToAction("Index");
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
         public string Display()
         {
             var ProjectNames = DataAccsess.GetAllProjectNames();
-            string result = "<script>window.location.replace(\"/dashboard/index.html\");</script>";
+        string result = "<script>window.location.replace(\"/dashboard/index.html\");</script>";
             return result;
         }
-        //public string RecordUpdatePackeage(UpdatePackage)
-        //{
 
-        //}
-        //[AuthAttribute]
-        //    [BasicAuthentication]
-        public string GetStatusUpdates(String id)
-        {
+    //[AuthAttribute]
+    //    [BasicAuthentication]
+    //public string GetStatusUpdates(String id)
+    //{
 
-            try
-            {
-               
-                if (this.Session["username"].ToString() != null && DataAccsess.IsUserAuthorized(this.Session["username"].ToString()))
-                {
-                    var ProjectUpdates = DataAccsess.GetAllUpdatesForProject(id);
-                    //var passedStatusUpdateList = new List<StatusUpdatesModel.StatusUpdate>();
-                    //foreach (StatusUpdatesModel.StatusUpdate passedStatusUpdate in ProjectUpdates)
-                    //{
-                    //    StatusUpdatesModel.StatusUpdate tempStatusUpdate = new StatusUpdatesModel.StatusUpdate();
-                    //    //tempStatusUpdate.Phase = passedStatusUpdate.Phase;
-                    //    tempStatusUpdate.PhaseID = passedStatusUpdate.PhaseID;
-                    //    //tempStatusUpdate.Project = passedStatusUpdate.Project;
-                    //    tempStatusUpdate.ProjectID = passedStatusUpdate.ProjectID;
-                    //    tempStatusUpdate.ProjectName = passedStatusUpdate.ProjectName;
-                    //    tempStatusUpdate.RecordDate = passedStatusUpdate.RecordDate;
-                    //    tempStatusUpdate.ProjectUpdateID = passedStatusUpdate.ProjectUpdateID;
-                    //    tempStatusUpdate.UpdateKey = passedStatusUpdate.UpdateKey;
-                    //    tempStatusUpdate.UpdateValue = passedStatusUpdate.UpdateValue;
-                    //    //tempStatusUpdate.Vertical = passedStatusUpdate.Vertical;
-                    //    tempStatusUpdate.VerticalID = passedStatusUpdate.VerticalID;
-                    //    passedStatusUpdateList.Add(tempStatusUpdate);
+    //    try
+    //    {
 
-                    //}
-                    //string result = JsonConvert.SerializeObject(passedStatusUpdateList);
-                    string result = JsonConvert.SerializeObject(ProjectUpdates);
-                    return result;
-                }
-            } catch (Exception)
-            {
-                string emptyException = JsonConvert.SerializeObject("");
-                return emptyException;
-            }
-            string empty = JsonConvert.SerializeObject("");
-            return empty;
+    //        if (this.Session["username"].ToString() != null && DataAccsess.IsUserAuthorized(this.Session["username"].ToString()))
+    //        {
+    //            var ProjectUpdates = DataAccsess.GetAllUpdatesForProject(id);
+    //            //var passedStatusUpdateList = new List<StatusUpdatesModel.StatusUpdate>();
+    //            //foreach (StatusUpdatesModel.StatusUpdate passedStatusUpdate in ProjectUpdates)
+    //            //{
+    //            //    StatusUpdatesModel.StatusUpdate tempStatusUpdate = new StatusUpdatesModel.StatusUpdate();
+    //            //    //tempStatusUpdate.Phase = passedStatusUpdate.Phase;
+    //            //    tempStatusUpdate.PhaseID = passedStatusUpdate.PhaseID;
+    //            //    //tempStatusUpdate.Project = passedStatusUpdate.Project;
+    //            //    tempStatusUpdate.ProjectID = passedStatusUpdate.ProjectID;
+    //            //    tempStatusUpdate.ProjectName = passedStatusUpdate.ProjectName;
+    //            //    tempStatusUpdate.RecordDate = passedStatusUpdate.RecordDate;
+    //            //    tempStatusUpdate.ProjectUpdateID = passedStatusUpdate.ProjectUpdateID;
+    //            //    tempStatusUpdate.UpdateKey = passedStatusUpdate.UpdateKey;
+    //            //    tempStatusUpdate.UpdateValue = passedStatusUpdate.UpdateValue;
+    //            //    //tempStatusUpdate.Vertical = passedStatusUpdate.Vertical;
+    //            //    tempStatusUpdate.VerticalID = passedStatusUpdate.VerticalID;
+    //            //    passedStatusUpdateList.Add(tempStatusUpdate);
 
-        }
-        
-        public string GetStatusData(String projectId, String ProjectUpdateId)
+    //            //}
+    //            //string result = JsonConvert.SerializeObject(passedStatusUpdateList);
+    //            string result = JsonConvert.SerializeObject(ProjectUpdates);
+    //            return result;
+    //        }
+    //    } catch (Exception)
+    //    {
+    //        string emptyException = JsonConvert.SerializeObject("");
+    //        return emptyException;
+    //    }
+    //    string empty = JsonConvert.SerializeObject("");
+    //    return empty;
+
+    //}
+
+    public string GetStatusData(String projectId, String ProjectUpdateId)
         {
             var passedStatusUpdateList = new List<StatusUpdatesModel.StatusUpdate>();
 
@@ -225,9 +222,10 @@ namespace CostcoProjectStatus.Controllers
                 string emptyException = JsonConvert.SerializeObject("");
                 return emptyException;
             }
-            string result = JsonConvert.SerializeObject(passedStatusUpdateList);
+            JsonSerializerSettings settings = new JsonSerializerSettings();
+            settings.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
+            string result = JsonConvert.SerializeObject(passedStatusUpdateList, settings);
             return result;
-
 
         }
         //

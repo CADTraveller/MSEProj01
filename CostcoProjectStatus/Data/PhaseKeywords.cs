@@ -76,9 +76,10 @@ namespace Data
                 voteList.Sort((p1, p2) => p1.Value.CompareTo(p2));
             }
 
+            Phases resultingPhase = Phases.Not_Assigned;
+            if (phaseVotes.Count > 0) resultingPhase = phaseVotes.First().Key;
 
-
-            return Phases.Not_Assigned;
+            return resultingPhase;
         }
 
         public static void GuessPhase(ref ProjectUpdate projectUpdate)
