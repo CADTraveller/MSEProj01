@@ -605,7 +605,12 @@ namespace DataService
             return updates;
         }
 
-        public bool UpdateProjectUpdatePhase(StatusUpdate update, int newPhase)
+        public bool ChangeProjectUpdatePhase(ProjectUpdate projectUpdate, int newPhase)
+        {
+            return ChangeProjectUpdatePhase(projectUpdate.StatusUpdates.First(), newPhase);
+        }
+
+        public bool ChangeProjectUpdatePhase(StatusUpdate update, int newPhase)
         {
             if (update == null || newPhase < 0 || newPhase > Enum.GetNames(typeof(Phases)).Length) return false;
 

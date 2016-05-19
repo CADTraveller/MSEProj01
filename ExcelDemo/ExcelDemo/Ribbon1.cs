@@ -94,9 +94,9 @@ namespace ExcelDemo
                     {
                         client.Headers[HttpRequestHeader.ContentType] = "application/json";
                         string url = "http://costcodevops.azurewebsites.net/ProjectUpdate/Update";
-#if DEBUG
-                        url = "https://localhost:44300/ProjectUpdate/Update";
-#endif
+//#if DEBUG
+//                        url = "https://localhost:44300/ProjectUpdate/Update";
+//#endif
                         var result = client.UploadString(url, "Post", json);
                         Console.WriteLine(result);
                     }
