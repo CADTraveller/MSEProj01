@@ -104,7 +104,7 @@ namespace ExcelDemo
                 catch (Exception ex)
                 {
 
-                    throw ex;
+                    MessageBox.Show(ex.Message);
                 }
             }
             MessageBox.Show("Successfully posted " + updateCount + " updates to CostcoDevOps Azure");

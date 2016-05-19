@@ -99,40 +99,40 @@ namespace CostcoProjectStatus.Controllers
         }
 
         // [System.Web.Mvc.HttpPostAttribute]
-        [System.Web.Mvc.HttpPost]
-        public void Update(UpdateObject jsonPacket)
-        {
-            // Insert into database
-            List<KeyValuePair<string, string>> temp = new List<KeyValuePair<string, string>>();
-            DataService.AccessService dataService = new DataService.AccessService();
-            DataService.UpdatePackage updatePackage = new DataService.UpdatePackage();
-            updatePackage.ProjectName = jsonPacket.ProjectName;
-            updatePackage.Subject = jsonPacket.Subject;
-            updatePackage.Body = jsonPacket.Body;
-            foreach (KVPPairs kvp in jsonPacket.Updates)
-            {
-                temp.Add(new KeyValuePair<string, string>(kvp.Key, kvp.Value));
-            }
-            updatePackage.Updates = temp;
-            dataService.RecordUpdatePackage(updatePackage);
-
-        }
-
         //[System.Web.Mvc.HttpPost]
-        //public HttpResponseMessage Update(string jsonPacket)
+        //public void Update(UpdateObject jsonPacket)
         //{
-        //    try
+        //     Insert into database
+        //    List<KeyValuePair<string, string>> temp = new List<KeyValuePair<string, string>>();
+        //    DataService.AccessService dataService = new DataService.AccessService();
+        //    DataService.UpdatePackage updatePackage = new DataService.UpdatePackage();
+        //    updatePackage.ProjectName = jsonPacket.ProjectName;
+        //    updatePackage.Subject = jsonPacket.Subject;
+        //    updatePackage.Body = jsonPacket.Body;
+        //    foreach (KVPPairs kvp in jsonPacket.Updates)
         //    {
-        //        UpdatePackage update = JsonConvert.DeserializeObject<UpdatePackage>(jsonPacket);
-        //        DataAccess.RecordUpdatePackage(update);
+        //        temp.Add(new KeyValuePair<string, string>(kvp.Key, kvp.Value));
         //    }
-        //    catch (Exception)
-        //    {
+        //    updatePackage.Updates = temp;
+        //    dataService.RecordUpdatePackage(updatePackage);
 
-        //        return new HttpResponseMessage(HttpStatusCode.BadRequest);
-        //    }
-        //    return new HttpResponseMessage(HttpStatusCode.Accepted);
         //}
+
+        [System.Web.Mvc.HttpPost]
+        public HttpResponseMessage Update(string jsonPacket)
+        {
+            try
+            {
+                UpdatePackage update = JsonConvert.DeserializeObject<UpdatePackage>(jsonPacket);
+                DataAccess.RecordUpdatePackage(update);
+            }
+            catch (Exception)
+            {
+
+                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            }
+            return new HttpResponseMessage(HttpStatusCode.Accepted);
+        }
 
 
         [Serializable]
