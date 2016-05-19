@@ -605,9 +605,9 @@ namespace DataService
             return updates;
         }
 
-        public bool ChangeProjectUpdatePhase(ProjectUpdate projectUpdate, int newPhase)
+        public bool ChangeProjectUpdatePhase(ProjectUpdate projectUpdate)
         {
-            return ChangeProjectUpdatePhase(projectUpdate.StatusUpdates.First(), newPhase);
+            return ChangeProjectUpdatePhase(projectUpdate.StatusUpdates.First(), projectUpdate.PhaseID);
         }
 
         public bool ChangeProjectUpdatePhase(StatusUpdate update, int newPhase)

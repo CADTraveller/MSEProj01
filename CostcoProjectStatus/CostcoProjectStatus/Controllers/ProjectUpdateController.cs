@@ -118,6 +118,21 @@ namespace CostcoProjectStatus.Controllers
 
         //}
 
+            [System.Web.Mvc.HttpPost]
+        public HttpResponseMessage UpdatePhase(ProjectUpdate projectUpdate)
+        {
+
+            try
+            {
+                DataAccess.ChangeProjectUpdatePhase(projectUpdate);
+            }
+            catch (Exception e)
+            {
+                return new HttpResponseMessage (HttpStatusCode.BadRequest);
+            }
+            return new HttpResponseMessage(HttpStatusCode.Accepted);
+        }
+
         [System.Web.Mvc.HttpPost]
         public HttpResponseMessage Update(string jsonPacket)
         {
