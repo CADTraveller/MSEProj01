@@ -121,7 +121,13 @@ var dashboardModule = angular.module('dashboardApp', [
             console.log(data);
             
             $scope.vId = $routeParams.vId;
-            $scope.vName = VerticalEnum[$routeParams.vId];
+            if ($routeParams.vId != -1) {
+                // Vertical Enums does not work for -1, need a more solid fix
+                $scope.vName = VerticalEnum[$routeParams.vId];
+            } else {
+                $scope.vName = "Not Assigned Vertical";
+            }
+            
             $scope.projectList = [];
             var projData, len;
             var projListIter = 0;
@@ -179,8 +185,16 @@ var dashboardModule = angular.module('dashboardApp', [
             console.log("data from Get Project Updates:" + data);
             console.log("Project Update " + $routeParams.projectId);
             $scope.ProjectUpdateList = data;
+            $scope.vId = data[0].Project.VerticalID;
+            $scope.pName = data[0].Project.ProjectName;
             //$scope.phaseEnums = PhaseEnum;
-
+            if ($scope.vId != -1) {
+                // Vertical Enums does not work for -1, need a more solid fix
+                $scope.vName = VerticalEnum[$routeParams.vId];
+            } else {
+                $scope.vName = "Not Assigned Vertical";
+            }
+            $scope.pName = $routeParams.projectName;
             var phases = [];
             phases[0] = 'Start Up';
             phases[1] = 'Solution Outline';
@@ -247,9 +261,18 @@ var dashboardModule = angular.module('dashboardApp', [
                 $scope.statusUpdateList = data;
                // $scope.pName = $routeParams.projectName;
                 $scope.date = $scope.statusUpdateList[0].RecordDate;
-                $scope.dataExtractionId = $scope.statusUpdateList[0].ProjectUpdateId;
-                $scope.vId = $scope.statusUpdateList[0].VerticalID;
-                $scope.vName = VerticalEnum[$scope.vId];
+                $scope.dataExtractionId = $scope.statusUpdateList[0].ProjectUpdateID;
+                //$scope.phaseEnums = PhaseEnum;
+                $scope.vId = data[0].VerticalID;
+                $scope.pName = data[0].ProjectName;
+                $scope.pId = data[0].ProjectID;
+                //$scope.phaseEnums = PhaseEnum;
+                if ($scope.vId != -1) {
+                    // Vertical Enums does not work for -1, need a more solid fix
+                    $scope.vName = VerticalEnum[$scope.vId];
+                } else {
+                    $scope.vName = "Not Assigned Vertical";
+                }
                 $scope.phase = PhaseEnum[$scope.statusUpdateList[0].PhaseID];
               //  $scope.pId = $routeParams.projectId;
             }).error(function(data, status, headers, config) {
