@@ -24,13 +24,13 @@
         <table width="100%" cellpadding="10">
             <tr>
                 <td ng-repeat="phaseEnum in phaseEnums">
-                    <div ng-if="inProgressPhases.indexOf($index) != -1">
+                    <div ng-if="inProgressPhases.indexOf(phaseEnum) != -1">
                         <center>
                             <img src="../../../../Content/Images/green_circle.png" height="50" width="50" /><br />
                             {{ phaseEnum }}
                         </center>
                     </div>
-                    <div ng-if="inProgressPhases.indexOf($index) == -1">
+                    <div ng-if="inProgressPhases.indexOf(phaseEnum) == -1">
                         <center>
                             <img src="../../../../Content/Images/grey_circle.gif" height="42" width="42" /><br />
                             {{ phaseEnum }}

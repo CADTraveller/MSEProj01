@@ -187,10 +187,18 @@ var dashboardModule = angular.module('dashboardApp', [
             $scope.ProjectUpdateList = data;
             $scope.vId = data[0].Project.VerticalID;
             $scope.pName = data[0].Project.ProjectName;
-            //$scope.phaseEnums = PhaseEnum;
+            // CODE FOR BUBBLES BEGIN
+            $scope.phaseEnums = PhaseEnum;
+            $scope.inProgressPhases = [];
+            angular.forEach($scope.ProjectUpdateList, function (value, key) {
+                console.log("Phase ID: " + $scope.ProjectUpdateList[key].PhaseID);
+                this.push($scope.ProjectUpdateList[key].Phase);
+            }, $scope.inProgressPhases);
+console.log("inProgressPhases: " + $scope.inProgressPhases);
+    // CODE FOR BUBBLES END
             if ($scope.vId != -1) {
                 // Vertical Enums does not work for -1, need a more solid fix
-                $scope.vName = VerticalEnum[$routeParams.vId];
+                $scope.vName = VerticalEnum[$scope.vId];
             } else {
                 $scope.vName = "Not Assigned Vertical";
             }
