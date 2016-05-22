@@ -164,7 +164,7 @@ namespace DataService.Tests
                 }
             }
         }
-        
+
         /// <summary>
         ///  Test for updating the user role
         /// </summary>
@@ -212,7 +212,7 @@ namespace DataService.Tests
         public void DeleteUserTest()
         {
             var dataAccess = new AccessService();
-            
+
             // Make sure that you can add users
             Assert.IsTrue(dataAccess.AddUser("faketestuser@fakedomain.com", 0));
             Assert.IsTrue(dataAccess.AddUser("faketestuser1@fakedomain.com", 1));
@@ -223,7 +223,7 @@ namespace DataService.Tests
             Assert.IsTrue(dataAccess.IsUserAuthorized("faketestuser1@fakedomain.com"));
             Assert.IsTrue(dataAccess.IsUserAuthorized("faketestuser2@fakedomain.com"));
 
-            
+
             // Make sure that you can delete users
             Assert.IsTrue(dataAccess.DeleteUser("faketestuser@fakedomain.com"));
             Assert.IsTrue(dataAccess.DeleteUser("faketestuser1@fakedomain.com"));
@@ -360,7 +360,15 @@ namespace DataService.Tests
             Assert.IsTrue(dataAccess.DeleteUser("faketestuser2updated@fakedomain.com"));
 
         }
-        
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [TestMethod()]
+        public void GetUserIDTest()
+        {
+            Assert.Fail();
+        }
         #endregion
         /// <summary>
         /// Tests public accessable GetAllProjectsForVertical function. Checks to make sure that all valid vertical ID's returns
@@ -458,7 +466,7 @@ namespace DataService.Tests
             }
 
         }
-        
+
 
 
 
