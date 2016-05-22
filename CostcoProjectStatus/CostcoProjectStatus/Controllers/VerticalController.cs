@@ -9,8 +9,13 @@ using Newtonsoft.Json;
 namespace CostcoProjectStatus.Controllers
 {
     public class VerticalController : Controller
-    {
-        // GET: VerticalList
+    {/// <summary>
+    ///  Getting all the vertical's name from the method in Data Access layer name GetAllVerticals. 
+    /// No parameter need to get pass. This method is used in app.js to get the all verticals and
+    /// feed the dropdown in nav bar.
+    /// </summary>
+    /// <returns></returns>
+        
         public string GetAllVertical()
         {
             AccessService DataAccess = new AccessService();
@@ -18,8 +23,12 @@ namespace CostcoProjectStatus.Controllers
             string result = JsonConvert.SerializeObject(verticals);
             return result;            
         }
-
-        // GET: GetVerticalProjects
+        /// <summary>
+        /// This method is a get function to get all the projects for each vertical from GetAllProjectsForVertical 
+        /// in Data access layer. It been used in project-list.js in projectListCtrl to be able to show the project names on a ProjectList.html.
+        /// </summary>
+        /// <param name="VerticalId"></param>
+        /// <returns></returns>
         public string GetVerticalProjects(int VerticalId)
         {
             AccessService DataAccess = new AccessService();
