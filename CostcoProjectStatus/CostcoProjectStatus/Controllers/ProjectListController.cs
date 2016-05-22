@@ -157,7 +157,7 @@ namespace CostcoProjectStatus.Controllers
                     {
                         StatusUpdatesModel.StatusUpdate tempStatusUpdate = new StatusUpdatesModel.StatusUpdate();
                         //tempStatusUpdate.Phase = passedStatusUpdate.Phase;
-                        //tempStatusUpdate.PhaseID = passedStatusUpdate.PhaseID;
+                        tempStatusUpdate.PhaseID = passedStatusUpdate.PhaseID;
                         //tempStatusUpdate.Project = passedStatusUpdate.Project;
                         tempStatusUpdate.ProjectID = passedStatusUpdate.ProjectID;
                         tempStatusUpdate.ProjectName = passedStatusUpdate.ProjectName;
@@ -199,7 +199,8 @@ namespace CostcoProjectStatus.Controllers
                     foreach (StatusUpdatesModel.ProjectUpdate passedStatusUpdate in statusData)
                     {
                         StatusUpdatesModel.ProjectUpdate tempStatusUpdate = new StatusUpdatesModel.ProjectUpdate();
-                        //tempStatusUpdate.Phase = passedStatusUpdate.Phase;
+                        tempStatusUpdate.Phase = passedStatusUpdate.Phase;
+                        tempStatusUpdate.PhaseID = passedStatusUpdate.PhaseID;
                         tempStatusUpdate.ProjectID = passedStatusUpdate.ProjectID;
                         tempStatusUpdate.Date = passedStatusUpdate.Date;
                         //tempStatusUpdate.Project = passedStatusUpdate.Project;

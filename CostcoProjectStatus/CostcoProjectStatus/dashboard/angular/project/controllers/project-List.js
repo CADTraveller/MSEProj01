@@ -121,7 +121,13 @@ var dashboardModule = angular.module('dashboardApp', [
             console.log(data);
             
             $scope.vId = $routeParams.vId;
-            $scope.vName = VerticalEnum[$routeParams.vId];
+            if ($routeParams.vId != -1) {
+                // Vertical Enums does not work for -1, need a more solid fix
+                $scope.vName = VerticalEnum[$routeParams.vId];
+            } else {
+                $scope.vName = "Not Assigned Vertical";
+            }
+            
             $scope.projectList = [];
             var projData, len;
             var projListIter = 0;
@@ -179,8 +185,16 @@ var dashboardModule = angular.module('dashboardApp', [
             console.log("data from Get Project Updates:" + data);
             console.log("Project Update " + $routeParams.projectId);
             $scope.ProjectUpdateList = data;
-            //$scope.phaseEnums = PhaseEnum;
-
+            $scope.vId = data[0].Project.VerticalID;
+            $scope.pName = data[0].Project.ProjectName;
+           
+            if ($scope.vId != -1) {
+                // Vertical Enums does not work for -1, need a more solid fix
+                $scope.vName = VerticalEnum[$scope.vId];
+            } else {
+                $scope.vName = "Not Assigned Vertical";
+            }
+            $scope.pName = $routeParams.projectName;
             var phases = [];
             phases[0] = 'Start Up';
             phases[1] = 'Solution Outline';
@@ -188,8 +202,19 @@ var dashboardModule = angular.module('dashboardApp', [
             phases[3] = 'Micro Design';
             phases[4] = 'Build and Test';
             phases[5] = 'Deploy';
-            phases[6] = 'Transition & Close';
+            phases[6] = 'Transition & Close'; 
             $scope.phases = phases;
+
+            // CODE FOR BUBBLES BEGIN
+            $scope.phaseEnums = PhaseEnum;
+            $scope.inProgressPhases = [0,0,0,0,0,0,0];
+            
+            angular.forEach($scope.ProjectUpdateList, function (value, key) {
+                var currPhase = $scope.ProjectUpdateList[key].Phase;
+                $scope.inProgressPhases[phases.indexOf(currPhase)] = 1;
+            });
+            // CODE FOR BUBBLES END
+
             var selectedPhase = [];
 
             for (var i = 0; i < data.length; i++){
@@ -198,7 +223,6 @@ var dashboardModule = angular.module('dashboardApp', [
     
             $scope.selectedPhase = selectedPhase;
 
-            var tempArr = [];
             var ProjectUpdateLine = [];
 
             $scope.SaveEmail = function (i) {
@@ -224,9 +248,6 @@ var dashboardModule = angular.module('dashboardApp', [
             });
             
             console.log($scope.SaveEmail);
-           
-            $scope.inProgressPhases = tempArr;
-            console.log($scope.inProgressPhases);
 
         }).error(function (data, status, headers, config) {
             console.log(status);
@@ -248,9 +269,18 @@ var dashboardModule = angular.module('dashboardApp', [
                 $scope.statusUpdateList = data;
                // $scope.pName = $routeParams.projectName;
                 $scope.date = $scope.statusUpdateList[0].RecordDate;
-                $scope.dataExtractionId = $scope.statusUpdateList[0].ProjectUpdateId;
-                $scope.vId = $scope.statusUpdateList[0].VerticalID;
-                $scope.vName = VerticalEnum[$scope.vId];
+                $scope.dataExtractionId = $scope.statusUpdateList[0].ProjectUpdateID;
+                //$scope.phaseEnums = PhaseEnum;
+                $scope.vId = data[0].VerticalID;
+                $scope.pName = data[0].ProjectName;
+                $scope.pId = data[0].ProjectID;
+                //$scope.phaseEnums = PhaseEnum;
+                if ($scope.vId != -1) {
+                    // Vertical Enums does not work for -1, need a more solid fix
+                    $scope.vName = VerticalEnum[$scope.vId];
+                } else {
+                    $scope.vName = "Not Assigned Vertical";
+                }
                 $scope.phase = PhaseEnum[$scope.statusUpdateList[0].PhaseID];
               //  $scope.pId = $routeParams.projectId;
             }).error(function(data, status, headers, config) {
