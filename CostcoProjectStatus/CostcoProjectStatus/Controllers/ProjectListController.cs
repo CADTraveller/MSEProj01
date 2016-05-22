@@ -12,7 +12,14 @@ namespace CostcoProjectStatus.Controllers
     
     public class ProjectListController : Controller
     {
-
+/// <summary>
+/// This controller is in general of read from the data base and pass the needed information to Angular therefore all the methods
+/// are GET. All routes definded in RouteConfig file and can be searched by the name of the methods.
+/// In general each method get the infromation from Data Access layer which is a wrapper around SQL database and 
+/// pass a json object to the UI. 
+/// 
+///
+/// </summary>
         private AccessService DataAccsess = new AccessService();
             // GET: ProjectList
         public ActionResult Index()
@@ -99,50 +106,58 @@ namespace CostcoProjectStatus.Controllers
             return result;
         }
 
-    //[AuthAttribute]
-    //    [BasicAuthentication]
-    //public string GetStatusUpdates(String id)
-    //{
+        //[AuthAttribute]
+        //    [BasicAuthentication]
+        //public string GetStatusUpdates(String id)
+        //{
 
-    //    try
-    //    {
+        //    try
+        //    {
 
-    //        if (this.Session["username"].ToString() != null && DataAccsess.IsUserAuthorized(this.Session["username"].ToString()))
-    //        {
-    //            var ProjectUpdates = DataAccsess.GetAllUpdatesForProject(id);
-    //            //var passedStatusUpdateList = new List<StatusUpdatesModel.StatusUpdate>();
-    //            //foreach (StatusUpdatesModel.StatusUpdate passedStatusUpdate in ProjectUpdates)
-    //            //{
-    //            //    StatusUpdatesModel.StatusUpdate tempStatusUpdate = new StatusUpdatesModel.StatusUpdate();
-    //            //    //tempStatusUpdate.Phase = passedStatusUpdate.Phase;
-    //            //    tempStatusUpdate.PhaseID = passedStatusUpdate.PhaseID;
-    //            //    //tempStatusUpdate.Project = passedStatusUpdate.Project;
-    //            //    tempStatusUpdate.ProjectID = passedStatusUpdate.ProjectID;
-    //            //    tempStatusUpdate.ProjectName = passedStatusUpdate.ProjectName;
-    //            //    tempStatusUpdate.RecordDate = passedStatusUpdate.RecordDate;
-    //            //    tempStatusUpdate.ProjectUpdateID = passedStatusUpdate.ProjectUpdateID;
-    //            //    tempStatusUpdate.UpdateKey = passedStatusUpdate.UpdateKey;
-    //            //    tempStatusUpdate.UpdateValue = passedStatusUpdate.UpdateValue;
-    //            //    //tempStatusUpdate.Vertical = passedStatusUpdate.Vertical;
-    //            //    tempStatusUpdate.VerticalID = passedStatusUpdate.VerticalID;
-    //            //    passedStatusUpdateList.Add(tempStatusUpdate);
+        //        if (this.Session["username"].ToString() != null && DataAccsess.IsUserAuthorized(this.Session["username"].ToString()))
+        //        {
+        //            var ProjectUpdates = DataAccsess.GetAllUpdatesForProject(id);
+        //            //var passedStatusUpdateList = new List<StatusUpdatesModel.StatusUpdate>();
+        //            //foreach (StatusUpdatesModel.StatusUpdate passedStatusUpdate in ProjectUpdates)
+        //            //{
+        //            //    StatusUpdatesModel.StatusUpdate tempStatusUpdate = new StatusUpdatesModel.StatusUpdate();
+        //            //    //tempStatusUpdate.Phase = passedStatusUpdate.Phase;
+        //            //    tempStatusUpdate.PhaseID = passedStatusUpdate.PhaseID;
+        //            //    //tempStatusUpdate.Project = passedStatusUpdate.Project;
+        //            //    tempStatusUpdate.ProjectID = passedStatusUpdate.ProjectID;
+        //            //    tempStatusUpdate.ProjectName = passedStatusUpdate.ProjectName;
+        //            //    tempStatusUpdate.RecordDate = passedStatusUpdate.RecordDate;
+        //            //    tempStatusUpdate.ProjectUpdateID = passedStatusUpdate.ProjectUpdateID;
+        //            //    tempStatusUpdate.UpdateKey = passedStatusUpdate.UpdateKey;
+        //            //    tempStatusUpdate.UpdateValue = passedStatusUpdate.UpdateValue;
+        //            //    //tempStatusUpdate.Vertical = passedStatusUpdate.Vertical;
+        //            //    tempStatusUpdate.VerticalID = passedStatusUpdate.VerticalID;
+        //            //    passedStatusUpdateList.Add(tempStatusUpdate);
 
-    //            //}
-    //            //string result = JsonConvert.SerializeObject(passedStatusUpdateList);
-    //            string result = JsonConvert.SerializeObject(ProjectUpdates);
-    //            return result;
-    //        }
-    //    } catch (Exception)
-    //    {
-    //        string emptyException = JsonConvert.SerializeObject("");
-    //        return emptyException;
-    //    }
-    //    string empty = JsonConvert.SerializeObject("");
-    //    return empty;
+        //            //}
+        //            //string result = JsonConvert.SerializeObject(passedStatusUpdateList);
+        //            string result = JsonConvert.SerializeObject(ProjectUpdates);
+        //            return result;
+        //        }
+        //    } catch (Exception)
+        //    {
+        //        string emptyException = JsonConvert.SerializeObject("");
+        //        return emptyException;
+        //    }
+        //    string empty = JsonConvert.SerializeObject("");
+        //    return empty;
 
-    //}
-
-    public string GetStatusData(String projectId, String ProjectUpdateId)
+        //}
+        /// <summary>
+        /// This method get the project informatiion from GetAllUpdatesFromEmail in Data Access layer.
+        /// It is  passing a json object to project-List.js which the format is clear from the foreach loop. 
+        /// The route defined in routconfig file looks like :ProjectList/GetStatusData/{projectId}/{projectUpdateId}
+        /// The controller for angular can be found in Project-List.js.  
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="ProjectUpdateId"></param>
+        /// <returns></returns>
+        public string GetStatusData(String projectId, String ProjectUpdateId)
         {
             var passedStatusUpdateList = new List<StatusUpdatesModel.StatusUpdate>();
 
@@ -183,6 +198,13 @@ namespace CostcoProjectStatus.Controllers
 
 
         }
+        /// <summary>
+        /// This method get all information about specific project from GetProjectUpdates on Data Access layer based on the projectID.
+        /// The URL defined on route config look like ProjectList/GetprojectUpdates/{projectID}. 
+        /// The json format is clear from the foreach loop and the controller for angular can be found on Project-List.js.
+        /// </summary>
+        /// <param name="projectID"></param>
+        /// <returns></returns>
         public string GetprojectUpdates(string projectID)
         {
             //var ProjectUpdateKeys = DataAccsess.GetUpdatesForKey(projectID);

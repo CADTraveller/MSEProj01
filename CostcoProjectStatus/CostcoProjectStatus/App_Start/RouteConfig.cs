@@ -8,9 +8,17 @@ using System.Web.Routing;
 namespace CostcoProjectStatus
 {
     public class RouteConfig
-    {
+    {/// <summary>
+     /// All the URLs are intorduced on this file. As it is clear the route can get tracked based on the name of controller
+     /// and the name of the action which is the name of the method defined in each controller. The default format of each URL
+     /// "{controller}/{action}/{id}" controller: Nmae of the controller in CotcoPrjectStatus>>controllers folder. 
+     /// Action: name of the method. id: the parameter passing through the URL.
+     /// </summary>
+     /// <param name="routes"></param>
         public static void RegisterRoutes(RouteCollection routes)
         {
+
+            
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.MapRoute(
                 "StatusUpdateList",
