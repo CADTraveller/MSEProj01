@@ -187,15 +187,7 @@ var dashboardModule = angular.module('dashboardApp', [
             $scope.ProjectUpdateList = data;
             $scope.vId = data[0].Project.VerticalID;
             $scope.pName = data[0].Project.ProjectName;
-            // CODE FOR BUBBLES BEGIN
-            $scope.phaseEnums = PhaseEnum;
-            $scope.inProgressPhases = [];
-            angular.forEach($scope.ProjectUpdateList, function (value, key) {
-                console.log("Phase ID: " + $scope.ProjectUpdateList[key].PhaseID);
-                this.push($scope.ProjectUpdateList[key].Phase);
-            }, $scope.inProgressPhases);
-console.log("inProgressPhases: " + $scope.inProgressPhases);
-    // CODE FOR BUBBLES END
+           
             if ($scope.vId != -1) {
                 // Vertical Enums does not work for -1, need a more solid fix
                 $scope.vName = VerticalEnum[$scope.vId];
@@ -210,8 +202,19 @@ console.log("inProgressPhases: " + $scope.inProgressPhases);
             phases[3] = 'Micro Design';
             phases[4] = 'Build and Test';
             phases[5] = 'Deploy';
-            phases[6] = 'Transition & Close';
+            phases[6] = 'Transition & Close'; 
             $scope.phases = phases;
+
+            // CODE FOR BUBBLES BEGIN
+            $scope.phaseEnums = PhaseEnum;
+            $scope.inProgressPhases = [0,0,0,0,0,0,0];
+            
+            angular.forEach($scope.ProjectUpdateList, function (value, key) {
+                var currPhase = $scope.ProjectUpdateList[key].Phase;
+                $scope.inProgressPhases[phases.indexOf(currPhase)] = 1;
+            });
+            // CODE FOR BUBBLES END
+
             var selectedPhase = [];
 
             for (var i = 0; i < data.length; i++){
@@ -220,7 +223,6 @@ console.log("inProgressPhases: " + $scope.inProgressPhases);
     
             $scope.selectedPhase = selectedPhase;
 
-            var tempArr = [];
             var ProjectUpdateLine = [];
 
             $scope.SaveEmail = function (i) {
@@ -245,9 +247,6 @@ console.log("inProgressPhases: " + $scope.inProgressPhases);
             });
             
             console.log($scope.SaveEmail);
-           
-            $scope.inProgressPhases = tempArr;
-            console.log($scope.inProgressPhases);
 
         }).error(function (data, status, headers, config) {
             console.log(status);
