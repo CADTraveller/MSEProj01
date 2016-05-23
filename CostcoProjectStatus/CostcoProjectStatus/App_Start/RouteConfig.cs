@@ -42,12 +42,12 @@ namespace CostcoProjectStatus
                 );
             routes.MapRoute(
                 "ProjectUpdate",
-                "ProjectUpdate/{Update}",
+                "ProjectUpdate/Update",
                  new { Controller="ProjectUpdate",action="Update"}
                 );
             routes.MapRoute(
                "ProjectUpdatePhase",
-               "ProjectUpdate/{UpdatePhase}",
+               "ProjectUpdate/UpdatePhase",
                 new { Controller = "ProjectUpdate", action = "UpdatePhase" }
                );
             routes.MapRoute(
