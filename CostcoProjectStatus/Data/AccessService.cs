@@ -187,7 +187,7 @@ namespace DataService
             try
             {
                 KeyValuePair<string, string> phasePair = updatePairs.FirstOrDefault(u => u.Key.ToLower() == "phaseid");
-                if(phasePair.Value != null) phaseID = Convert.ToInt16(phasePair.Value);
+                if (phasePair.Value != null) phaseID = Convert.ToInt16(phasePair.Value);
 
                 if (phaseID < -1 || phaseID > 7) phaseID = -1;
 
@@ -232,7 +232,7 @@ namespace DataService
             //__safety, incase of duplicate keys, combine the values so there is only one entry
             //___trying to record duplicate keys in the same PackageUpdate will cause primary key error in DB
             Dictionary<string, string> cleanedPairs = combineEqualKeys(updatePairs);
-          
+
             foreach (var pair in cleanedPairs)
             {
                 string key = pair.Key;
@@ -608,7 +608,7 @@ namespace DataService
         public bool ChangeProjectUpdatePhase(ProjectUpdate projectUpdate)
         {
             List<StatusUpdate> oldStatusUpdates = GetAllUpdatesFromEmail(projectUpdate.ProjectUpdateID);
-            
+
             return ChangeProjectUpdatePhase(oldStatusUpdates.First(), projectUpdate.PhaseID);
         }
 
@@ -625,11 +625,10 @@ namespace DataService
             {
                 statusUpdate.PhaseID = newPhase;
 
-                //__also update any related entries in ProjectPhase table
-                ProjectPhase pp = context.ProjectPhases.FirstOrDefault(p => p.PhaseID == oldPhase
-                                                                            && p.ProjectID == projectID
-                                                                            && p.UpdateKey == updateKey);
-                if (pp != null) pp.PhaseID = newPhase;
+                ////__also update any related entries in ProjectPhase table
+                //ProjectPhase pp = context.ProjectPhases.FirstOrDefault(p => p.ProjectID == projectID
+                //                                                            && p.UpdateKey == updateKey);
+                //if (pp != null) pp.PhaseID = newPhase;
             }
             return true;
         }
