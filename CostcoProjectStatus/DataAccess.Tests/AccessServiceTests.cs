@@ -722,7 +722,7 @@ namespace DataService.Tests
 
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void GetAllUpdatesForProjectTest()
         {
             var dataAccess = new AccessService();
@@ -767,7 +767,7 @@ namespace DataService.Tests
             dataAccess.DeleteProject(projectGuid);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void GetAllProjectNamesTest()
         {
             var dataAccess = new AccessService();
@@ -809,7 +809,7 @@ namespace DataService.Tests
             }
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void RecordStatusUpdateTest()
         {
             var dataAccess = new AccessService();
@@ -890,4 +890,5 @@ namespace DataService.Tests
 
 
     }
+#endregion
 }

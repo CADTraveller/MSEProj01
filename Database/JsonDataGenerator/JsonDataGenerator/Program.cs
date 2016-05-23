@@ -24,7 +24,8 @@ namespace JsonDataGenerator
             if (inDebug)
             {
                 AccessService dbService = new AccessService();
-                //var projectUpdates = dbService.GetProjectUpdates("6a8a7e56-e9ac-4385-a8be-5be702c1f2e6");
+                //
+                var projectUpdates = dbService.GetProjectUpdates("0a9514be-0e61-4ffc-9d7b-8e151a126038");
                 UpdatePackage package = new UpdatePackage();
                 package.ProjectName = "we done testing";
                 package.Subject = "Deployment";
