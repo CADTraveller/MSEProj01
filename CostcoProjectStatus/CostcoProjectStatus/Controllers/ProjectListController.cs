@@ -232,6 +232,7 @@ namespace CostcoProjectStatus.Controllers
                         tempStatusUpdate.Description = passedStatusUpdate.Description;
                         tempStatusUpdate.Body = passedStatusUpdate.Body;
                         tempStatusUpdate.Project = passedStatusUpdate.Project;
+                        tempStatusUpdate.StatusUpdates = passedStatusUpdate.StatusUpdates;
                         //tempStatusUpdate.Vertical = passedStatusUpdate.Vertical;
                         
                         tempStatusUpdate.ProjectUpdateID = passedStatusUpdate.ProjectUpdateID;

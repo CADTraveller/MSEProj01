@@ -214,7 +214,7 @@ var dashboardModule = angular.module('dashboardApp', [
                 $scope.inProgressPhases[phases.indexOf(currPhase)] = 1;
             });
             // CODE FOR BUBBLES END
-
+            // Populate drop down menu
             var selectedPhase = [];
 
             for (var i = 0; i < data.length; i++){
@@ -222,28 +222,22 @@ var dashboardModule = angular.module('dashboardApp', [
             }
     
             $scope.selectedPhase = selectedPhase;
-
-            var ProjectUpdateLine = [];
-
+            // End drop down menu population
+            
+            
+            var ProjectUpdateLine = []; //  don't think this variable is being used
+            
             $scope.SaveEmail = function (i) {
                 
                 $scope.ProjectUpdateList[i].PhaseID = phases.indexOf($scope.selectedPhase[i]);
                 $scope.ProjectUpdateList[i].Phase = $scope.selectedPhase[i];
-                //$http({
-                //    method: 'POST',
-                //    url: '../ProjectUpdate/UpdatePhase',
-                //    data: $scope.ProjectUpdateList[i],
-                //    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-                //}).then(function () {
-                //            console.log('succeeded updating project');
-                //        });
-
                 $http.post('../ProjectUpdate/UpdatePhase', $scope.ProjectUpdateList[i])
                     .then(function () {
                         console.log('succeeded updating project');
                     });
             }
 
+            // not sure what this code is about
             angular.forEach($scope.ProjectUpdateList, function (value, key) {
                 //projectUpdateBody = angular.fromJson(value.Body);
                 //tempArr.push(projectUpdateBody[0].PhaseID);
