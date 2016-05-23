@@ -14,7 +14,29 @@ namespace StatusUpdatesModel
 
         public string Description { get; set; }
 
-        public string  Phase { get; set; }
+        private string phase;
+        public string Phase
+        {
+            get
+            {
+                phase = Phases.Not_Assigned.ToString();
+                if (StatusUpdates.Count > 0)
+                {
+                    try
+                    {
+
+                    phase = Enum.GetName(typeof(Phases), StatusUpdates.First().PhaseID);
+                    }
+                    catch (Exception)
+                    {
+                        phase = Phases.Not_Assigned.ToString();
+                    }
+                }
+                return phase;
+            }
+             
+            set { phase = value; }
+        }
 
         public int PhaseID { get; set; }
     }

@@ -509,11 +509,16 @@ namespace DataService
                 List<StatusUpdate> statusUpdates = projectUpdate.StatusUpdates.ToList();
                 StatusUpdate referenceUpdate = statusUpdates.FirstOrDefault();
                 if (referenceUpdate == null) continue;//__should not happen
+
                 projectUpdate.Date = referenceUpdate.RecordDate.ToString();
-                int phaseIndex = referenceUpdate.PhaseID.Value;
-                //__correct for "Not Assigned" value which is -1
-                phaseIndex = phaseIndex < 0 ? 7 : phaseIndex;
-                projectUpdate.Phase = Enum.GetNames(typeof(Phases))[phaseIndex];
+                int? phaseIndex = referenceUpdate.PhaseID;
+                  
+                //__add some safety checks, default to -1, Not_Assigned
+                if (phaseIndex == null) phaseIndex = -1;
+                if (phaseIndex < -1 || phaseIndex > 7) phaseIndex = -1;
+
+                projectUpdate.Phase = Enum.GetName(typeof(Phases),phaseIndex);
+                projectUpdate.PhaseID = Convert.ToInt16( phaseIndex);
 
                 //__will need to look for Environment and Description
                 StatusUpdate environmentUpdate = statusUpdates.FirstOrDefault(su => su.UpdateKey == "Environment");
