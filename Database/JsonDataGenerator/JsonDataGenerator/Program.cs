@@ -30,10 +30,10 @@ namespace JsonDataGenerator
                 package.Subject = "Deployment";
                 package.Body = "Environment:br549|Jimmy, toloose";
 
-                package.Updates.Add(new KeyValuePair<string, string>( "VerticalID",  "-1"));
-                package.Updates.Add(new KeyValuePair<string, string>( "PhaseID", "0"));
-                package.Updates.Add(new KeyValuePair<string, string>( "Environment",  "Joe's Computer"));
-                package.Updates.Add(new KeyValuePair<string, string>("Some Key","Some Value" ));
+                package.Updates.Add("VerticalID",  "-1");
+                package.Updates.Add( "PhaseID", "0");
+                package.Updates.Add( "Environment",  "Joe's Computer");
+                package.Updates.Add("Some Key","Some Value" );
 
                 dbService.RecordUpdatePackage(package);
                 var db = 1;

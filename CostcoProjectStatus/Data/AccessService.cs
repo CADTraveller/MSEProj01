@@ -148,7 +148,7 @@ namespace DataService
             string body = package.Body;
             if (string.IsNullOrEmpty(projectName)) return null;
 
-            List<KeyValuePair<string, string>> updatePairs = package.Updates;
+            Dictionary<string, string> updatePairs = package.Updates;
 
             Project project = context.Projects.FirstOrDefault(p => p.ProjectName == projectName);
 
@@ -250,7 +250,7 @@ namespace DataService
             return projectID.ToString();
         }
 
-        private Dictionary<string, string> combineEqualKeys(List<KeyValuePair<string, string>> updatePairs)
+        private Dictionary<string, string> combineEqualKeys(Dictionary<string, string> updatePairs)
         {
             Dictionary<string, string> combinedKeys = new Dictionary<string, string>();
             foreach (KeyValuePair<string, string> pair in updatePairs)

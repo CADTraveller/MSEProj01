@@ -12,6 +12,6 @@ namespace DataService
         public string Subject;
         public string Body;
 
-        public List<KeyValuePair<string, string>> Updates = new List<KeyValuePair<string, string>>();
+        public Dictionary<string, string> Updates = new Dictionary<string, string>();
     }
 }

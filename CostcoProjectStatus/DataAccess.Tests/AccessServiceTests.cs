@@ -852,10 +852,10 @@ namespace DataService.Tests
             package.Subject = "Deployment";
             package.Body = "Environment:br549|Jimmy, toloose";
 
-            package.Updates.Add(new KeyValuePair<string, string>("verticalID", "3"));
-            package.Updates.Add(new KeyValuePair<string, string>("Environment", "br549"));
-            package.Updates.Add(new KeyValuePair<string, string>("Author", "Samantha"));
-            package.Updates.Add(new KeyValuePair<string, string>("Manager", "Bocephus"));
+            package.Updates.Add("verticalID", "3");
+            package.Updates.Add("Environment", "br549");
+            package.Updates.Add("Author", "Samantha");
+            package.Updates.Add("Manager", "Bocephus");
 
             //__Adding this package should create a new Project and return the ProjectID as string
             string stId = dbService.RecordUpdatePackage(package);
