@@ -228,8 +228,18 @@ var dashboardModule = angular.module('dashboardApp', [
             $scope.SaveEmail = function (i) {
                 
                 $scope.ProjectUpdateList[i].PhaseID = $scope.selectedPhase[i];
+                var temp = $scope.ProjectUpdateList[i];
+               
+                var temp = $.param({
+                    json: JSON.stringify({
+                        name: $scope.ProjectUpdateList[i]
+                    })
+                });
+                var temp;
                 
-                $http.post('../ProjectUpdate/UpdatePhase', $scope.ProjectUpdateList[i])
+                //temp: JSON.stringify(ProjectUpdateList[i]);
+                
+                $http.post('../ProjectUpdate/UpdatePhase/', temp)
                     .then(function () {
                         console.log('succeeded updating project');
                     });
