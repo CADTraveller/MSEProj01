@@ -124,12 +124,13 @@ namespace CostcoProjectStatus.Controllers
         //}
 
             [System.Web.Mvc.HttpPost]
-        public HttpResponseMessage UpdatePhase(ProjectUpdate projectUpdate)
+        public HttpResponseMessage UpdatePhase(string projectUpdate)
         {
 
             try
             {
-                DataAccess.ChangeProjectUpdatePhase(projectUpdate);
+               ProjectUpdate update = JsonConvert.DeserializeObject<ProjectUpdate>(projectUpdate);
+                DataAccess.ChangeProjectUpdatePhase(update);
             }
             catch (Exception e)
             {

@@ -59,12 +59,14 @@ namespace CostcoProjectStatus
                 "LogOff",
                 "Account/LogOff",
                 new { Controller = "Account", action = "LogOff" }
-                );
+               );
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "ProjectList", action = "Display", id = "" }
             );
+
+
         }
     }
 }
