@@ -238,7 +238,15 @@ var dashboardModule = angular.module('dashboardApp', [
                 //            console.log('succeeded updating project');
                 //        });
 
-                $http.post('../ProjectUpdate/UpdatePhase', $scope.ProjectUpdateList[i])
+                //var temp = $scope.ProjectUpdateList[i];
+
+                //var temp = $.param({
+                //    json: JSON.stringify({
+                //        name: $scope.ProjectUpdateList[i]
+                //    })
+                //});
+
+                $http.post('../ProjectUpdate/UpdatePhase/', $scope.ProjectUpdateList[i])
                     .then(function () {
                         console.log('succeeded updating project');
                     });

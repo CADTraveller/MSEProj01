@@ -129,7 +129,7 @@ namespace CostcoProjectStatus.Controllers
 
             try
             {
-                ProjectUpdate update = JsonConvert.DeserializeObject<ProjectUpdate>(projectUpdate);
+               ProjectUpdate update = JsonConvert.DeserializeObject<ProjectUpdate>(projectUpdate);
                 DataAccess.ChangeProjectUpdatePhase(update);
             }
             catch (Exception e)
