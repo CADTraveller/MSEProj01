@@ -630,6 +630,7 @@ namespace DataService
                 //                                                            && p.UpdateKey == updateKey);
                 //if (pp != null) pp.PhaseID = newPhase;
             }
+            context.SaveChanges();
             return true;
         }
 
