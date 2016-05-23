@@ -362,14 +362,30 @@ namespace DataService.Tests
         }
 
         /// <summary>
-        /// 
+        /// Checks if user ID is correct
         /// </summary>
         [TestMethod()]
         public void GetUserIDTest()
         {
-            Assert.Fail();
+            var dataAccess = new AccessService();
+            // Add a user
+            Assert.IsTrue(dataAccess.AddUser("faketestuser@fakedomain.com", 0));
+
+            // Check that the users are actually in the DB
+            Assert.IsTrue(dataAccess.IsUserAuthorized("faketestuser@fakedomain.com"));
+
+            // Here's the actual test - the GUID should not be empty
+            Guid userIdCheck = dataAccess.GetUserID("faketestuser@fakedomain.com");
+            Assert.IsFalse(userIdCheck == Guid.Empty);
+
+            // Now delete and check again - if that was really the user's id, then it should return false after deleting
+            Assert.IsTrue(dataAccess.DeleteUser("faketestuser@fakedomain.com"));
+            Assert.IsTrue(userIdCheck == Guid.Empty);
+
         }
         #endregion
+
+        #region StatusUpdate and Project Methods Tests
         /// <summary>
         /// Tests public accessable GetAllProjectsForVertical function. Checks to make sure that all valid vertical ID's returns
         /// some form of valid data (brute force), and non valid verticals returns no data via boundary and random test.
