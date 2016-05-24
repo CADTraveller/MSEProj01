@@ -80,8 +80,8 @@ namespace EmailClient
               using (var client = new WebClient())
               {
                   client.Headers[HttpRequestHeader.ContentType] = "application/json";
-                    // result = client.UploadString("https://localhost:44300/ProjectUpdate/Update", "Post", emailJson);
-                    result = client.UploadString("https://costcodevops.azurewebsites.net/ProjectUpdate/Update", "Post", emailJson);
+                 // result = client.UploadString("https://localhost:44300/ProjectUpdate/Update", "Post", emailJson);
+                  result = client.UploadString("https://costcodevops.azurewebsites.net/ProjectUpdate/Update", "Post", emailJson);
                   Console.WriteLine(result);
               }
               

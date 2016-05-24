@@ -99,6 +99,10 @@ namespace CostcoProjectStatus.Controllers
         //        return View();
         //    }
         //}
+        /// <summary>
+        /// Getting use only in angular to show the projectName.
+        /// </summary>
+        /// <returns></returns>
         public string Display()
         {
             var ProjectNames = DataAccsess.GetAllProjectNames();

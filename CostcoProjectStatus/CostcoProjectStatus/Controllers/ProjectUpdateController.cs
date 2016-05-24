@@ -167,25 +167,8 @@ namespace CostcoProjectStatus.Controllers
                 return message;
             }
             return new HttpResponseMessage(HttpStatusCode.Accepted);
-        }
+        }     
 
-
-        [Serializable]
-        public class UpdateObject
-        {
-            public string ProjectName { get; set; }
-            public string Subject { get; set; }
-            public string Body { get; set; }
-            public List<KVPPairs> Updates { get; set; }
-
-
-        }
-
-        public class KVPPairs
-        {
-            public string Key { get; set; }
-            public string Value { get; set; }
-        }
 
         public HttpResponseMessage Post(string value)
         {
