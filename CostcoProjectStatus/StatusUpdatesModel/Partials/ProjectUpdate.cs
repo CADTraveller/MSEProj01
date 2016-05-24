@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace StatusUpdatesModel
 {
@@ -14,29 +10,8 @@ namespace StatusUpdatesModel
 
         public string Description { get; set; }
 
-        private string phase;
-        public string Phase
-        {
-            get
-            {
-                phase = Phases.Not_Assigned.ToString();
-                if (StatusUpdates.Count > 0)
-                {
-                    try
-                    {
-
-                    phase = Enum.GetName(typeof(Phases), StatusUpdates.First().PhaseID);
-                    }
-                    catch (Exception)
-                    {
-                        phase = Phases.Not_Assigned.ToString();
-                    }
-                }
-                return phase;
-            }
-             
-            set { phase = value; }
-        }
+   
+        public string Phase { get; set; }
 
         public int PhaseID { get; set; }
     }

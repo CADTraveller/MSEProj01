@@ -9,10 +9,13 @@ namespace DataService
     [Serializable]
     public class UpdatePackage
     {
-        public string ProjectName;
-        public string Subject;
-        public string Body;
+        public string ProjectName { get; set; }
+        public string Subject { get; set; }
+        public string Body { get; set; }
 
-        public Dictionary<string, string> Updates = new Dictionary<string, string>();
+        private Dictionary<string, string > updates  = new Dictionary<string, string>();
+        public Dictionary<string, string> Updates {
+            get { return updates; }
+            set { updates = value; } }
     }
 }
