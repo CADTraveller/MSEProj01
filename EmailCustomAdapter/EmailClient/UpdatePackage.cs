@@ -11,6 +11,6 @@ namespace EmailClient
         public string ProjectName;
         public string Subject;
         public string Body;
-        public List<KeyValuePair<string, string>> Updates;
+        public Dictionary<string, string> Updates = new Dictionary<string, string>();
     }
 }

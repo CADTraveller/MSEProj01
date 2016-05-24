@@ -75,7 +75,7 @@ namespace ExcelDemo
                 {
 
                     cell = usedRange.Cells[i, k];
-                    package.Updates.Add(new KeyValuePair<string, string>(keys[k], cell.Value.ToString()));
+                    package.Updates.Add(keys[k], cell.Value.ToString());
                     package.Body += keys[k] + ":" + cell.Value.ToString();
                     if (k != iNumColumns) package.Body += "|";
                 }
@@ -93,11 +93,11 @@ namespace ExcelDemo
                     using (var client = new WebClient())
                     {
                         client.Headers[HttpRequestHeader.ContentType] = "application/json";
-                        string url = "http://costcodevops.azurewebsites.net/ProjectUpdate/Update";
+                        string url = "https://costcodevops.azurewebsites.net/ProjectUpdate/Update";
 #if DEBUG
                         url = "https://localhost:44300/ProjectUpdate/Update";
 #endif
-                        var result = client.UploadString(url, "Post", json);
+                        var result = client.UploadString(url,  json);
                         Console.WriteLine(result);
                     }
                 }

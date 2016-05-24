@@ -42,11 +42,6 @@ namespace EmailClient
 
             // Console.WriteLine(imapClient.GetMessageCount());
 
-            //Person p = new Person();
-            //p.FirstName = "Jaya";
-            //p.LastName = "Sree";
-            //string json = JsonConvert.SerializeObject(p);
-
             //using (var client = new WebClient())
             //{
             //    client.Headers[HttpRequestHeader.ContentType] = "application/Json";
@@ -85,7 +80,8 @@ namespace EmailClient
               using (var client = new WebClient())
               {
                   client.Headers[HttpRequestHeader.ContentType] = "application/json";
-                  result = client.UploadString("https://localhost:44300/ProjectUpdate/Update", "Post", emailJson);
+                    // result = client.UploadString("https://localhost:44300/ProjectUpdate/Update", "Post", emailJson);
+                    result = client.UploadString("https://costcodevops.azurewebsites.net/ProjectUpdate/Update", "Post", emailJson);
                   Console.WriteLine(result);
               }
               
@@ -112,12 +108,12 @@ namespace EmailClient
         }*/
 
 
-        public List<KeyValuePair<string, string>> ParseBody(string Body)
+        public Dictionary<string,string> ParseBody(string Body)
         {
             int counter = 1;
             string line;
-            string summary = "";         
-            var list = new List<KeyValuePair<string, string>>();
+            string summary = "";
+            var dict = new Dictionary<string, string>();
             System.IO.File.WriteAllText("Test.txt",Body);
             System.IO.StreamReader file =
             new System.IO.StreamReader("Test.txt");
@@ -131,8 +127,8 @@ namespace EmailClient
                 if (line.Equals("Application:") || line.Equals("Process:") || line.Equals("Environment:") || line.Equals("Requested By:") || line.Equals("Requested On:")||line.Equals("Description:"))
                 {
                     // Console.WriteLine(getNextLine(counter)); 
-                    //  dict.Add(line, getNextLine(counter));
-                    list.Add(new KeyValuePair<string, string>(line, getNextLine(counter)));        
+                     dict.Add(line, getNextLine(counter));
+                  //  list.Add(new KeyValuePair<string, string>(line, getNextLine(counter)));        
                               
                 }
                
@@ -144,7 +140,7 @@ namespace EmailClient
             }
                    
             file.Close();
-            return list;         
+            return dict;         
      
         }
 

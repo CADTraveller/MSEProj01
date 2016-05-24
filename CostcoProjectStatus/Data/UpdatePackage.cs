@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataService
 {
+    [Serializable]
     public class UpdatePackage
     {
         public string ProjectName;

@@ -66,8 +66,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="appObject.cs" />
-    <Compile Include="appPacket.cs" />
     <Compile Include="ImapService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -77,7 +75,9 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\PublishProfiles\costcosutest1 - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\costcosutest1 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\EmailClient - Web Deploy.pubxml" />
