@@ -386,6 +386,71 @@ namespace DataService.Tests
         #endregion
 
         #region StatusUpdate and Project Methods Tests
+
+        /// <summary>
+        /// Tests Updating of a package
+        /// </summary>
+        [TestMethod]
+        public void RecordPackageUpdateTest()
+        {
+            AccessService dbService = new AccessService();
+            //var projectUpdates = dbService.GetProjectUpdates("6a8a7e56-e9ac-4385-a8be-5be702c1f2e6");
+            UpdatePackage package = new UpdatePackage();
+            package.ProjectName = "Test Project";
+            package.Subject = "Deployment";
+            package.Body = "Environment:br549|Jimmy, toloose";
+
+            package.Updates.Add("verticalID", "3");
+            package.Updates.Add("Environment", "br549");
+            package.Updates.Add("Author", "Samantha");
+            package.Updates.Add("Manager", "Bocephus");
+
+            //__Adding this package should create a new Project and return the ProjectID as string
+            string stId = dbService.RecordUpdatePackage(package);
+            Assert.IsFalse(string.IsNullOrEmpty(stId));
+
+            Guid projectID = Guid.Parse(stId);
+            Assert.IsFalse(projectID == Guid.Empty);
+
+            Guid recordedId = dbService.GetProjectIDbyName(package.ProjectName);
+            Assert.AreEqual(projectID, recordedId);
+
+
+
+            dbService.DeleteProject(projectID);
+        }
+        /// <summary>
+        /// Tests the deletion of a project
+        /// </summary>
+        [TestMethod()]
+        public void DeleteProjectTest()
+        {
+            AccessService dbService = new AccessService();
+            //var projectUpdates = dbService.GetProjectUpdates("6a8a7e56-e9ac-4385-a8be-5be702c1f2e6");
+            UpdatePackage package = new UpdatePackage();
+            package.ProjectName = "Test Project";
+            package.Subject = "Deployment";
+            package.Body = "Environment:br549|Jimmy, toloose";
+
+            package.Updates.Add("verticalID", "3");
+            package.Updates.Add("Environment", "br549");
+            package.Updates.Add("Author", "Samantha");
+            package.Updates.Add("Manager", "Bocephus");
+
+            //__Adding this package should create a new Project and return the ProjectID as string
+            string stId = dbService.RecordUpdatePackage(package);
+            Assert.IsFalse(string.IsNullOrEmpty(stId));
+
+            Guid projectID = Guid.Parse(stId);
+            Assert.IsFalse(projectID == Guid.Empty);
+
+            Guid recordedId = dbService.GetProjectIDbyName(package.ProjectName);
+            Assert.AreEqual(projectID, recordedId);
+            // This is the actual test - let's see if it actually deletes the project
+            dbService.DeleteProject(projectID);
+            // When we look for updates, it should be null or empty
+            Assert.IsTrue(dbService.GetAllUpdatesForProject(projectID.ToString()) == null);
+        }
         /// <summary>
         /// Tests public accessable GetAllProjectsForVertical function. Checks to make sure that all valid vertical ID's returns
         /// some form of valid data (brute force), and non valid verticals returns no data via boundary and random test.
@@ -482,9 +547,6 @@ namespace DataService.Tests
             }
 
         }
-
-
-
 
         [TestMethod()]
         public void GetProjectNameForIDTest()
@@ -853,41 +915,6 @@ namespace DataService.Tests
 
         }
 
-
-
-
-
-
-        [TestMethod]
-        public void RecordPackageUpdateTest()
-        {
-            AccessService dbService = new AccessService();
-            //var projectUpdates = dbService.GetProjectUpdates("6a8a7e56-e9ac-4385-a8be-5be702c1f2e6");
-            UpdatePackage package = new UpdatePackage();
-            package.ProjectName = "Test Project";
-            package.Subject = "Deployment";
-            package.Body = "Environment:br549|Jimmy, toloose";
-
-            package.Updates.Add("verticalID", "3");
-            package.Updates.Add("Environment", "br549");
-            package.Updates.Add("Author", "Samantha");
-            package.Updates.Add("Manager", "Bocephus");
-
-            //__Adding this package should create a new Project and return the ProjectID as string
-            string stId = dbService.RecordUpdatePackage(package);
-            Assert.IsFalse(string.IsNullOrEmpty(stId));
-
-            Guid projectID = Guid.Parse(stId);
-            Assert.IsFalse(projectID == Guid.Empty);
-
-            Guid recordedId = dbService.GetProjectIDbyName(package.ProjectName);
-            Assert.AreEqual(projectID, recordedId);
-
-
-
-            dbService.DeleteProject(projectID);
-        }
-
-
     }
+    #endregion
 }
