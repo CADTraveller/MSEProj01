@@ -18,7 +18,8 @@ describe('Business Unit Test Result', function () {
 	var response;
 
 
-agent1=chai.request.agent("https://localhost:44300/");
+//agent1=chai.request.agent("https://localhost:44300/");
+agent1 = chai.request.agent("https://costcodevops.azurewebsites.net");
 
 describe('IsLogin', function() {
 this.timeout(15000);
@@ -57,7 +58,7 @@ this.timeout(15000);
     it('returns', function(done) {        
 		return agent1
 		      .get('/Vertical/GetVerticalProjects/0')
-		      .set('Cookie','ai_user=9z4tw|2016-05-13T23:20:16.657Z; ASP.NET_SessionId=ir2zqt1vqxhgaffxdsz54sn3; .AspNet.ExternalCookie=g533NMTMjeJhceykajfkJyCFNhr9_-BZcVxF2sKI9W-11Owqu5LCI_rukCyLVSG0L53XH9Tu6ttwo3Crj59SELJQyVbCqur7rXXihwAEeltRy2z0d9CqueaNAb3N3wU8CJG636Zj63U_r2oWuNhYNgFM1dmN_KPQr-xbMlG5WFGUl1Yr1ISYGx5fZX1CfuvKBQD9N8VczDxpzjTbJmnew2vOGzqKOBlz1x8KRGYIdZ_zurwO1x0lQ_WkxYVA-0Bw42MHjce8NIQAKpV1B4dJ7HvFlOQtNlkI3zvYCQIRbZpYG-Qtz52cZZMYZJwZeYcBYMKlBc9FeCq4LiLKZxWTuFtP2SxT4rdYmZqhmn28pmHnG4E3Z9DlhTb4c1EKzpArxzLOhwFNrzmfbnrGn6kcxaoItfn2pmBQd71LbxTZClZlzhx7d6CxshWa8de_QIRN')
+		      .set('Cookie','ai_user=X8pZz|2016-04-10T03:09:45.992Z; ARRAffinity=5d61d7e367d553a3c54df0aaec20b2ad4cadb57598e9e108062da519ca725375; ASP.NET_SessionId=yliqzw54b0l2sije2d0n142i; .AspNet.ExternalCookie=ADHisJ8nHEUzRuWmZ7oxzXlmE1fDYAEu8uxq1km1G8DEWgWMq0dig8JB5pImByH1owatOUudKRNDYK7MJxAhMYf5rjdhBqakQTN72WsMbWKan5SIBlOnYK4_FzEr1druKeJ2t_3phf2amOEAe8Fm87E8dh4p_C4K3IgtS-m8bClaVNUB58YUhtTMgteGJxgcqgyo1zzWT4Xw07ZRLnnJshjOtnxw9z29V_5W6rXBtL8Ut5l38wC6EaDWrPCl2XSxdXDQpMzA1IItj0Oh5r6Se48bUMTo5P21mzDTIrLpmVhZ4kbozzuNDPbYqA7_iZD0lHwmhf-1Aljug-2vxKDGV1tMUErv4fhuxEzTHm4gVqXY3w813O8oSZlBHomgi_zcW3sMem8DhGBxo4LY4M0CmdglDodf8OnpdlwmXl78lieyCek-UBUc8DbgzriZWzoY')
 		      .end( function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(200);
@@ -72,7 +73,7 @@ this.timeout(15000);
     it('returns', function(done) {        
 		return agent1
 		      .get('/ProjectList/GetprojectUpdates/e22c5304-163c-4ba4-bd7e-20b71e41572f')
-		      .set('Cookie','ai_user=9z4tw|2016-05-13T23:20:16.657Z; ASP.NET_SessionId=ir2zqt1vqxhgaffxdsz54sn3; .AspNet.ExternalCookie=g533NMTMjeJhceykajfkJyCFNhr9_-BZcVxF2sKI9W-11Owqu5LCI_rukCyLVSG0L53XH9Tu6ttwo3Crj59SELJQyVbCqur7rXXihwAEeltRy2z0d9CqueaNAb3N3wU8CJG636Zj63U_r2oWuNhYNgFM1dmN_KPQr-xbMlG5WFGUl1Yr1ISYGx5fZX1CfuvKBQD9N8VczDxpzjTbJmnew2vOGzqKOBlz1x8KRGYIdZ_zurwO1x0lQ_WkxYVA-0Bw42MHjce8NIQAKpV1B4dJ7HvFlOQtNlkI3zvYCQIRbZpYG-Qtz52cZZMYZJwZeYcBYMKlBc9FeCq4LiLKZxWTuFtP2SxT4rdYmZqhmn28pmHnG4E3Z9DlhTb4c1EKzpArxzLOhwFNrzmfbnrGn6kcxaoItfn2pmBQd71LbxTZClZlzhx7d6CxshWa8de_QIRN')
+		      .set('Cookie','ai_user=X8pZz|2016-04-10T03:09:45.992Z; ARRAffinity=5d61d7e367d553a3c54df0aaec20b2ad4cadb57598e9e108062da519ca725375; ASP.NET_SessionId=yliqzw54b0l2sije2d0n142i; .AspNet.ExternalCookie=ADHisJ8nHEUzRuWmZ7oxzXlmE1fDYAEu8uxq1km1G8DEWgWMq0dig8JB5pImByH1owatOUudKRNDYK7MJxAhMYf5rjdhBqakQTN72WsMbWKan5SIBlOnYK4_FzEr1druKeJ2t_3phf2amOEAe8Fm87E8dh4p_C4K3IgtS-m8bClaVNUB58YUhtTMgteGJxgcqgyo1zzWT4Xw07ZRLnnJshjOtnxw9z29V_5W6rXBtL8Ut5l38wC6EaDWrPCl2XSxdXDQpMzA1IItj0Oh5r6Se48bUMTo5P21mzDTIrLpmVhZ4kbozzuNDPbYqA7_iZD0lHwmhf-1Aljug-2vxKDGV1tMUErv4fhuxEzTHm4gVqXY3w813O8oSZlBHomgi_zcW3sMem8DhGBxo4LY4M0CmdglDodf8OnpdlwmXl78lieyCek-UBUc8DbgzriZWzoY')
 		      .end( function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(200);
@@ -87,7 +88,7 @@ this.timeout(15000);
     it('returns', function(done) {        
 		return agent1
 		      .get('/ProjectList/GetStatusData/e22c5304-163c-4ba4-bd7e-20b71e41572f/1213a14b-4a19-4d84-93aa-1e18ea01f248')
-		      .set('Cookie','ai_user=9z4tw|2016-05-13T23:20:16.657Z; ASP.NET_SessionId=ir2zqt1vqxhgaffxdsz54sn3; .AspNet.ExternalCookie=RGrcFHnXQ2DkdTqvDbQl4FA2XbC5qVV6JtOIoi4NABCYPEPtpvTWJe-Gz4pWw4Kx6cebUzJ0jHxhqkRTr7z_wVjauWH7KBuv8ta6zPqOl35WdRt4R7gU-R95ooGQh8PSxmYZZqdsQj6gsXcfVp4_nKTjoTPr5x7TW-qHbx563vbWiFROdMxSWtI_ui-EPXlXm8Mi5ESs9E7UoiJPTPSMQKs15RKE39fJmxOWj_0Igg8hkDdZd_zshmsy2pihFZYIpiclxVqUEh1C4D3O5-_QlWj2yhMaG2UJccBiYQXUjEkSVenhIbA7oFmvSEBvU63sADf3gZ9TI1OjU83IdtPOkfNbq_zbgr_sVXRXUObWpE0OJ5732ZrH-WAC8Y2WdfaryukbF0xhfOWE1oWaA9gxNX58aSGJZR7rdkEH6VEaPQSSXD0u12yozABV3f0F5HuT')
+		      .set('Cookie','ai_user=X8pZz|2016-04-10T03:09:45.992Z; ARRAffinity=5d61d7e367d553a3c54df0aaec20b2ad4cadb57598e9e108062da519ca725375; ASP.NET_SessionId=yliqzw54b0l2sije2d0n142i; .AspNet.ExternalCookie=ADHisJ8nHEUzRuWmZ7oxzXlmE1fDYAEu8uxq1km1G8DEWgWMq0dig8JB5pImByH1owatOUudKRNDYK7MJxAhMYf5rjdhBqakQTN72WsMbWKan5SIBlOnYK4_FzEr1druKeJ2t_3phf2amOEAe8Fm87E8dh4p_C4K3IgtS-m8bClaVNUB58YUhtTMgteGJxgcqgyo1zzWT4Xw07ZRLnnJshjOtnxw9z29V_5W6rXBtL8Ut5l38wC6EaDWrPCl2XSxdXDQpMzA1IItj0Oh5r6Se48bUMTo5P21mzDTIrLpmVhZ4kbozzuNDPbYqA7_iZD0lHwmhf-1Aljug-2vxKDGV1tMUErv4fhuxEzTHm4gVqXY3w813O8oSZlBHomgi_zcW3sMem8DhGBxo4LY4M0CmdglDodf8OnpdlwmXl78lieyCek-UBUc8DbgzriZWzoY')
 		      .end( function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(200);
@@ -99,7 +100,7 @@ this.timeout(15000);
 
 
 var emailJson = {
-"ProjectName":"MochaTest2:Ecomm_NonCore",
+"ProjectName":"MochaTest5:Ecomm_NonCore",
 
 "Subject":"Deployment Succeeded wdc_prod_group1: Ecomm_NonCore [RxWebInt_3.0.4877.0]",
 
@@ -129,7 +130,7 @@ this.timeout(15000);
     it('returns', function(done) {        
 		return agent1
 		      .post('/Account/Logoff')
-		      .set('Cookie','ai_user=9z4tw|2016-05-13T23:20:16.657Z; ASP.NET_SessionId=ir2zqt1vqxhgaffxdsz54sn3; .AspNet.ExternalCookie=RGrcFHnXQ2DkdTqvDbQl4FA2XbC5qVV6JtOIoi4NABCYPEPtpvTWJe-Gz4pWw4Kx6cebUzJ0jHxhqkRTr7z_wVjauWH7KBuv8ta6zPqOl35WdRt4R7gU-R95ooGQh8PSxmYZZqdsQj6gsXcfVp4_nKTjoTPr5x7TW-qHbx563vbWiFROdMxSWtI_ui-EPXlXm8Mi5ESs9E7UoiJPTPSMQKs15RKE39fJmxOWj_0Igg8hkDdZd_zshmsy2pihFZYIpiclxVqUEh1C4D3O5-_QlWj2yhMaG2UJccBiYQXUjEkSVenhIbA7oFmvSEBvU63sADf3gZ9TI1OjU83IdtPOkfNbq_zbgr_sVXRXUObWpE0OJ5732ZrH-WAC8Y2WdfaryukbF0xhfOWE1oWaA9gxNX58aSGJZR7rdkEH6VEaPQSSXD0u12yozABV3f0F5HuT')
+		      .set('Cookie','ai_user=X8pZz|2016-04-10T03:09:45.992Z; ARRAffinity=5d61d7e367d553a3c54df0aaec20b2ad4cadb57598e9e108062da519ca725375; ASP.NET_SessionId=yliqzw54b0l2sije2d0n142i; .AspNet.ExternalCookie=ADHisJ8nHEUzRuWmZ7oxzXlmE1fDYAEu8uxq1km1G8DEWgWMq0dig8JB5pImByH1owatOUudKRNDYK7MJxAhMYf5rjdhBqakQTN72WsMbWKan5SIBlOnYK4_FzEr1druKeJ2t_3phf2amOEAe8Fm87E8dh4p_C4K3IgtS-m8bClaVNUB58YUhtTMgteGJxgcqgyo1zzWT4Xw07ZRLnnJshjOtnxw9z29V_5W6rXBtL8Ut5l38wC6EaDWrPCl2XSxdXDQpMzA1IItj0Oh5r6Se48bUMTo5P21mzDTIrLpmVhZ4kbozzuNDPbYqA7_iZD0lHwmhf-1Aljug-2vxKDGV1tMUErv4fhuxEzTHm4gVqXY3w813O8oSZlBHomgi_zcW3sMem8DhGBxo4LY4M0CmdglDodf8OnpdlwmXl78lieyCek-UBUc8DbgzriZWzoY')
 		      .end( function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(200);
