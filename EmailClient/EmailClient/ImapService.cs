@@ -39,42 +39,18 @@ namespace EmailClient
 
             imapClient.NewMessage += (sender, e) =>
             {
-                var msg = imapClient.GetMessage(e.MessageCount - 1);
-                List<string> emailSub = new List<string>();
-                Dictionary<string, string> emailBody = new Dictionary<string, string>();
-                List<string> emailBodyKeys = new List<string>();
-                List<string> emailBodyValues = new List<string>();
-                List<EmailJsonObject> emailObjectlist = new List<EmailJsonObject>();
-                emailSub = ParseSubject(msg.Subject);
-                emailBody = ParseBody(msg.Body);
-                foreach (string keys in emailBody.Keys)
-                {
-                    emailBodyKeys.Add(keys);
-                }
-
-                foreach (string values in emailBody.Values)
-                {
-                    emailBodyValues.Add(values);
-                } 
-               
-                for (int i = 0; i < emailBody.Count(); i++)
-                {
-                    EmailJsonObject emailJsonObject = new EmailJsonObject();
-                    emailJsonObject.ProjectID = Guid.Parse(emailSub[0]);                 
-                    emailJsonObject.PhaseID = emailSub[1];
-                    emailJsonObject.VerticalID = emailSub[2];
-                    emailJsonObject.ProjectName = emailSub[3];
-                    emailJsonObject.UpdateKey = emailBodyKeys[i];
-                    emailJsonObject.UpdateValue = emailBodyValues[i];
-                    emailJsonObject.RecordedDate = msg.Date;
-                    emailObjectlist.Add(emailJsonObject);
-                }
-                EmailJsonPacket packet = new EmailJsonPacket();
-                packet.AppId = "emailCostco";
-                packet.StatusUpdateList = emailObjectlist;
-               emailJson = JsonConvert.SerializeObject(packet);              
-               string result = "";
-
+                var msg = imapClient.GetMessage(e.MessageCount - 1);                             
+                string result = "";
+                UpdatePackage up = new UpdatePackage();               
+                List<string> li = new List<string>();
+                up.Subject = msg.Subject;
+                up.Body = msg.Body;
+                up.Updates = ParseBody(msg.Body);
+                li = ParseSubject(msg.Subject);
+                up.ProjectName = li[li.Count - 1];
+                up.Updates.Add("PhaseId", li[1]);
+                up.Updates.Add("VerticalId", li[2]);
+                emailJson = JsonConvert.SerializeObject(up);
                 //using (var client = new WebClient())
                 //{
                 //    client.Headers[HttpRequestHeader.ContentType] = "application/json";
