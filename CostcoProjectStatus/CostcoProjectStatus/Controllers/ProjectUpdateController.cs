@@ -157,12 +157,14 @@ namespace CostcoProjectStatus.Controllers
             {
                 //UpdatePackage update = JsonConvert.DeserializeObject<UpdatePackage>(jsonPacket);
                 //DataAccess.RecordUpdatePackage(update);
-                DataAccess.RecordUpdatePackage(jsonPacket.GetUpdatePackage());
+                UpdatePackage package = jsonPacket.GetUpdatePackage();
+                DataAccess.RecordUpdatePackage(package);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
-                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+                HttpResponseMessage message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                message.ReasonPhrase = e.Message;
+                return message;
             }
             return new HttpResponseMessage(HttpStatusCode.Accepted);
         }

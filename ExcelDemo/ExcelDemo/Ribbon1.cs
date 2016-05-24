@@ -83,6 +83,8 @@ namespace ExcelDemo
             }
 
             int updateCount = updates.Count;
+            string result = "";
+            bool hadError = false;
             for (int i = 0; i < updateCount; i++)
             {
 
@@ -93,21 +95,25 @@ namespace ExcelDemo
                     using (var client = new WebClient())
                     {
                         client.Headers[HttpRequestHeader.ContentType] = "application/json";
-                        string url = "https://costcodevops.azurewebsites.net/ProjectUpdate/Update";
-#if DEBUG
-                        url = "https://localhost:44300/ProjectUpdate/Update";
-#endif
-                        var result = client.UploadString(url,  json);
+                        string url = "http://costcodevops.azurewebsites.net/ProjectUpdate/Update";
+//#if DEBUG
+//                        url = "https://localhost:44300/ProjectUpdate/Update";
+//#endif
+                        result = client.UploadString(url,  json);
+
                         Console.WriteLine(result);
                     }
                 }
                 catch (Exception ex)
                 {
 
-                    MessageBox.Show(ex.Message);
+                    MessageBox.Show(ex.Message+ "\n" + result);
+                    hadError = true;
+                    break;
                 }
             }
-            MessageBox.Show("Successfully posted " + updateCount + " updates to CostcoDevOps Azure");
+
+            if (! hadError) MessageBox.Show("Successfully posted " + updateCount + " updates to CostcoDevOps Azure");
         }
     }
 
