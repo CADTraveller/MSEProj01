@@ -184,6 +184,12 @@ var dashboardModule = angular.module('dashboardApp', [
         $http({ method: 'GET', url: '../ProjectList/GetprojectUpdates/' + $routeParams.projectId }).success(function (data) {
             console.log("data from Get Project Updates:" + data);
             console.log("Project Update " + $routeParams.projectId);
+            // Code to get the underscores out of the Phase names for display purposes
+            //for (var i = 0; i < data.length; i++) {
+            //    var UIPhase = data[i].Phase.replace("_", " ");
+            //    data[i].Phase = UIPhase;
+            //}
+            // End code for getting underscores out of the phase name for display purposes
             $scope.ProjectUpdateList = data;
             $scope.vId = data[0].Project.VerticalID;
             $scope.pName = data[0].Project.ProjectName;
@@ -210,15 +216,16 @@ var dashboardModule = angular.module('dashboardApp', [
             $scope.inProgressPhases = [0,0,0,0,0,0,0];
             
             angular.forEach($scope.ProjectUpdateList, function (value, key) {
-                var currPhase = $scope.ProjectUpdateList[key].Phase;
-                $scope.inProgressPhases[phases.indexOf(currPhase)] = 1;
+                //var currPhase = $scope.ProjectUpdateList[key].Phase;
+                //$scope.inProgressPhases[phases.indexOf(currPhase)] = 1;
+                $scope.inProgressPhases[$scope.ProjectUpdateList[key].PhaseID] = 1;
             });
             // CODE FOR BUBBLES END
             // Populate drop down menu
             var selectedPhase = [];
 
             for (var i = 0; i < data.length; i++){
-                selectedPhase[i] = data[i].Phase;
+                selectedPhase[i] = phases[data[i].PhaseID];
             }
     
             $scope.selectedPhase = selectedPhase;
