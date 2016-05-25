@@ -391,7 +391,7 @@ namespace DataService.Tests
         /// Tests Updating of a package
         /// </summary>
         [TestMethod]
-        public void RecordPackageUpdateTest()
+        public void RecordUpdatePackageTest()
         {
             AccessService dbService = new AccessService();
             //var projectUpdates = dbService.GetProjectUpdates("6a8a7e56-e9ac-4385-a8be-5be702c1f2e6");
@@ -419,16 +419,169 @@ namespace DataService.Tests
 
             dbService.DeleteProject(projectID);
         }
+
         /// <summary>
-        /// Tests the deletion of a project
+        /// Tests the recording of a project update
+        /// This function is depricated and not referenced, so simply pass and don't worry about it.
+        /// Delete when Craig gives the OK.
+        /// </summary>
+
+        [TestMethod()]
+        public void RecordProjectUpdateTest()
+        {
+            Assert.IsTrue(true);
+        }
+
+        /// <summary>
+        /// Deprecated test - remove when Craig removes the associated function.
         /// </summary>
         [TestMethod()]
-        public void DeleteProjectTest()
+        public void RecordStatusUpdateTest()
+        {
+            var dataAccess = new AccessService();
+            // This function records a status update as a new project if one does not already exist.
+            // We want to test two things - does it record a new project, and if a new project already
+            // exists, does it store it properly
+
+            // First, let's create a StatusUpdate
+            Random random = new Random();
+            int randomNumber = random.Next(0, int.MaxValue);
+            string projectName = "Access Service Unit Test Project" + randomNumber;
+            StatusUpdate newProject = new StatusUpdate();
+            newProject.PhaseID = 0;
+            newProject.ProjectName = projectName;
+            newProject.VerticalID = 3;
+            List<StatusUpdate> newProjectsList = new List<StatusUpdate>();
+            newProjectsList.Add(newProject);
+
+            dataAccess.RecordStatusUpdate(newProjectsList);
+
+            // Now, let's make sure that the project got added
+            Guid projectGuid = dataAccess.GetProjectIDbyName(projectName);
+
+            // Test the updating part of the project. The function only updates one project at a time
+            Assert.IsTrue(projectGuid != Guid.Empty);
+            StatusUpdate updateProject = newProject;
+            updateProject.PhaseID = 1;
+            StatusUpdate updateProject2 = newProject;
+            updateProject2.PhaseID = 2;
+            StatusUpdate updateProject3 = newProject;
+            updateProject2.PhaseID = 3;
+            List<StatusUpdate> updateProjectsList = new List<StatusUpdate>();
+            updateProjectsList.Add(updateProject);
+            updateProjectsList.Add(updateProject2);
+            updateProjectsList.Add(updateProject3);
+            dataAccess.RecordStatusUpdate(updateProjectsList);
+
+            // Test that the updates got in
+            List<StatusUpdate> retrievedProjectUpdates = dataAccess.GetAllUpdatesForProject(projectGuid.ToString());
+            Assert.AreEqual(retrievedProjectUpdates.Count, 4);
+
+        }
+
+        /// <summary>
+        /// Test for retrieving all project names currently existing in a database
+        /// </summary>
+        [TestMethod()]
+        public void GetAllProjectNamesTest()
+        {
+            var dataAccess = new AccessService();
+            List<Project> allProjectsList = dataAccess.GetAllProjectNames();
+
+            // Got to make sure that the data is the same
+            using (SqlConnection sqlConnection = new SqlConnection())
+            {
+                sqlConnection.ConnectionString = ConnectionString;
+
+                SqlCommand sqlCommand = new SqlCommand("select * from Project", sqlConnection);
+                sqlCommand.CommandTimeout = 30;
+
+
+                sqlConnection.Open();
+                SqlDataReader sqlReader = sqlCommand.ExecuteReader();
+                int sqlCount = 0;
+
+                while (sqlReader.Read())
+                {
+                    // could make this more efficient if i knew hot to cast a sql object into a type
+                    bool isProjectThere = false;
+                    Project currProject = new Project();
+                    currProject.ProjectID = new Guid(sqlReader["ProjectID"].ToString());
+                    currProject.ProjectName = sqlReader["ProjectName"].ToString();
+                    foreach (Project testProject in allProjectsList)
+                    {
+                        if (testProject.ProjectID.Equals(currProject.ProjectID))
+                        {
+                            isProjectThere = true;
+                        }
+                    }
+
+                    Assert.IsTrue(isProjectThere, "Project " + currProject.ProjectName + " does not exist in the list of projects");
+                    sqlCount++;
+                }
+                sqlConnection.Close();
+                Assert.AreEqual(sqlCount, allProjectsList.Count, "The number of projects are not equal. The database has " + sqlCount + " and the Access Service layer is returning " + allProjectsList.Count + " for this list of projects");
+            }
+        }
+
+        /// <summary>
+        /// Tests getting all updates for a specific project. Depricated.
+        /// </summary>
+        [TestMethod()]
+        public void GetAllUpdatesForProjectTest()
+        {
+            var dataAccess = new AccessService();
+            // This function records a status update as a new project if one does not already exist.
+            // We want to test two things - does it record a new project, and if a new project already
+            // exists, does it store it properly
+
+            // First, let's create a StatusUpdate
+            Random random = new Random();
+            int randomNumber = random.Next(0, int.MaxValue);
+            string projectName = "Access Service Unit Test Project" + randomNumber;
+            StatusUpdate newProject = new StatusUpdate();
+            newProject.PhaseID = 0;
+            newProject.ProjectName = projectName;
+            newProject.VerticalID = 3;
+            newProject.UpdateKey = "Unit Test Key";
+            newProject.UpdateValue = "Unit Test Value";
+            List<StatusUpdate> newProjectsList = new List<StatusUpdate>();
+            newProjectsList.Add(newProject);
+
+            dataAccess.RecordStatusUpdate(newProjectsList);
+
+            // Now, let's make sure that the project got added
+            Guid projectGuid = dataAccess.GetProjectIDbyName(projectName);
+
+            // Test the updating part of the project. The function only updates one project at a time
+            StatusUpdate updateProject = newProject;
+            updateProject.PhaseID = 1;
+            StatusUpdate updateProject2 = newProject;
+            updateProject2.PhaseID = 2;
+            StatusUpdate updateProject3 = newProject;
+            updateProject2.PhaseID = 3;
+            List<StatusUpdate> updateProjectsList = new List<StatusUpdate>();
+            updateProjectsList.Add(updateProject);
+            updateProjectsList.Add(updateProject2);
+            updateProjectsList.Add(updateProject3);
+            dataAccess.RecordStatusUpdate(updateProjectsList);
+
+            // Test that the updates got in
+            List<StatusUpdate> retrievedProjectUpdates = dataAccess.GetAllUpdatesForProject(projectGuid.ToString());
+            Assert.AreEqual(retrievedProjectUpdates.Count, 4);
+            dataAccess.DeleteProject(projectGuid);
+        }
+
+        /// <summary>
+        /// Tests getting all project updates for a specific project
+        /// </summary>
+        [TestMethod()]
+        public void GetProjectUpdatesTest()
         {
             AccessService dbService = new AccessService();
             //var projectUpdates = dbService.GetProjectUpdates("6a8a7e56-e9ac-4385-a8be-5be702c1f2e6");
             UpdatePackage package = new UpdatePackage();
-            package.ProjectName = "Test Project";
+            package.ProjectName = "Test Getting Project Updates";
             package.Subject = "Deployment";
             package.Body = "Environment:br549|Jimmy, toloose";
 
@@ -439,18 +592,99 @@ namespace DataService.Tests
 
             //__Adding this package should create a new Project and return the ProjectID as string
             string stId = dbService.RecordUpdatePackage(package);
-            Assert.IsFalse(string.IsNullOrEmpty(stId));
-
+            List<ProjectUpdate> list = dbService.GetProjectUpdates(stId);
+            Assert.Equals(list.Count, 4);
             Guid projectID = Guid.Parse(stId);
-            Assert.IsFalse(projectID == Guid.Empty);
 
-            Guid recordedId = dbService.GetProjectIDbyName(package.ProjectName);
-            Assert.AreEqual(projectID, recordedId);
-            // This is the actual test - let's see if it actually deletes the project
             dbService.DeleteProject(projectID);
-            // When we look for updates, it should be null or empty
-            Assert.IsTrue(dbService.GetAllUpdatesForProject(projectID.ToString()) == null);
         }
+
+        /// <summary>
+        /// Unit tests for getting updates for a certain key
+        /// </summary>
+        [TestMethod()]
+        public void GetUpdatesForKeyTest()
+        {
+            var dataAccess = new AccessService();
+            // This function records a status update as a new project if one does not already exist.
+            // We want to test two things - does it record a new project, and if a new project already
+            // exists, does it store it properly
+
+            // First, let's create a StatusUpdate
+            Random random = new Random();
+            int randomNumber = random.Next(0, int.MaxValue);
+            string projectName = "Access Service Unit Test Project" + randomNumber;
+            StatusUpdate newProject = new StatusUpdate();
+            newProject.PhaseID = 0;
+            newProject.ProjectName = projectName;
+            newProject.VerticalID = 3;
+            List<StatusUpdate> newProjectsList = new List<StatusUpdate>();
+            newProjectsList.Add(newProject);
+
+            dataAccess.RecordStatusUpdate(newProjectsList);
+
+            // Now, let's make sure that the project got added
+            Guid projectGuid = dataAccess.GetProjectIDbyName(projectName);
+
+            // Test the updating part of the project. The function only updates one project at a time
+            Assert.IsTrue(projectGuid != Guid.Empty);
+            StatusUpdate updateProject = newProject;
+            updateProject.PhaseID = 1;
+            updateProject.UpdateKey = "Environment";
+            updateProject.UpdateValue = "QA1";
+            StatusUpdate updateProject2 = newProject;
+            updateProject2.PhaseID = 2;
+            updateProject.UpdateKey = "Random Key";
+            updateProject.UpdateValue = "BT1";
+            StatusUpdate updateProject3 = newProject;
+            updateProject2.PhaseID = 3;
+            updateProject.UpdateKey = "Environment";
+            updateProject.UpdateValue = "BT3";
+            List<StatusUpdate> updateProjectsList = new List<StatusUpdate>();
+            updateProjectsList.Add(updateProject);
+            updateProjectsList.Add(updateProject2);
+            updateProjectsList.Add(updateProject3);
+            dataAccess.RecordStatusUpdate(updateProjectsList);
+
+            // Test that the updates got in
+            List<StatusUpdate> retrievedProjectUpdates = dataAccess.GetUpdatesForKey("Environment", projectGuid);
+
+            Assert.AreEqual(retrievedProjectUpdates.Count, 2);
+            dataAccess.DeleteProject(projectGuid);
+
+        }
+
+        /// <summary>
+        /// Test for retrieving all verticals (hardcoded)
+        /// </summary>
+        [TestMethod()]
+        public void GetAllVerticalsTest()
+        {
+            var dataAccess = new AccessService();
+            List<KeyValuePair<int, string>> verticalsList = dataAccess.GetAllVerticals();
+            // We can hardcode this because the verticals should never change. If it does,
+            // it shouldn't be very frequent and is reasonable to change this relatively unimportant unit test.
+            Assert.IsTrue(verticalsList[0].Key == 0);
+            Assert.IsTrue(verticalsList[0].Value == "Warehouse_Solutions");
+            Assert.IsTrue(verticalsList[1].Key == 1);
+            Assert.IsTrue(verticalsList[1].Value == "Merchandising_Solutions");
+            Assert.IsTrue(verticalsList[2].Key == 2);
+            Assert.IsTrue(verticalsList[2].Value == "Membership_Solutions");
+            Assert.IsTrue(verticalsList[3].Key == 3);
+            Assert.IsTrue(verticalsList[3].Value == "Distribution_Solutions");
+            Assert.IsTrue(verticalsList[4].Key == 4);
+            Assert.IsTrue(verticalsList[4].Value == "International_Solutions");
+            Assert.IsTrue(verticalsList[5].Key == 5);
+            Assert.IsTrue(verticalsList[5].Value == "Ancillary_Solutions");
+            Assert.IsTrue(verticalsList[6].Key == 6);
+            Assert.IsTrue(verticalsList[6].Value == "eBusiness_Solutions");
+            Assert.IsTrue(verticalsList[7].Key == 7);
+            Assert.IsTrue(verticalsList[7].Value == "Corporate_Solutions");
+            Assert.IsTrue(verticalsList[8].Key == -1);
+            Assert.IsTrue(verticalsList[8].Value == "Not_Assigned");
+
+        }
+
         /// <summary>
         /// Tests public accessable GetAllProjectsForVertical function. Checks to make sure that all valid vertical ID's returns
         /// some form of valid data (brute force), and non valid verticals returns no data via boundary and random test.
@@ -526,128 +760,8 @@ namespace DataService.Tests
         }
 
         /// <summary>
-        /// Helper function for GetAllProjectsForVerticalTest - whatever number that gets passed in should
-        /// not be between 0-8
+        /// Gets all updates from Emails - unit test
         /// </summary>
-        /// <param name="illVertNum"> Fake vertical ID which the access layer should return null</param>
-        private void checkForGetAllProjectsForVerticalFailure(int illVertNum)
-        {
-            try
-            {
-                var dataAccess = new AccessService();
-                List<Project> illegalVertical = dataAccess.GetAllProjectsForVertical(illVertNum);
-                if ((illegalVertical != null && illegalVertical.Count > 0) && (illVertNum > 7 || illVertNum < 0))
-                {
-                    Assert.Fail("The vertical ID " + illVertNum + "exists and it should not!");
-                }
-            }
-            catch (Exception e)
-            {
-                Assert.Fail("checkForGetAllProjectsForVerticalFailure in GetAppProjectsForVerticalAsync failed with this exception: " + e.Message);
-            }
-
-        }
-
-        [TestMethod()]
-        public void GetProjectNameForIDTest()
-        {
-            var dataAccess = new AccessService();
-            // Grab a list of all the projects in the database
-            List<Project> allProjects = dataAccess.GetAllProjectNames();
-
-            // In case the database has just been wiped out...
-            if (allProjects.Count != 0)
-            {
-                // Pick a random project and get the ID and the (correct) project name
-                Random random = new Random();
-                int randomNumber = random.Next(0, allProjects.Count);
-                Guid randomProjectID = allProjects[randomNumber].ProjectID;
-                string randomProjectName = allProjects[randomNumber].ProjectName;
-
-                // Using the ID, use the function that we are testing to retrieve the projectname
-                string checkThisName = dataAccess.GetProjectNameForID(randomProjectID);
-
-                // Check if it is correct. boom.
-                Assert.AreEqual(checkThisName, randomProjectName);
-            }
-            else
-            {
-                Assert.Inconclusive("Database might be empty, try rerunning with data");
-            }
-        }
-
-        /// <summary>
-        /// Do the reverse of the previous test - grab the project ID using 
-        /// the project name.
-        /// </summary>
-        [TestMethod()]
-        public void GetProjectIDbyNameTest()
-        {
-            var dataAccess = new AccessService();
-            // Grab a list of all the projects in the database
-            List<Project> allProjects = dataAccess.GetAllProjectNames();
-            if (allProjects.Count != 0)
-            {
-                // Pick a random project and get the ID and the (correct) project name
-                Random random = new Random();
-                int randomNumber = random.Next(0, allProjects.Count);
-                Guid randomProjectID = allProjects[randomNumber].ProjectID;
-                string randomProjectName = allProjects[randomNumber].ProjectName;
-
-                // Using the ID, use the function that we are testing to retrieve the projectname
-                Guid checkThisID = dataAccess.GetProjectIDbyName(randomProjectName);
-
-                // Check if it is correct. boom.
-                Assert.AreEqual(checkThisID, randomProjectID);
-            }
-            else
-            {
-                Assert.Inconclusive("Database might be empty, try rerunning with data");
-            }
-        }
-
-        [TestMethod()]
-        public void GetProjectIDsTest()
-        {
-            var dataAccess = new AccessService();
-            List<Project> allProjectsList = dataAccess.GetAllProjectNames();
-
-            // Got to make sure that the data is the same
-            using (SqlConnection sqlConnection = new SqlConnection())
-            {
-                sqlConnection.ConnectionString = ConnectionString;
-
-                SqlCommand sqlCommand = new SqlCommand("select * from Project", sqlConnection);
-                sqlCommand.CommandTimeout = 30;
-
-
-                sqlConnection.Open();
-                SqlDataReader sqlReader = sqlCommand.ExecuteReader();
-                int sqlCount = 0;
-
-                while (sqlReader.Read())
-                {
-                    // could make this more efficient if i knew hot to cast a sql object into a type
-                    bool isProjectThere = false;
-                    Project currProject = new Project();
-                    currProject.ProjectID = new Guid(sqlReader["ProjectID"].ToString());
-                    currProject.ProjectName = sqlReader["ProjectName"].ToString();
-                    foreach (Project testProject in allProjectsList)
-                    {
-                        if (testProject.ProjectID.Equals(currProject.ProjectID))
-                        {
-                            isProjectThere = true;
-                        }
-                    }
-
-                    Assert.IsTrue(isProjectThere, "Project " + currProject.ProjectName + " does not exist in the list of projects");
-                    sqlCount++;
-                }
-                sqlConnection.Close();
-                Assert.AreEqual(sqlCount, allProjectsList.Count, "The number of projects are not equal. The database has " + sqlCount + " and the Access Service layer is returning " + allProjectsList.Count + " for this list of projects");
-            }
-        }
-
         [TestMethod()]
         public void GetAllUpdatesFromEmailTest()
         {
@@ -703,134 +817,133 @@ namespace DataService.Tests
             Assert.AreEqual(dataAccess.GetAllUpdatesFromEmail(projectUpdateID).Count, 1);
             dataAccess.DeleteProject(projectGuid);
         }
-
+        /// <summary>
+        /// Unit test for changing project update phases
+        /// </summary>
         [TestMethod()]
-        public void GetAllVerticalsTest()
+        public void ChangeProjectUpdatePhaseTest()
         {
-            var dataAccess = new AccessService();
-            List<KeyValuePair<int, string>> verticalsList = dataAccess.GetAllVerticals();
-            // We can hardcode this because the verticals should never change. If it does,
-            // it shouldn't be very frequent and is reasonable to change this relatively unimportant unit test.
-            Assert.IsTrue(verticalsList[0].Key == 0);
-            Assert.IsTrue(verticalsList[0].Value == "Warehouse_Solutions");
-            Assert.IsTrue(verticalsList[1].Key == 1);
-            Assert.IsTrue(verticalsList[1].Value == "Merchandising_Solutions");
-            Assert.IsTrue(verticalsList[2].Key == 2);
-            Assert.IsTrue(verticalsList[2].Value == "Membership_Solutions");
-            Assert.IsTrue(verticalsList[3].Key == 3);
-            Assert.IsTrue(verticalsList[3].Value == "Distribution_Solutions");
-            Assert.IsTrue(verticalsList[4].Key == 4);
-            Assert.IsTrue(verticalsList[4].Value == "International_Solutions");
-            Assert.IsTrue(verticalsList[5].Key == 5);
-            Assert.IsTrue(verticalsList[5].Value == "Ancillary_Solutions");
-            Assert.IsTrue(verticalsList[6].Key == 6);
-            Assert.IsTrue(verticalsList[6].Value == "eBusiness_Solutions");
-            Assert.IsTrue(verticalsList[7].Key == 7);
-            Assert.IsTrue(verticalsList[7].Value == "Corporate_Solutions");
-            Assert.IsTrue(verticalsList[8].Key == -1);
-            Assert.IsTrue(verticalsList[8].Value == "Not_Assigned");
+            AccessService dbService = new AccessService();
+            //var projectUpdates = dbService.GetProjectUpdates("6a8a7e56-e9ac-4385-a8be-5be702c1f2e6");
+            UpdatePackage package = new UpdatePackage();
+            package.ProjectName = "Test Getting Project Updates";
+            package.Subject = "Deployment";
+            package.Body = "Environment:br549|Jimmy, toloose";
+
+            package.Updates.Add("verticalID", "3");
+            package.Updates.Add("Environment", "br549");
+            package.Updates.Add("Author", "Samantha");
+            package.Updates.Add("Manager", "Bocephus");
+
+            //__Adding this package should create a new Project and return the ProjectID as string
+            string stId = dbService.RecordUpdatePackage(package);
+            Guid projectID = Guid.Parse(stId);
+
+            // Gotta convert this to a Project Update as opposed to a plain Update Project
+            List<ProjectUpdate> pjUpdates = dbService.GetProjectUpdates(stId);
+            Assert.IsTrue(pjUpdates[0].PhaseID == -1);
+            pjUpdates[0].PhaseID = 4;
+            pjUpdates[0].Phase = "Build_and_Test"; // Don't think this needs to be done
+            dbService.ChangeProjectUpdatePhase(pjUpdates[0]);
+            List<ProjectUpdate> pjUpdateChanges = dbService.GetProjectUpdates(stId);
+            Assert.IsTrue(pjUpdateChanges[0].PhaseID == 4);
+            dbService.DeleteProject(projectID);
+        }
+        /// <summary>
+        /// Test for overloaded function Change Project Update
+        /// </summary>
+        [TestMethod()]
+        public void ChangeProjectUpdatePhaseTest1()
+        {
+            AccessService dbService = new AccessService();
+            //var projectUpdates = dbService.GetProjectUpdates("6a8a7e56-e9ac-4385-a8be-5be702c1f2e6");
+            UpdatePackage package = new UpdatePackage();
+            package.ProjectName = "Test Getting Project Updates";
+            package.Subject = "Deployment";
+            package.Body = "Environment:br549|Jimmy, toloose";
+
+            package.Updates.Add("verticalID", "3");
+            package.Updates.Add("Environment", "br549");
+            package.Updates.Add("Author", "Samantha");
+            package.Updates.Add("Manager", "Bocephus");
+
+            //__Adding this package should create a new Project and return the ProjectID as string
+            string stId = dbService.RecordUpdatePackage(package);
+            Guid projectID = Guid.Parse(stId);
+
+            // Gotta convert this to a Project Update as opposed to a plain Update Project
+            List<ProjectUpdate> pjUpdates = dbService.GetProjectUpdates(stId);
+            Assert.IsTrue(pjUpdates[0].PhaseID == -1);
+            pjUpdates[0].PhaseID = 4;
+            pjUpdates[0].Phase = "Build_and_Test"; // Don't think this needs to be done
+            dbService.ChangeProjectUpdatePhase(pjUpdates[0]);
+            List<ProjectUpdate> pjUpdateChanges = dbService.GetProjectUpdates(stId);
+            Assert.IsTrue(pjUpdateChanges[0].PhaseID == 4);
+            dbService.DeleteProject(projectID);
+        }
+
+        /// <summary>
+        /// Unit tests for updating project verticals. Not used
+        /// </summary>
+        [TestMethod()]
+        public void UpdateProjectVerticalTest()
+        {
+            AccessService dbService = new AccessService();
+            //var projectUpdates = dbService.GetProjectUpdates("6a8a7e56-e9ac-4385-a8be-5be702c1f2e6");
+            UpdatePackage package = new UpdatePackage();
+            package.ProjectName = "Test Getting Project Updates";
+            package.Subject = "Deployment";
+            package.Body = "Environment:br549|Jimmy, toloose";
+
+            package.Updates.Add("verticalID", "3");
+            package.Updates.Add("Environment", "br549");
+            package.Updates.Add("Author", "Samantha");
+            package.Updates.Add("Manager", "Bocephus");
+
+            //__Adding this package should create a new Project and return the ProjectID as string
+            string stId = dbService.RecordUpdatePackage(package);
+            Guid projectID = Guid.Parse(stId);
+            // In theory there should be an easy way to check a project vertical, but there isn't
+            
+
+            // We gotta prove that this project doesn't have a vertical id
+            List<ProjectUpdate> pjUpdates = dbService.GetProjectUpdates(stId);
+            Assert.IsTrue(pjUpdates[0].Project.VerticalID == -1);
+
+            //now the actual test
+            dbService.UpdateProjectVertical(5, projectID);
+            Assert.IsTrue(pjUpdates[0].Project.VerticalID == 5);
+
+            dbService.DeleteProject(projectID);
+        }
+        /// <summary>
+        /// Helper function for GetAllProjectsForVerticalTest - whatever number that gets passed in should
+        /// not be between 0-8
+        /// </summary>
+        /// <param name="illVertNum"> Fake vertical ID which the access layer should return null</param>
+        private void checkForGetAllProjectsForVerticalFailure(int illVertNum)
+        {
+            try
+            {
+                var dataAccess = new AccessService();
+                List<Project> illegalVertical = dataAccess.GetAllProjectsForVertical(illVertNum);
+                if ((illegalVertical != null && illegalVertical.Count > 0) && (illVertNum > 7 || illVertNum < 0))
+                {
+                    Assert.Fail("The vertical ID " + illVertNum + "exists and it should not!");
+                }
+            }
+            catch (Exception e)
+            {
+                Assert.Fail("checkForGetAllProjectsForVerticalFailure in GetAppProjectsForVerticalAsync failed with this exception: " + e.Message);
+            }
 
         }
 
+        /// <summary>
+        /// Unit test for getting project ID's
+        /// </summary>
         [TestMethod()]
-        public void GetUpdatesForKeyTest()
-        {
-            var dataAccess = new AccessService();
-            // This function records a status update as a new project if one does not already exist.
-            // We want to test two things - does it record a new project, and if a new project already
-            // exists, does it store it properly
-
-            // First, let's create a StatusUpdate
-            Random random = new Random();
-            int randomNumber = random.Next(0, int.MaxValue);
-            string projectName = "Access Service Unit Test Project" + randomNumber;
-            StatusUpdate newProject = new StatusUpdate();
-            newProject.PhaseID = 0;
-            newProject.ProjectName = projectName;
-            newProject.VerticalID = 3;
-            List<StatusUpdate> newProjectsList = new List<StatusUpdate>();
-            newProjectsList.Add(newProject);
-
-            dataAccess.RecordStatusUpdate(newProjectsList);
-
-            // Now, let's make sure that the project got added
-            Guid projectGuid = dataAccess.GetProjectIDbyName(projectName);
-
-            // Test the updating part of the project. The function only updates one project at a time
-            Assert.IsTrue(projectGuid != Guid.Empty);
-            StatusUpdate updateProject = newProject;
-            updateProject.PhaseID = 1;
-            updateProject.UpdateKey = "Environment";
-            updateProject.UpdateValue = "QA1";
-            StatusUpdate updateProject2 = newProject;
-            updateProject2.PhaseID = 2;
-            updateProject.UpdateKey = "Random Key";
-            updateProject.UpdateValue = "BT1";
-            StatusUpdate updateProject3 = newProject;
-            updateProject2.PhaseID = 3;
-            updateProject.UpdateKey = "Environment";
-            updateProject.UpdateValue = "BT3";
-            List<StatusUpdate> updateProjectsList = new List<StatusUpdate>();
-            updateProjectsList.Add(updateProject);
-            updateProjectsList.Add(updateProject2);
-            updateProjectsList.Add(updateProject3);
-            dataAccess.RecordStatusUpdate(updateProjectsList);
-
-            // Test that the updates got in
-            List<StatusUpdate> retrievedProjectUpdates = dataAccess.GetUpdatesForKey("Environment", projectGuid);
-
-            Assert.AreEqual(retrievedProjectUpdates.Count, 2);
-            dataAccess.DeleteProject(projectGuid);
-
-        }
-
-        [TestMethod()]
-        public void GetAllUpdatesForProjectTest()
-        {
-            var dataAccess = new AccessService();
-            // This function records a status update as a new project if one does not already exist.
-            // We want to test two things - does it record a new project, and if a new project already
-            // exists, does it store it properly
-
-            // First, let's create a StatusUpdate
-            Random random = new Random();
-            int randomNumber = random.Next(0, int.MaxValue);
-            string projectName = "Access Service Unit Test Project" + randomNumber;
-            StatusUpdate newProject = new StatusUpdate();
-            newProject.PhaseID = 0;
-            newProject.ProjectName = projectName;
-            newProject.VerticalID = 3;
-            newProject.UpdateKey = "Unit Test Key";
-            newProject.UpdateValue = "Unit Test Value";
-            List<StatusUpdate> newProjectsList = new List<StatusUpdate>();
-            newProjectsList.Add(newProject);
-
-            dataAccess.RecordStatusUpdate(newProjectsList);
-
-            // Now, let's make sure that the project got added
-            Guid projectGuid = dataAccess.GetProjectIDbyName(projectName);
-
-            // Test the updating part of the project. The function only updates one project at a time
-            StatusUpdate updateProject = newProject;
-            updateProject.PhaseID = 1;
-            StatusUpdate updateProject2 = newProject;
-            updateProject2.PhaseID = 2;
-            StatusUpdate updateProject3 = newProject;
-            updateProject2.PhaseID = 3;
-            List<StatusUpdate> updateProjectsList = new List<StatusUpdate>();
-            updateProjectsList.Add(updateProject);
-            updateProjectsList.Add(updateProject2);
-            updateProjectsList.Add(updateProject3);
-            dataAccess.RecordStatusUpdate(updateProjectsList);
-
-            // Test that the updates got in
-            List<StatusUpdate> retrievedProjectUpdates = dataAccess.GetAllUpdatesForProject(projectGuid.ToString());
-            Assert.AreEqual(retrievedProjectUpdates.Count, 4);
-            dataAccess.DeleteProject(projectGuid);
-        }
-
-        [TestMethod()]
-        public void GetAllProjectNamesTest()
+        public void GetProjectIDsTest()
         {
             var dataAccess = new AccessService();
             List<Project> allProjectsList = dataAccess.GetAllProjectNames();
@@ -871,48 +984,98 @@ namespace DataService.Tests
             }
         }
 
+        /// <summary>
+        /// Do the reverse of the previous test - grab the project ID using 
+        /// the project name.
+        /// </summary>
         [TestMethod()]
-        public void RecordStatusUpdateTest()
+        public void GetProjectIDbyNameTest()
         {
             var dataAccess = new AccessService();
-            // This function records a status update as a new project if one does not already exist.
-            // We want to test two things - does it record a new project, and if a new project already
-            // exists, does it store it properly
+            // Grab a list of all the projects in the database
+            List<Project> allProjects = dataAccess.GetAllProjectNames();
+            if (allProjects.Count != 0)
+            {
+                // Pick a random project and get the ID and the (correct) project name
+                Random random = new Random();
+                int randomNumber = random.Next(0, allProjects.Count);
+                Guid randomProjectID = allProjects[randomNumber].ProjectID;
+                string randomProjectName = allProjects[randomNumber].ProjectName;
 
-            // First, let's create a StatusUpdate
-            Random random = new Random();
-            int randomNumber = random.Next(0, int.MaxValue);
-            string projectName = "Access Service Unit Test Project" + randomNumber;
-            StatusUpdate newProject = new StatusUpdate();
-            newProject.PhaseID = 0;
-            newProject.ProjectName = projectName;
-            newProject.VerticalID = 3;
-            List<StatusUpdate> newProjectsList = new List<StatusUpdate>();
-            newProjectsList.Add(newProject);
+                // Using the ID, use the function that we are testing to retrieve the projectname
+                Guid checkThisID = dataAccess.GetProjectIDbyName(randomProjectName);
 
-            dataAccess.RecordStatusUpdate(newProjectsList);
+                // Check if it is correct. boom.
+                Assert.AreEqual(checkThisID, randomProjectID);
+            }
+            else
+            {
+                Assert.Inconclusive("Database might be empty, try rerunning with data");
+            }
+        }
 
-            // Now, let's make sure that the project got added
-            Guid projectGuid = dataAccess.GetProjectIDbyName(projectName);
+        /// <summary>
+        /// Unit tests for getting Project Name for ID's
+        /// </summary>
+        [TestMethod()]
+        public void GetProjectNameForIDTest()
+        {
+            var dataAccess = new AccessService();
+            // Grab a list of all the projects in the database
+            List<Project> allProjects = dataAccess.GetAllProjectNames();
 
-            // Test the updating part of the project. The function only updates one project at a time
-            Assert.IsTrue(projectGuid != Guid.Empty);
-            StatusUpdate updateProject = newProject;
-            updateProject.PhaseID = 1;
-            StatusUpdate updateProject2 = newProject;
-            updateProject2.PhaseID = 2;
-            StatusUpdate updateProject3 = newProject;
-            updateProject2.PhaseID = 3;
-            List<StatusUpdate> updateProjectsList = new List<StatusUpdate>();
-            updateProjectsList.Add(updateProject);
-            updateProjectsList.Add(updateProject2);
-            updateProjectsList.Add(updateProject3);
-            dataAccess.RecordStatusUpdate(updateProjectsList);
+            // In case the database has just been wiped out...
+            if (allProjects.Count != 0)
+            {
+                // Pick a random project and get the ID and the (correct) project name
+                Random random = new Random();
+                int randomNumber = random.Next(0, allProjects.Count);
+                Guid randomProjectID = allProjects[randomNumber].ProjectID;
+                string randomProjectName = allProjects[randomNumber].ProjectName;
 
-            // Test that the updates got in
-            List<StatusUpdate> retrievedProjectUpdates = dataAccess.GetAllUpdatesForProject(projectGuid.ToString());
-            Assert.AreEqual(retrievedProjectUpdates.Count, 4);
+                // Using the ID, use the function that we are testing to retrieve the projectname
+                string checkThisName = dataAccess.GetProjectNameForID(randomProjectID);
 
+                // Check if it is correct. boom.
+                Assert.AreEqual(checkThisName, randomProjectName);
+            }
+            else
+            {
+                Assert.Inconclusive("Database might be empty, try rerunning with data");
+            }
+        }
+
+        /// <summary>
+        /// Tests the deletion of a project
+        /// </summary>
+        [TestMethod()]
+        public void DeleteProjectTest()
+        {
+            AccessService dbService = new AccessService();
+            //var projectUpdates = dbService.GetProjectUpdates("6a8a7e56-e9ac-4385-a8be-5be702c1f2e6");
+            UpdatePackage package = new UpdatePackage();
+            package.ProjectName = "Test Project";
+            package.Subject = "Deployment";
+            package.Body = "Environment:br549|Jimmy, toloose";
+
+            package.Updates.Add("verticalID", "3");
+            package.Updates.Add("Environment", "br549");
+            package.Updates.Add("Author", "Samantha");
+            package.Updates.Add("Manager", "Bocephus");
+
+            //__Adding this package should create a new Project and return the ProjectID as string
+            string stId = dbService.RecordUpdatePackage(package);
+            Assert.IsFalse(string.IsNullOrEmpty(stId));
+
+            Guid projectID = Guid.Parse(stId);
+            Assert.IsFalse(projectID == Guid.Empty);
+
+            Guid recordedId = dbService.GetProjectIDbyName(package.ProjectName);
+            Assert.AreEqual(projectID, recordedId);
+            // This is the actual test - let's see if it actually deletes the project
+            dbService.DeleteProject(projectID);
+            // When we look for updates, it should be null or empty
+            Assert.IsTrue(dbService.GetAllUpdatesForProject(projectID.ToString()) == null);
         }
 
     }
