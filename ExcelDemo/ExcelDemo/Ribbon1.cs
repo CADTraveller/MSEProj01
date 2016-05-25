@@ -98,7 +98,8 @@ namespace ExcelDemo
                         string url = "http://costcodevops.azurewebsites.net/ProjectUpdate/Update";
 //#if DEBUG
 //                        url = "https://localhost:44300/ProjectUpdate/Update";
-//#endif
+//#endif 
+                        
                         result = client.UploadString(url,  json);
 
                         Console.WriteLine(result);

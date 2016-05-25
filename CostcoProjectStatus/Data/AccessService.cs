@@ -611,6 +611,12 @@ namespace DataService
             return updates;
         }
 
+        /// <summary>
+        /// This overload was implimented to match UI input
+        /// </summary>
+        /// <param name="projectUpdate">The ProjectUpdate to modify, it already has the new PhaseID set
+        /// all StatusUpdates which originated with this ProjectUpdate will get the new PhaseID</param>
+        /// <returns>true for success, false for failure</returns>
         public bool ChangeProjectUpdatePhase(ProjectUpdate projectUpdate)
         {
             List<StatusUpdate> oldStatusUpdates = GetAllUpdatesFromEmail(projectUpdate.ProjectUpdateID);
@@ -618,13 +624,21 @@ namespace DataService
             return ChangeProjectUpdatePhase(oldStatusUpdates.First(), projectUpdate.PhaseID);
         }
 
+        /// <summary>
+        /// Originally this would update each related StatusUpdate, and the entries in ProjectPhase, but this was commented
+        /// out since the ProjectPhase table is not currently in use. Instead, each StatusUpdate which came from the associated 
+        /// ProjectUpdate is modified with the new PhaseID
+        /// </summary>
+        /// <param name="update">An representative StatusUpdate, it is only used to get ProjectUpdateID</param>
+        /// <param name="newPhase">An integer representing the new PhaseID</param>
+        /// <returns>True or False to indicate success or failure</returns>
         public bool ChangeProjectUpdatePhase(StatusUpdate update, int newPhase)
         {
             if (update == null || newPhase < 0 || newPhase > Enum.GetNames(typeof(Phases)).Length) return false;
 
-            int oldPhase = update.PhaseID.Value;
-            Guid projectID = update.ProjectID;
-            string updateKey = update.UpdateKey;
+            //int oldPhase = update.PhaseID.Value;
+            //Guid projectID = update.ProjectID;
+            //string updateKey = update.UpdateKey;
             Guid projectUpdateID = update.ProjectUpdateID;
             var updates = context.StatusUpdates.Where(u => u.ProjectUpdateID == projectUpdateID);
             foreach (StatusUpdate statusUpdate in updates)
