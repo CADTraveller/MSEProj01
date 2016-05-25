@@ -85,6 +85,7 @@
     <None Include="Properties\PublishProfiles\EmailClient20160210065135 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\EmailClient20160306125331 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\EmailClient20160416024423 - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\EmailCustomAdapter.pubxml" />
     <None Include="Properties\webjob-publish-settings.json" />
   </ItemGroup>
   <ItemGroup>

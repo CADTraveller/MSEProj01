@@ -30,6 +30,18 @@ namespace EmailClient
             _password = ConfigurationManager.AppSettings["Password"];
         }
 
+        /// <summary>
+        /// Function Name : ParseNewEmail
+        /// Input Parameters : none  
+        /// Input Parameter Type : none
+        /// Description:This method is going to record the event when an email is received to the Test email. It uses ImapClient which is available in AE.Net.Mail Nuget package.
+        /// ImapClient has inbuilt properties to extract subject, body, sender information details from a newly received email
+        /// </summary>
+        /// <returns>
+        /// Return Parameter : emailJson 
+        /// Return Parameter Type : string
+        /// </returns>
+
         public string ParseNewEmail()
         {
             // Connect to the IMAP server. The 'true' parameter specifies to use SSL, which is important (for Gmail at least)
@@ -38,17 +50,7 @@ namespace EmailClient
           //  ImapClient imapClient = new ImapClient(ConfigurationManager.AppSettings["ImapServer"], "jayasreetestemail@gmail.com", "7Ywy7N[S", AuthMethods.Login, 993, true);
             // Select a mailbox. Case-insensitive
             imapClient.SelectMailbox("INBOX");
-            string emailJson="";
-
-            // Console.WriteLine(imapClient.GetMessageCount());
-
-            //using (var client = new WebClient())
-            //{
-            //    client.Headers[HttpRequestHeader.ContentType] = "application/Json";
-            //    string result = client.UploadString("https://localhost:44300/ProjectUpdate/Update", "Post", json);
-            //    Console.WriteLine(result);
-            //}
-
+            string emailJson="";          
             imapClient.NewMessage += (sender, e) =>
             {
                 var msg = imapClient.GetMessage(e.MessageCount - 1);
@@ -58,24 +60,7 @@ namespace EmailClient
                 up.Body = msg.Body;
                 up.ProjectName = ApplicationName;              
                
-                emailJson = JsonConvert.SerializeObject(up);
-              //  Console.WriteLine(emailJson);
-
-              //appPacket ap = new appPacket();
-              //appObject ao = new appObject();
-              //List<string> emailbodylist = new List<string>();
-              ////emailbodylist=ParseBody(msg.Body);
-              ////ao.ProjectID = Guid.NewGuid();
-              //ao.ProjectName = emailbodylist[0];
-              //ao.PhaseID = "-1";
-              //ao.VerticalID = "-1";
-              //ao.RecordedDate = DateTime.Now;
-              //ao.UpdateKey = "Execution Summary";
-              //ao.UpdateValue = emailbodylist[1];
-              //ap.AppId = "emailCostco";           
-              //ap.StatusUpdateList.Add(ao);
-              //emailJson = JsonConvert.SerializeObject(ap);
-              //Console.WriteLine(emailJson);
+              emailJson = JsonConvert.SerializeObject(up);                          
               string result = "";
               using (var client = new WebClient())
               {
@@ -90,23 +75,18 @@ namespace EmailClient
 
            return emailJson;           
         }
-      /*  public Dictionary<string,string> ParseSubject(string emailSubject)
-        {
-            Dictionary<string, string> dict = new Dictionary<string, string>();
-            string[] sub = emailSubject.Split(' ');
-            string op = sub[2] + sub[3] + sub[4];
-            dict.Add("Phase",sub[0]); // Phase
-            dict.Add("Result", sub[1]); // Result
-            dict.Add("Operation",op); // Operation 
-            Console.WriteLine("");
-            Console.WriteLine("Subject");
-            foreach (string key in dict.Keys)
-            {
-                Console.WriteLine(key+":"+dict[key]);
-            }
-            return dict;
-        }*/
 
+        /// <summary>
+        /// Function Name : ParseBody
+        /// Input Parameters : Body  
+        /// Input Parameter Type : string
+        /// Description: This function is going to parse the body of the email and returns key value pairs.
+        /// </summary>
+        /// <param name="Body"></param>
+        /// <returns>
+        /// Returns Parameter : dict
+        /// Returns Parameter type: Dictionary
+        /// </returns>
 
         public Dictionary<string,string> ParseBody(string Body)
         {
@@ -144,7 +124,17 @@ namespace EmailClient
      
         }
 
-        
+        /// <summary>
+        /// Function Name : getNextLine
+        /// Input Parameters : lineNumber  
+        /// Input Parameter Type : Integer
+        /// Description : This function is going read the email line by line and return the next line of give line number
+        /// </summary>
+        /// <param name="lineNumber"></param>
+        /// <returns>
+        /// Return Parameter: nextLine
+        /// Return Parameter Type : String
+        /// </returns>
         private string getNextLine(int lineNumber)
         {
             // using will make sure the file is closed
