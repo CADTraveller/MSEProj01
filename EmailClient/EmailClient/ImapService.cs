@@ -26,6 +26,18 @@ namespace EmailClient
             _password = ConfigurationManager.AppSettings["Password"];
         }
 
+        /// <summary>
+        /// Function Name : ParseNewEmail
+        /// Input Parameters : none  
+        /// Input Parameter Type : none
+        /// Description:This method is going to record the event when an email is received to the Test email. It uses ImapClient which is available in AE.Net.Mail Nuget package.
+        /// ImapClient has inbuilt properties to extract subject, body, sender information details from a newly received email
+        /// </summary>
+        /// <returns>
+        /// Return Parameter : emailJson 
+        /// Return Parameter Type : string
+        /// </returns>
+
         public string ParseNewEmail()
         {
             // Connect to the IMAP server. The 'true' parameter specifies to use SSL, which is important (for Gmail at least)
@@ -51,17 +63,12 @@ namespace EmailClient
                 up.Updates.Add("PhaseId", li[1]);
                 up.Updates.Add("VerticalId", li[2]);
                 emailJson = JsonConvert.SerializeObject(up);
-                //using (var client = new WebClient())
-                //{
-                //    client.Headers[HttpRequestHeader.ContentType] = "application/json";
-                //    result = client.UploadString("http://costcodevops.azurewebsites.net/ProjectUpdate/Update", "Post", emailJson);
-                //    Console.WriteLine(result);
-                //}
-
+               
                 using (var client = new WebClient())
                 {
                     client.Headers[HttpRequestHeader.ContentType] = "application/json";
-                    result = client.UploadString("https://localhost:44300/ProjectUpdate/Update", "Post", emailJson);
+                   // result = client.UploadString("https://localhost:44300/ProjectUpdate/Update", "Post", emailJson);
+                    result = client.UploadString("http://costcodevops.azurewebsites.net/ProjectUpdate/Update", "Post", emailJson);
                     Console.WriteLine(result);
                 }
 
@@ -69,7 +76,17 @@ namespace EmailClient
            return emailJson;           
         }
 
-
+        /// <summary>
+        /// Function Name : ParseSubject
+        /// Input Parameters : Subject
+        /// Input Parameter Type : string
+        /// Description: This function is going to parse the subject of the email and returns a list of strings.
+        /// </summary>
+        /// <param name="Body"></param>
+        /// <returns>
+        /// Returns Parameter : li
+        /// Returns Parameter type: List<string>
+        /// </returns>
 
         public List<string> ParseSubject(string Subject)
         {
@@ -82,6 +99,18 @@ namespace EmailClient
             return li;
 
         }
+
+        /// <summary>
+        /// Function Name : ParseBody
+        /// Input Parameters : Body  
+        /// Input Parameter Type : string
+        /// Description: This function is going to parse the body of the email and returns key value pairs.
+        /// </summary>
+        /// <param name="Body"></param>
+        /// <returns>
+        /// Returns Parameter : dict
+        /// Returns Parameter type: Dictionary
+        /// </returns>
 
         public Dictionary<string, string> ParseBody(string Body)
         {
