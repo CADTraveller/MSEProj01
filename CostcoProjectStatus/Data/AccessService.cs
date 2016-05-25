@@ -140,7 +140,12 @@ namespace DataService
 
 
         #region StatusUpdate and Project Methods
-
+        /// <summary>
+        /// This takes an UpdatePackage, which represents an email, and records it to the database
+        /// </summary>
+        /// <param name="package">An UpdatePackage is a normalized email</param>
+        /// <returns>Guid of updated project as a string. 
+        /// Useful if this project is new or caller wants to retreive other data on that project</returns>
         public string RecordUpdatePackage(UpdatePackage package)
         {
             //__get the information from input
@@ -251,6 +256,12 @@ namespace DataService
             return projectID.ToString();
         }
 
+        /// <summary>
+        /// This internal method is used to prevent duplicate keys from causing issues in the database
+        /// The value from duplicate keys is concatenated
+        /// </summary>
+        /// <param name="updatePairs">the list of key-value pairs to remove duplicates from</param>
+        /// <returns>A Dictionary with no duplicate keys and no lost information</returns>
         private Dictionary<string, string> combineEqualKeys(Dictionary<string, string> updatePairs)
         {
             Dictionary<string, string> combinedKeys = new Dictionary<string, string>();
@@ -271,6 +282,10 @@ namespace DataService
             return combinedKeys;
         }
 
+        /// <summary>
+        /// Currently (5/24/16) not utilized. This method will scrub a Project and all related entries from the DB
+        /// </summary>
+        /// <param name="projectName">Names in the system are unique identifiers</param>
         public void DeleteProject(string projectName)
         {
             Guid projectID = context.Projects.FirstOrDefault(p => p.ProjectName == projectName).ProjectID;
@@ -278,7 +293,13 @@ namespace DataService
         }
 
 
-
+        /// <summary>
+        /// Internal method to update ProjectPhase entry when a new StatusUpdate changes the update count
+        /// ProjectPhase table is no longer utilized by current UI and this should likely be removed during refactoring
+        /// </summary>
+        /// <param name="projectId">ProjectID is part of the primary key of each ProjectPhase entry</param>
+        /// <param name="phaseId">PhaseID is part of the primary key of each ProjectPhase entry</param>
+        /// <param name="key">UpdateKey is part of the primary key of each ProjectPhase entry</param>
         private void updateProjectPhase(Guid projectId, int phaseId, string key)
         {
             ProjectPhase projectPhase = context.ProjectPhases.FirstOrDefault(pp =>
@@ -304,6 +325,11 @@ namespace DataService
             context.SaveChanges();
         }
 
+        /// <summary>
+        /// Deprecated and not currently referenced
+        /// </summary>
+        /// <param name="projectUpdate"></param>
+        /// <returns></returns>
         public bool RecordProjectUpdate(ProjectUpdate projectUpdate)
         {
 
@@ -334,6 +360,11 @@ namespace DataService
             return true;
         }
 
+        /// <summary>
+        /// Deprecated, only referenced by sample data generator, deprecated RecordProjectUpdate, and unit tests
+        /// </summary>
+        /// <param name="updates">Method is deprecated</param>
+        /// <returns>Method is deprecated</returns>
         public bool? RecordStatusUpdate(List<StatusUpdate> updates)
         {
             //__safety check, cannot record an empty list
@@ -457,6 +488,12 @@ namespace DataService
             return true;
         }
 
+        /// <summary>
+        /// Deprecatd in favor of RecordUpdatePackage
+        /// </summary>
+        /// <param name="projectID"></param>
+        /// <param name="phaseID"></param>
+        /// <returns></returns>
         private List<StatusUpdate> GetAllUpdatesForProjectPhase(string projectID, int phaseID)
         {
             Guid projectGuid = new Guid(projectID);
@@ -471,6 +508,10 @@ namespace DataService
             return updates;
         }
 
+        /// <summary>
+        /// Reads all Projects currently stored in DB
+        /// </summary>
+        /// <returns>List of currently tracked Projects</returns>
         public List<Project> GetAllProjectNames()
         {
             List<Project> projects = context.Projects.AsEnumerable().ToList();
@@ -487,6 +528,11 @@ namespace DataService
             return projects;
         }
 
+        /// <summary>
+        /// Deprecated, referenced only by Unit Tests as of 5/24/16
+        /// </summary>
+        /// <param name="projectID"></param>
+        /// <returns></returns>
         public List<StatusUpdate> GetAllUpdatesForProject(string projectID)
         {
             Guid projectGuid = new Guid(projectID);
@@ -498,6 +544,12 @@ namespace DataService
             return updates;
         }
 
+        /// <summary>
+        /// Gets all existing ProjectUpdates for the Project associated with this ID
+        /// ProjectUpdate is a normalized update message (email)
+        /// </summary>
+        /// <param name="projectID">Guid ProjectID as string</param>
+        /// <returns>Returns a list of ProjectUpdates for the specified Project</returns>
         public List<ProjectUpdate> GetProjectUpdates(string projectID)
         {
             Guid projectGuid = Guid.Parse(projectID);

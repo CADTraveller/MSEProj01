@@ -27,10 +27,10 @@ namespace StatusUpdatesModel
         public string Subject { get; set; }
         public string Body { get; set; }
     
-        [JsonIgnore]
+
         public virtual Project Project { get; set; }
 
-        [JsonIgnore]
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StatusUpdate> StatusUpdates { get; set; }
     }
