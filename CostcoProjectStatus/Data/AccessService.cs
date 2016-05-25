@@ -511,7 +511,7 @@ namespace DataService
         /// <summary>
         /// Reads all Projects currently stored in DB
         /// </summary>
-        /// <returns>List of currently tracked Projects</returns>
+        /// <returns>List of currently tracked Projects as Project objects</returns>
         public List<Project> GetAllProjectNames()
         {
             List<Project> projects = context.Projects.AsEnumerable().ToList();
@@ -531,8 +531,8 @@ namespace DataService
         /// <summary>
         /// Deprecated, referenced only by Unit Tests as of 5/24/16
         /// </summary>
-        /// <param name="projectID"></param>
-        /// <returns></returns>
+        /// <param name="projectID">ProjectID Guid as string</param>
+        /// <returns>List of StatusUpdate Objects</returns>
         public List<StatusUpdate> GetAllUpdatesForProject(string projectID)
         {
             Guid projectGuid = new Guid(projectID);
@@ -584,6 +584,14 @@ namespace DataService
             return projectUpdates;
         }
 
+        /// <summary>
+        /// Gets all UpdateValues for a particular UpdateKey, with options to filter by Project, Phase, and date
+        /// </summary>
+        /// <param name="updateKey">The UpdateKey to look up</param>
+        /// <param name="projectID">Optional, if set only StatusUpdates associated with this project are reviewed</param>
+        /// <param name="phaseID">Optional, if set will only look at StatusUpdates with this Phase</param>
+        /// <param name="getOnlyLatest">Optional, if set to True will return only a single StatusUpdate, the most recently recorded</param>
+        /// <returns>List of StatusUpdates which have the specified UpdateKey, potentially filtered by Project, Phase, and date</returns>
         public List<StatusUpdate> GetUpdatesForKey(string updateKey, Guid? projectID = null, int phaseID = -2,
             bool getOnlyLatest = false)
         {
@@ -620,6 +628,10 @@ namespace DataService
             return updates;
         }
 
+        /// <summary>
+        /// Used to retreive the names of all currently defined Verticals
+        /// </summary>
+        /// <returns>List of Key-Value pairs which map directly to the Verticals enum</returns>
         public List<KeyValuePair<int, string>> GetAllVerticals()
         {
             string[] names = Enum.GetNames(typeof(Verticals));
@@ -632,6 +644,11 @@ namespace DataService
             return verticals;
         }
 
+        /// <summary>
+        /// Used to query for all currently tracked Projects associated with a particular VerticalID (int)
+        /// </summary>
+        /// <param name="verticalID">VerticalID is the (int)index defined in the Verticals enum</param>
+        /// <returns>List of Project objects associated with the Vertical</returns>
         public List<Project> GetAllProjectsForVertical(int verticalID)
         {
             //return context.Projects.Where(p => p.VerticalID == verticalID).Select(p => p.ProjectID).ToList();
@@ -645,6 +662,11 @@ namespace DataService
             return projects;
         }
 
+        /// <summary>
+        /// Gets all StatusUpdate objects which came from a particular ProjectUpdate(email)
+        /// </summary>
+        /// <param name="projectUpdateID">Guid which is the unique identifer for the ProjectUpdate being queried</param>
+        /// <returns>List of StatusUpdate objects</returns>
         public List<StatusUpdate> GetAllUpdatesFromEmail(Guid projectUpdateID)
         {
             var updates = new List<StatusUpdate>();
@@ -706,6 +728,14 @@ namespace DataService
             return true;
         }
 
+        /// <summary>
+        /// Used to modify the Vertical a given Project is associated with.
+        /// Either projectID or projectName must be provided.
+        /// </summary>
+        /// <param name="newVerticalID">(int) Index to Verticals enum</param>
+        /// <param name="projectID">Optional. Guid which identifies the Project being modified</param>
+        /// <param name="projectName">Optional. The name of the Project to be modified</param>
+        /// <returns>True upon successful modification, else false</returns>
         public bool UpdateProjectVertical(int newVerticalID, Guid? projectID = null, string projectName = "")
         {
             //__validate arguments
@@ -727,7 +757,12 @@ namespace DataService
             return true;
         }
 
-
+        /// <summary>
+        /// Deprecated method to retrieve Projects from a particular vertical
+        /// </summary>
+        /// <param name="projectName">Deprecated</param>
+        /// <param name="verticalID">Deprecated</param>
+        /// <returns></returns>
         public List<Project> GetProjectIDs(string projectName = "", int verticalID = -1)
         {
             List<Project> projects = new List<Project>();
@@ -750,6 +785,11 @@ namespace DataService
             return projects;
         }
 
+        /// <summary>
+        /// Gets the ProjectID for a given ProjectName
+        /// </summary>
+        /// <param name="projectName">String, name of Project being queried</param>
+        /// <returns>Project ID as Guid</returns>
         public Guid GetProjectIDbyName(string projectName)
         {
             Project project = context.Projects.FirstOrDefault(p => p.ProjectName == projectName);
@@ -758,11 +798,21 @@ namespace DataService
             return (Guid)projectID;
         }
 
+        /// <summary>
+        /// Gets the Project Name associated with a particular ID
+        /// </summary>
+        /// <param name="projectID">The Guid ProjectID associated with the Project being queried</param>
+        /// <returns>Project Name as string if Project is found, else returns empty string</returns>
         public string GetProjectNameForID(Guid projectID)
         {
             return context.Projects.FirstOrDefault(p => p.ProjectID == projectID).ProjectName;
         }
 
+        /// <summary>
+        /// Takes a Proejct ID and removes all records associated with that Project
+        /// </summary>
+        /// <param name="projectID">Guid which identifies the Project to be deleted</param>
+        /// <returns>True if the project was found and deleted, false if no project or error encountered</returns>
         public bool DeleteProject(Guid projectID)//__this must be done in a specific order so as to not violate SQL integrity
         {
             try
