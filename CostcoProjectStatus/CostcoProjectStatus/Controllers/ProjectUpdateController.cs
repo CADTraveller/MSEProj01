@@ -21,8 +21,8 @@ namespace CostcoProjectStatus.Controllers
     public class ProjectUpdateController : Controller
     {
         /// <summary>
-        /// This controller is include post actions. It basically receives the information in format of Json from email adapter or excel adapter
-        /// and write all the information into the database by the help of Data Access layer which is a wrapper around the SQL data base.
+        /// This controller includes post actions. It basically receives the information in format of Json from email adapter or excel adapter
+        /// and save all the information into the database by the help of Data Access layer which is a wrapper around the SQL.
         /// 
         /// </summary>
         private AccessService DataAccess = new AccessService();
@@ -142,11 +142,11 @@ namespace CostcoProjectStatus.Controllers
         }
 
         /// <summary>
-        /// This method receiving a json object, deserialze the object and pass the inforamtion to the the RecordUpdatePackage
+        /// This method receives a json object, deserialze the object and pass the inforamtion to the the RecordUpdatePackage
         /// from Data Access layer. And then all the information will be recorded in SQL db live in Azure.
         /// </summary>
-        /// <param name="jsonPacket"></param>
-        /// <returns></returns>
+        /// <param name="jsonPacket"> An email header and body in format of json.</param>
+        /// <returns>HttpResponseMessage</returns>
         [System.Web.Mvc.HttpPost]
         //public HttpResponseMessage Update(string jsonPacket)
         public HttpResponseMessage Update(UpdatePackageModel jsonPacket)

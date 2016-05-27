@@ -10,11 +10,11 @@ namespace CostcoProjectStatus.Controllers
 {
     public class VerticalController : Controller
     {/// <summary>
-    ///  Getting all the vertical's name from the method in Data Access layer name GetAllVerticals. 
+    ///  Getting all the vertical's name from Data Access layer . 
     /// No parameter need to get pass. This method is used in app.js to get the all verticals and
     /// feed the dropdown in nav bar.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>verticals in format of json</returns>
         
         public string GetAllVertical()
         {
@@ -24,11 +24,11 @@ namespace CostcoProjectStatus.Controllers
             return result;            
         }
         /// <summary>
-        /// This method is a get function to get all the projects for each vertical from GetAllProjectsForVertical 
-        /// in Data access layer. It been used in project-list.js in projectListCtrl to be able to show the project names on a ProjectList.html.
+        ///  Get function ,to get all the projects for specific vertical from data access layer.
+        ///  It been used in project-list.js to show the project names on a ProjectList.html.
         /// </summary>
-        /// <param name="VerticalId"></param>
-        /// <returns></returns>
+        /// <param name="VerticalId">VerticalId (int)index defined in the Verticals enum</param>
+        /// <returns>List of Project objects in format of json</returns>
         public string GetVerticalProjects(int VerticalId)
         {
             AccessService DataAccess = new AccessService();

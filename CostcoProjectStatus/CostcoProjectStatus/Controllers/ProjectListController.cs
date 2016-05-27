@@ -13,7 +13,7 @@ namespace CostcoProjectStatus.Controllers
     public class ProjectListController : Controller
     {
 /// <summary>
-/// This controller is in general of read from the data base and pass the needed information to Angular therefore all the methods
+/// This controller read from the data base and pass the needed information to Angular therefore all the methods
 /// are GET. All routes definded in RouteConfig file and can be searched by the name of the methods.
 /// In general each method get the infromation from Data Access layer which is a wrapper around SQL database and 
 /// pass a json object to the UI. 
@@ -100,12 +100,12 @@ namespace CostcoProjectStatus.Controllers
         //    }
         //}
         /// <summary>
-        /// Getting use only in angular to show the projectName.
+        /// Not getting use currently.
         /// </summary>
         /// <returns></returns>
         public string Display()
         {
-            var ProjectNames = DataAccsess.GetAllProjectNames();
+           // var ProjectNames = DataAccsess.GetAllProjectNames();
         string result = "<script>window.location.replace(\"/dashboard/index.html\");</script>";
             return result;
         }
@@ -158,9 +158,9 @@ namespace CostcoProjectStatus.Controllers
         /// The route defined in routconfig file looks like :ProjectList/GetStatusData/{projectId}/{projectUpdateId}
         /// The controller for angular can be found in Project-List.js.  
         /// </summary>
-        /// <param name="projectId"></param>
-        /// <param name="ProjectUpdateId"></param>
-        /// <returns></returns>
+        /// <param name="projectId">integer defined for each project</param>
+        /// <param name="ProjectUpdateId"> integer defined for each email.</param>
+        /// <returns>List of StatusUpdate objects in format of json</returns>
         public string GetStatusData(String projectId, String ProjectUpdateId)
         {
             var passedStatusUpdateList = new List<StatusUpdatesModel.StatusUpdate>();
@@ -207,8 +207,8 @@ namespace CostcoProjectStatus.Controllers
         /// The URL defined on route config look like ProjectList/GetprojectUpdates/{projectID}. 
         /// The json format is clear from the foreach loop and the controller for angular can be found on Project-List.js.
         /// </summary>
-        /// <param name="projectID"></param>
-        /// <returns></returns>
+        /// <param name="projectID">Guid ProjectID as string</param>
+        /// <returns>Returns a string includes list of ProjectUpdates for the specified Project</returns>
         public string GetprojectUpdates(string projectID)
         {
             //var ProjectUpdateKeys = DataAccsess.GetUpdatesForKey(projectID);
