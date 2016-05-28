@@ -54,7 +54,6 @@ namespace CostcoProjectStatus.Controllers
                 _userManager = value;
             }
         }
-
         //
         // GET: /Account/Login
         [AllowAnonymous]
@@ -268,8 +267,14 @@ namespace CostcoProjectStatus.Controllers
             AddErrors(result);
             return View();
         }
+        /// <summary>
+        /// This methods checks if the user is logged in or not and creates session for an authorized users.
+        /// </summary>
+        /// <returns> returns json object</returns>
         [AllowAnonymous]
         //GET: /Account/IsLogged
+        ///
+       
         public string IsLogin()
         {
                try
@@ -317,7 +322,12 @@ namespace CostcoProjectStatus.Controllers
         */
         //
         // POST: /Account/ExternalLogin
-        
+        /// <summary>
+        /// This method is invoked when user clicks on login to login into the system via google account.
+        /// </summary>
+        /// <param name="provider"> google</param>
+        /// <param name="returnURL"> Account/ExternalLoginCallBack</param>
+        /// <returns></returns>
         [AllowAnonymous]
         public ActionResult ExternalLogin(String provider, String returnURL)
         {
@@ -396,6 +406,12 @@ namespace CostcoProjectStatus.Controllers
         //    else
         //        return false;
         //}
+        /// <summary>
+        /// This method is invoked when user is authenticated that is when the user login with there google account.
+        /// and in this method the authrization is done to see if the user is authorised user or not.
+        /// </summary>
+        /// <param name="returnUrl"></param>
+        /// <returns> returns authorized users to index.html page</returns>
          public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
              var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();

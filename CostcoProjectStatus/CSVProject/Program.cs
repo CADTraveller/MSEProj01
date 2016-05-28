@@ -11,6 +11,13 @@ namespace CSVProject
     {
         static void Main(string[] args)
         {
+            RequestedAction();
+        }
+        /// <summary>
+        /// Manage user profile like adding or deleting user from databse or updating user email or role in the database.
+        /// </summary>
+        public static void RequestedAction()
+        {
             DataService.AccessService dataService = new DataService.AccessService();
             var file = new StreamReader(File.OpenRead(@"c:\Test.csv"));
             while (!file.EndOfStream)
@@ -20,7 +27,7 @@ namespace CSVProject
                 string userEmail = valuesOfLine[0];
                 int role = int.Parse(valuesOfLine[1]);
                 string Action = valuesOfLine[2];
-                string NewEmail = valuesOfLine[3];
+                //string NewEmail = valuesOfLine[3];
                 if (Action == "add")
                 {
                     dataService.AddUser(userEmail, role);
@@ -35,12 +42,15 @@ namespace CSVProject
                 {
                     dataService.UpdateUserRole(userEmail, role);
                 }
-                else 
-                if(Action == "updateEmail")
+                else
+                if (Action == "updateEmail")
                 {
-                    dataService.UpdateUserEmail(userEmail , NewEmail);
+                    string NewEmail = valuesOfLine[3];
+                    dataService.UpdateUserEmail(userEmail, NewEmail);
                 }
             }
+
         }
+
     }
 }
