@@ -34,7 +34,7 @@
     <PublishUrl>C:\Users\cc\Desktop\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.0.0.4</ApplicationVersion>
+    <ApplicationVersion>1.0.0.6</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -224,10 +224,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>ExcelDemo_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>ExcelDemo_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>15BAAD76D6476630DACA47B9FB471A0AD8B2652C</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>24CBD5B13B516BF4D0CA248B970F91FB5FD3BA20</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

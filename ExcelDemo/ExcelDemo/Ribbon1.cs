@@ -71,13 +71,13 @@ namespace ExcelDemo
                 package.Subject = "Excel Update";
 
                 //__remainder of columns should be key/value pairs
-                for (int k = 2; k <= iNumColumns; k += 2)
+                for (int k = 2; k <= iNumColumns; k++)
                 {
 
                     cell = usedRange.Cells[i, k];
                     package.Updates.Add(keys[k], cell.Value.ToString());
                     package.Body += keys[k] + ":" + cell.Value.ToString();
-                    if (k != iNumColumns) package.Body += "|";
+                    if (k != iNumColumns) package.Body += "\n";
                 }
                 updates.Add(package);
             }

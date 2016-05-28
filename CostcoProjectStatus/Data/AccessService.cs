@@ -657,7 +657,7 @@ namespace DataService
             {
                 Guid projectID = project.ProjectID;
                 var lastUpdateDate = context.ProjectPhases.Where(p => p.ProjectID == projectID && p.LatestUpdate != null).Max(p => p.LatestUpdate);
-                project.LatestUpdate = (DateTime)lastUpdateDate;
+                if(lastUpdateDate != null) project.LatestUpdate = (DateTime)lastUpdateDate;
             }
             return projects;
         }
