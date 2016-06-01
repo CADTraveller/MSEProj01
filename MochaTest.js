@@ -2,13 +2,18 @@ console.log('starting test');
 var chai = require('chai');
 var chaiHttp = require('chai-http');
 var async = require('async');
+var chaiJsonEqual = require('chai-json-equal');
 
 var assert = chai.assert;
 var expect = chai.expect;
 var should = chai.should();
 chai.use(chaiHttp);
 
+
+
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
+var cookie = 'ai_user=X8pZz|2016-04-10T03:09:45.992Z; ARRAffinity=5d61d7e367d553a3c54df0aaec20b2ad4cadb57598e9e108062da519ca725375; ASP.NET_SessionId=xlofspejffca5uw4o0bsjlj2; .AspNet.ExternalCookie=5ULO1XM5wFoReS0fLZ9psmhsDtJgedNRGSOqBYOfim6OkExzhac0-HiasB-iVkbzkHEWf2uudenqys0G9crY5G3jIiU_o0Q9BEc2aOmjJHp-JxMdY8kslyByOjo5BdtNDliUklIuYcshWCwsCDG14IBIsMOwvIbrFI6fjBhE62J_SyVgKgKsRk7fYtQf0tIJX1DQeUGvxFvD9MWUdCs6J1Zk3urjHm5aAiv3JlCtOOJF1sfQEbgetwS2JOBGrE1R7p_kFd1L_96F2_QVR69FAdb9jn7qEYAiFswX3P4PnctjK6JvyNf9t3ZCSCuWUe21LrLDrozqkwN1vpZFtkAVQdoVwPZpWp9UCO37qDoi086WEB7OL3nrmPOZBP3R8PLyKaRJk37kyVA-6K0HoVpnS0oImFyoedYjB5IagfHY31KHyIIbxnO81H3Zfg0jtKj-';
 
 //defines a test suite
 describe('Business Unit Test Result', function () {
@@ -16,11 +21,14 @@ describe('Business Unit Test Result', function () {
 	this.timeout(15000);
 	var results;
 	var response;
+	var testProjectID;
+	var testProjectUpdateID;
 
 
 //agent1=chai.request.agent("https://localhost:44300/");
 agent1 = chai.request.agent("https://costcodevops.azurewebsites.net");
-describe('GetAllVertical', function() {
+
+describe('GetAllVertical-Getting all the verticals name from Data Access layer', function() {
 this.timeout(15000);
     it('returns', function(done) {        
 		return agent1
@@ -56,64 +64,33 @@ this.timeout(15000);
 		
     })
 
-    it('First entry in json object array has Known values', function(done){
-		expect(result[0]).to.have.deep.property('Key',0);
-	  	expect(result[0]).to.have.deep.property('Value','Warehouse_Solutions');	 
+    it('Json Array in the entry has Known key value types', function(done){
+    	expect(result).to.satisfy(
+			function (result) {
+				for (var i = 0; i < result.length; i++) {
+					 var jsonkey = result[i].Key;
+					 var jsonval = result[i].Value;
+					 assert.isNumber(jsonkey, 'value check integer');
+					 assert.isString(jsonval, 'value check string');
+					
+				}
+				return true;
+			});
 		done();
-    });
-     it('Second entry in json object array has Known values', function(done){
-		expect(result[1]).to.have.deep.property('Key',1);
-	  	expect(result[1]).to.have.deep.property('Value','Merchandising_Solutions');	 
-		done();
-    });
-     it('Third entry in json object array has Known values', function(done){
-		expect(result[2]).to.have.deep.property('Key',2);
-	  	expect(result[2]).to.have.deep.property('Value','Membership_Solutions');	 
-		done();
-    });
-     it('Fourth entry in json object array has Known values', function(done){
-		expect(result[3]).to.have.deep.property('Key',3);
-	  	expect(result[3]).to.have.deep.property('Value','Distribution_Solutions');	 
-		done();
-    });
-     it('Fifth entry in json object array has Known values', function(done){
-		expect(result[4]).to.have.deep.property('Key',4);
-	  	expect(result[4]).to.have.deep.property('Value','International_Solutions');	 
-		done();
-    });
-     it('Sixth entry in json object array has Known values', function(done){
-		expect(result[5]).to.have.deep.property('Key',5);
-	  	expect(result[5]).to.have.deep.property('Value','Ancillary_Solutions');	 
-		done();
-    });
-     it('Seventh entry in json object array has Known values', function(done){
-		expect(result[6]).to.have.deep.property('Key',6);
-	  	expect(result[6]).to.have.deep.property('Value','eBusiness_Solutions');	 
-		done();
-    });
-     it('Eighty entry in json object array has Known values', function(done){
-		expect(result[7]).to.have.deep.property('Key',7);
-	  	expect(result[7]).to.have.deep.property('Value','Corporate_Solutions');	 
-		done();
-    });
-     it('Last entry in json object array has Known values', function(done){
-		expect(result[8]).to.have.deep.property('Key',-1);
-	  	expect(result[8]).to.have.deep.property('Value','Not_Assigned');	 
-		done();
-    }); 
-
-describe('IsLogin', function() {
+		
+    })
+   
+describe('IsLogin - Checks if the user is logged in or not and creates session for an authorized users', function() {
 this.timeout(15000);
     it('returns', function(done) {        
 		return agent1
 		      .get('/Account/IsLogin')	
-		      .set('Cookie','ai_user=X8pZz|2016-04-10T03:09:45.992Z; ARRAffinity=5d61d7e367d553a3c54df0aaec20b2ad4cadb57598e9e108062da519ca725375; ASP.NET_SessionId=ez0rkd1lid202f11dbxyxmw2; .AspNet.ExternalCookie=dj4wm8qck6OQAVpt0zoW1xj-0q2hALC8G7weV_t2Hymdgv8jlbt2MzJfSEEN50yCoAiu09W-5ITyKPVS7PQLcs4hSs_ANeEgoEOKsg3I8wukIJZkqBNi5EJJphlT15leAOpORtARUSK-ykk6EV2QB-VbMxgdw3kRRBU8jlYkAIkdoAelVY13VNuNCwhvoTB_i3Y4lDCE9VSbqu4oFISneRJOateQ6bscAfedD48PRIh6o7afwPE6QNZxcbWsXDpEVQ9vujqxo_gu43CMZp_nJgpr08Zmg95WtZUcVcyFG7uhxCoLKF_YoeCMEJgoy3TQ4o8jGzeL5qslEz2T-bppVDh1B2TXGgvJHrQupfGrQapaz2qfnqOzepq3DhkPc5Ojz6TL_wZ-Mgz1COS-DIIFwP_LItwJ8-jOa3sBi8tP1JdA6GHiNDzzZZODtmLToOBd')
+		      .set('Cookie',cookie)
 		      .end( function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(200);
 				response=res;
-				result = JSON.parse(JSON.stringify(eval(res.text)));
-				//console.log(result);
+				result = res.text;
 				done();
 		       });
     });
@@ -125,26 +102,29 @@ this.timeout(15000);
 		done();
     });
 
-    it('Should return username "costcosu@gmail.com" for current session', function(done){
-		expect(result).to.be.eql('costcosu@gmail.com');
+
+    it('Should return a logged in user Id which is a string', function(done){
+		assert.isString(result, 'value check string');
 		done();
-	});
+    });    
+
 
 });
 
 });
 
-describe('GetVerticalProjects', function() {
+describe('GetVerticalProjects-get all the projects for specific vertical from data access layer', function() {
 this.timeout(15000);
     it('returns', function(done) {        
 		return agent1
 		      .get('/Vertical/GetVerticalProjects/0')
-		      .set('Cookie','ai_user=X8pZz|2016-04-10T03:09:45.992Z; ARRAffinity=5d61d7e367d553a3c54df0aaec20b2ad4cadb57598e9e108062da519ca725375; ASP.NET_SessionId=ez0rkd1lid202f11dbxyxmw2; .AspNet.ExternalCookie=dj4wm8qck6OQAVpt0zoW1xj-0q2hALC8G7weV_t2Hymdgv8jlbt2MzJfSEEN50yCoAiu09W-5ITyKPVS7PQLcs4hSs_ANeEgoEOKsg3I8wukIJZkqBNi5EJJphlT15leAOpORtARUSK-ykk6EV2QB-VbMxgdw3kRRBU8jlYkAIkdoAelVY13VNuNCwhvoTB_i3Y4lDCE9VSbqu4oFISneRJOateQ6bscAfedD48PRIh6o7afwPE6QNZxcbWsXDpEVQ9vujqxo_gu43CMZp_nJgpr08Zmg95WtZUcVcyFG7uhxCoLKF_YoeCMEJgoy3TQ4o8jGzeL5qslEz2T-bppVDh1B2TXGgvJHrQupfGrQapaz2qfnqOzepq3DhkPc5Ojz6TL_wZ-Mgz1COS-DIIFwP_LItwJ8-jOa3sBi8tP1JdA6GHiNDzzZZODtmLToOBd')
+		      .set('Cookie', cookie)
 		      .end( function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(200);
 				response=res;
 				result = JSON.parse(JSON.stringify(eval(res.text)));
+				testProjectID=result[0].ProjectID;
 				//console.log(res.text);
 				done();
 		       });
@@ -167,53 +147,55 @@ this.timeout(15000);
 					expect(result[i]).to.have.property('Vertical');
 					expect(result[i]).to.have.property('ProjectPhases');
 					expect(result[i]).to.have.property('ProjectUpdates');
-					expect(result[i]).to.have.property('StatusUpdates');			
-							
+					expect(result[i]).to.have.property('StatusUpdates');
+					
 				}
 				return true;
 			});
 		done();		
     });
-	it('GetVerticalProjects returns ProjectID:509f534a-2c78-4cd5-bbf9-2349e9bb1420', function(done){
-		expect(result[0]).to.have.deep.property('ProjectID','509f534a-2c78-4cd5-bbf9-2349e9bb1420');
-	  	done();
+
+it('Should return a Json Array has know key value types', function(done){
+	expect(result).to.satisfy(
+			function (result) {
+				for (var i = 0; i < result.length; i++) {
+					 assert.isString(result[i].LatestUpdate, 'value check string');
+					 assert.isString(result[i].ProjectID, 'value check string');
+					 assert.isString(result[i].ProjectName, 'value check string');
+					  assert.isNull(result[i].VerticalID, 'value check Null');					
+					 assert.isNull(result[i].Description, 'value check Null');
+					 assert.isNull(result[i].Vertical, 'value check Null');
+					 assert.isArray(result[i].ProjectPhases, 'Value check isArray');
+					 assert.isArray(result[i].ProjectUpdates, 'value check isArray');
+					 assert.isArray(result[i].StatusUpdates, 'value check isArray');					  
+
+				}
+				return true;
+			});
+		done();
+
+
+	
+       
     });
-    it('GetVerticalProjects returns ProjectID:21ee5812-9d98-4a5a-a173-5f6ba4b7f267 ', function(done){
-		expect(result[1]).to.have.deep.property('ProjectID','21ee5812-9d98-4a5a-a173-5f6ba4b7f267');
-	  	done();
-    });
-     it('GetVerticalProjects returns ProjectID:2267cdcc-2fd0-4033-9eb0-82d31ae42516', function(done){
-		expect(result[2]).to.have.deep.property('ProjectID','2267cdcc-2fd0-4033-9eb0-82d31ae42516');
-	  	done();
-    });
-     it('GetVerticalProjects returns ProjectID:0a9514be-0e61-4ffc-9d7b-8e151a126038', function(done){
-		expect(result[3]).to.have.deep.property('ProjectID','0a9514be-0e61-4ffc-9d7b-8e151a126038');
-	  	done();
-    });
-      it('GetVerticalProjects returns ProjectID:6eec9e76-6ab0-414b-b03f-98597530853a', function(done){
-		expect(result[4]).to.have.deep.property('ProjectID','6eec9e76-6ab0-414b-b03f-98597530853a');
-	  	done();
-    });
-       it('GetVerticalProjects returns ProjectID: d09b5ddf-a92e-481b-9942-a404c2c2bdfd', function(done){
-		expect(result[5]).to.have.deep.property('ProjectID','d09b5ddf-a92e-481b-9942-a404c2c2bdfd');
-	  	done();
-    });
+	
 
 });
 
 
-describe('GetProjectUpdates', function() {
+describe('GetProjectUpdates-Get all information about specific project from GetProjectUpdates on Data Access layer based on the projectID', function() {
 this.timeout(15000);
-    it('returns', function(done) {        
+    it('returns', function(done) {    	 
 		return agent1
-		      .get('/ProjectList/GetprojectUpdates/509f534a-2c78-4cd5-bbf9-2349e9bb1420')
-		      .set('Cookie','ai_user=X8pZz|2016-04-10T03:09:45.992Z; ARRAffinity=5d61d7e367d553a3c54df0aaec20b2ad4cadb57598e9e108062da519ca725375; ASP.NET_SessionId=ez0rkd1lid202f11dbxyxmw2; .AspNet.ExternalCookie=dj4wm8qck6OQAVpt0zoW1xj-0q2hALC8G7weV_t2Hymdgv8jlbt2MzJfSEEN50yCoAiu09W-5ITyKPVS7PQLcs4hSs_ANeEgoEOKsg3I8wukIJZkqBNi5EJJphlT15leAOpORtARUSK-ykk6EV2QB-VbMxgdw3kRRBU8jlYkAIkdoAelVY13VNuNCwhvoTB_i3Y4lDCE9VSbqu4oFISneRJOateQ6bscAfedD48PRIh6o7afwPE6QNZxcbWsXDpEVQ9vujqxo_gu43CMZp_nJgpr08Zmg95WtZUcVcyFG7uhxCoLKF_YoeCMEJgoy3TQ4o8jGzeL5qslEz2T-bppVDh1B2TXGgvJHrQupfGrQapaz2qfnqOzepq3DhkPc5Ojz6TL_wZ-Mgz1COS-DIIFwP_LItwJ8-jOa3sBi8tP1JdA6GHiNDzzZZODtmLToOBd')
+		      .get('/ProjectList/GetprojectUpdates/'+testProjectID)
+		      .set('Cookie',cookie)
 		      .end( function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(200);
 				response=res;
 				result = JSON.parse(JSON.stringify(eval(res.text)));
-				//console.log(result);
+				testProjectUpdateID = result[0].ProjectUpdateID;
+				//console.log(testProjectUpdateID);
 				done();
 		       });
     });
@@ -235,28 +217,32 @@ this.timeout(15000);
 		expect(result[0]).to.include.keys('ProjectID');
 		expect(result[0]).to.include.keys('Subject');
 		expect(result[0]).to.include.keys('Project');
-		expect(result[0]).to.include.keys('StatusUpdates');
+		expect(result[0]).to.include.keys('StatusUpdates');			
 		done();
      })
 
-      it('GetprojectUpdates should return known values', function(done){
-		expect(result[0]).to.have.deep.property('ProjectID','509f534a-2c78-4cd5-bbf9-2349e9bb1420');
-		expect(result[0]).to.have.deep.property('ProjectUpdateID','135c96dd-2987-4118-94cf-f039baff94da');
-		expect(result[0]).to.have.deep.property('Subject','Deployment Succeeded wdc_prod_group1: Ecomm_NonCore [RxWebInt_3.0.4877.0]');
-		expect(result[0]).to.have.deep.property('Phase','Start_Up');
-		
-		done();
-    });
-
-
+     it('Should return an array of Know Key Value types', function(done){
+     	assert.isString(result[0].$id, 'value check string');
+		assert.isString(result[0].Date, 'value check string');
+		assert.isString(result[0].Environment, 'value check Null');
+		assert.isString(result[0].Description, 'value check Null');					
+		assert.isNumber(result[0].PhaseID, 'value check Number');
+		assert.isString(result[0].ProjectUpdateID, 'value check string');
+		assert.isString(result[0].ProjectID, 'Value check string');
+		assert.isString(result[0].Subject, 'value check string');
+		assert.isObject(result[0].Project, 'value check object');
+		assert.isArray(result[0].StatusUpdates, 'value check object');		
+		done();		
+     });      
 });
 
-describe('GetStatusData', function() {
+
+describe('GetStatusData-Get the project information from GetAllUpdatesFromEmail in Data Access layer', function() {
 this.timeout(15000);
     it('returns', function(done) {        
 		return agent1
-		      .get('/ProjectList/GetStatusData/e22c5304-163c-4ba4-bd7e-20b71e41572f/1213a14b-4a19-4d84-93aa-1e18ea01f248')
-		      .set('Cookie','ai_user=X8pZz|2016-04-10T03:09:45.992Z; ARRAffinity=5d61d7e367d553a3c54df0aaec20b2ad4cadb57598e9e108062da519ca725375; ASP.NET_SessionId=ez0rkd1lid202f11dbxyxmw2; .AspNet.ExternalCookie=dj4wm8qck6OQAVpt0zoW1xj-0q2hALC8G7weV_t2Hymdgv8jlbt2MzJfSEEN50yCoAiu09W-5ITyKPVS7PQLcs4hSs_ANeEgoEOKsg3I8wukIJZkqBNi5EJJphlT15leAOpORtARUSK-ykk6EV2QB-VbMxgdw3kRRBU8jlYkAIkdoAelVY13VNuNCwhvoTB_i3Y4lDCE9VSbqu4oFISneRJOateQ6bscAfedD48PRIh6o7afwPE6QNZxcbWsXDpEVQ9vujqxo_gu43CMZp_nJgpr08Zmg95WtZUcVcyFG7uhxCoLKF_YoeCMEJgoy3TQ4o8jGzeL5qslEz2T-bppVDh1B2TXGgvJHrQupfGrQapaz2qfnqOzepq3DhkPc5Ojz6TL_wZ-Mgz1COS-DIIFwP_LItwJ8-jOa3sBi8tP1JdA6GHiNDzzZZODtmLToOBd')
+		      .get('/ProjectList/GetStatusData/'+testProjectID+'/'+ testProjectUpdateID)
+		      .set('Cookie',cookie)
 		      .end( function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(200);
@@ -290,11 +276,35 @@ this.timeout(15000);
 					expect(result[i]).to.have.property('Project');
 					expect(result[i]).to.have.property('ProjectUpdate');
 					expect(result[i]).to.have.property('Vertical');	
-					
+					           					
 				}
 				return true;
 			});
+           
 		done();		
+    });
+
+     it('Should return a Json Array has know key value types', function(done){
+	expect(result).to.satisfy(
+			function (result) {
+				for (var i = 0; i < result.length; i++) {
+					 assert.isNumber(result[i].PhaseID, 'value check Number');
+					 assert.isString(result[i].ProjectID, 'value check string');
+					 assert.isString(result[i].ProjectName, 'value check string');
+					 assert.isString(result[i].ProjectUpdateID, 'value check string');
+					 assert.isNumber(result[i].VerticalID, 'value check Number');					
+					 assert.isString(result[i].RecordDate, 'value check string');
+					 assert.isString(result[i].UpdateKey, 'value check string');
+					 assert.isNull(result[i].Phase, 'value check null');
+					 assert.isNull(result[i].Project, 'value check null');
+					 assert.isNull(result[i].ProjectUpdate, 'value check null');
+					 assert.isNull(result[i].Vertical, 'value check null');									  
+
+				}
+				return true;
+			});
+		done();	
+       
     });
 
 
@@ -311,7 +321,7 @@ var emailJson = {
 
 }
 
-describe('ProjectUpdate', function() {
+describe('ProjectUpdate-Receives a json object, deserialze the object and pass the inforamtion to the the RecordUpdatePackage', function() {
 this.timeout(15000);
     it('returns', function(done) {        
 		return agent1
@@ -327,15 +337,20 @@ this.timeout(15000);
 		       });
     });
 
-     it('Should return a json string with valid status and header', function(done){
+     it('Should return a string with valid status and header', function(done){
 		expect(response).to.have.status(200);
 		expect(result).to.have.length.above(1);	
 		expect(response).to.have.header('content-type', 'text/html; charset=utf-8');
 		done();
     });
+ 	it('Should return a json with known key value types', function(done){
+		assert.isString(result,'value check string');
+		done();
+    });
+
 });
 
-describe('Display', function() {
+describe('Display - Redirects to home Page', function() {
 this.timeout(15000);
     it('returns', function(done) {        
 		return agent1
@@ -350,20 +365,25 @@ this.timeout(15000);
 		       });
     });
 
-     it('Should return a json string with valid status and header', function(done){
+     it('Should return a string with valid status and header', function(done){
 		expect(response).to.have.status(200);
 		expect(result).to.have.length.above(1);	
 		expect(response).to.have.header('content-type', 'text/html; charset=utf-8');
 		done();
     });
+
+    it('Should return a json with known key value types', function(done){
+		assert.isString(result,'value check string');
+		done();
+    });
 });
 
-describe('Logoff', function() {
+describe('Logoff-Ends the current user session', function() {
 this.timeout(15000);
     it('returns', function(done) {        
 		return agent1
 		      .post('/Account/Logoff')
-		      .set('Cookie','ai_user=X8pZz|2016-04-10T03:09:45.992Z; ARRAffinity=5d61d7e367d553a3c54df0aaec20b2ad4cadb57598e9e108062da519ca725375; ASP.NET_SessionId=yliqzw54b0l2sije2d0n142i; .AspNet.ExternalCookie=ADHisJ8nHEUzRuWmZ7oxzXlmE1fDYAEu8uxq1km1G8DEWgWMq0dig8JB5pImByH1owatOUudKRNDYK7MJxAhMYf5rjdhBqakQTN72WsMbWKan5SIBlOnYK4_FzEr1druKeJ2t_3phf2amOEAe8Fm87E8dh4p_C4K3IgtS-m8bClaVNUB58YUhtTMgteGJxgcqgyo1zzWT4Xw07ZRLnnJshjOtnxw9z29V_5W6rXBtL8Ut5l38wC6EaDWrPCl2XSxdXDQpMzA1IItj0Oh5r6Se48bUMTo5P21mzDTIrLpmVhZ4kbozzuNDPbYqA7_iZD0lHwmhf-1Aljug-2vxKDGV1tMUErv4fhuxEzTHm4gVqXY3w813O8oSZlBHomgi_zcW3sMem8DhGBxo4LY4M0CmdglDodf8OnpdlwmXl78lieyCek-UBUc8DbgzriZWzoY')
+		      .set('Cookie',cookie)
 		      .end( function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(200);
@@ -374,12 +394,19 @@ this.timeout(15000);
 		       });
     });
 
-     it('Should return a json string with valid status and header', function(done){
+     it('Should return a string with valid status and header', function(done){
 		expect(response).to.have.status(200);
 		expect(result).to.have.length.above(1);	
 		expect(response).to.have.header('content-type', 'text/html');
 		done();
     });
+
+    it('Should return a json with known key value types', function(done){
+		assert.isString(result,'value check string');
+		done();
+    });
+
+
 });
 
 });
